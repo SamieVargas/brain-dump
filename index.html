@@ -837,7 +837,6 @@
 
 <script>
   // ── CONFIG ────────────────────────────────────────────
-  // Replace with your deployed Cloudflare Worker URL
   const WORKER_URL = "https://brain-dump-proxy.samievargas.workers.dev";
 
   // ── STATE ─────────────────────────────────────────────
@@ -868,11 +867,11 @@
     },
     "time boxing": {
       title: "time boxing",
-      body: "set a hard stop time before you begin. tasks that could expand infinitely (research, email, planning) need a container. knowing it ends at 3pm makes starting at 2pm feel safe."
+      body: "set a hard stop time before you begin. tasks that could expand infinitely (research, email, planning) need a container. knowing it ends at a set time makes starting feel safe."
     },
     "temptation bundling": {
       title: "temptation bundling",
-      body: "pair a boring task with something you actually enjoy — your favourite playlist, a good coffee, a walk. the enjoyable thing is only allowed during the task. it makes the mundane feel like a treat."
+      body: "pair a boring task with something you actually enjoy. the enjoyable thing is only allowed during the task. it makes the mundane feel like a treat."
     },
     "micro-commitment": {
       title: "micro-commitment",
@@ -881,6 +880,50 @@
     "reset first": {
       title: "reset before tasking",
       body: "when the dump is mostly emotional weight — worries, guilt, vague dread — trying to 'do' something often backfires. a short physical reset shifts your nervous system state first, making any task that follows easier to start."
+    },
+    "parallel stacking": {
+      title: "parallel stacking",
+      body: "stack two tasks so one runs in the background while you do the other. press the Roomba button while waiting for food, start laundry before a call. zero extra effort, double the progress."
+    },
+    "body first, everything else second": {
+      title: "body first",
+      body: "your brain can't function well when your body's basic needs aren't met. food, water, and rest aren't distractions from productivity — they're the foundation of it. this comes first, everything else follows."
+    },
+    "body first, brain second": {
+      title: "body first",
+      body: "your brain can't function well when your body's basic needs aren't met. food, water, and rest aren't distractions from productivity — they're the foundation of it. this comes first, everything else follows."
+    },
+    "pre-made decision + single action": {
+      title: "pre-made decision",
+      body: "when energy is low, decision fatigue is real. this task has already been decided for you — there's nothing to weigh or choose. just follow the single physical action described. that's the entire task."
+    },
+    "pre-made decision, single physical gesture": {
+      title: "pre-made decision",
+      body: "when you're foggy, even small decisions drain energy you don't have. this task removes the decision entirely. one physical gesture is all that's needed — the rest takes care of itself."
+    },
+    "parallel task / temptation bundling": {
+      title: "parallel task + temptation bundling",
+      body: "two things at once: this task runs in the background while you do something you'd do anyway (eat, rest, watch something). zero extra willpower required."
+    },
+    "20-minute time box + scope limiter": {
+      title: "time box + scope limit",
+      body: "set a 20-minute timer and a hard boundary on scope. you're not finishing the thing — you're doing the smallest defined version of it in a fixed window. when the timer stops, you stop."
+    },
+    "minimum viable prep": {
+      title: "minimum viable prep",
+      body: "prep doesn't have to be thorough to be useful. the smallest amount of preparation that makes tomorrow easier is enough. three bullet points beats a polished outline every time."
+    },
+    "capture to release": {
+      title: "capture to release",
+      body: "writing something down externally — even one sentence — moves it out of your working memory and into the world. once it's captured, your brain can actually let it go. the act of writing is the release."
+    },
+    "5-minute rule + pre-made decision": {
+      title: "5-minute rule + pre-made decision",
+      body: "two things working together: the decision is already made for you (no choosing required), and you're only committing to 5 minutes. lowest possible activation energy."
+    },
+    "parallel tasking + micro-commitment": {
+      title: "parallel task + micro-commitment",
+      body: "the commitment is tiny (just press one button) and the task runs while you're already doing something else. the bar is as low as it gets."
     }
   };
 
@@ -905,9 +948,9 @@ YOUR JOB:
    - task_heavy: 2+ actionable do_it items
    - mental_load: dump is mostly release_it/capture_it, very few real tasks
 
-5. For task_heavy: write focus tasks with a built-in scope limiter — every task should feel already half-done when you read it. Include the constraint in the task text itself ("write just one bullet", "literally just press the button", "even one sentence is enough"). Order by activation energy, easiest first.
+5. For task_heavy: write focus tasks with a built-in scope limiter — every task should feel already half-done when you read it. ALWAYS lead with the explicit task name first, then add framing/context after. Include the constraint in the task text itself ("write just one bullet", "literally just press the button", "even one sentence is enough"). Order by activation energy, easiest first.
 
-6. For mental_load: one gentle physical anchor only.
+6. For mental_load: one gentle physical anchor only. CRITICAL: gentle_note must ONLY acknowledge the emotional weight — never put an action, task, or instruction inside it. Actions belong in gentle_anchor only. Bad: "You had a lot in there. Food first, everything else later." Good: "You had a lot in there. That's a lot to be carrying." The anchor task goes in the bullet, not the note.
 
 ENERGY STATE RULES — bucket sizing, task language, and tone ALL must match:
 
@@ -949,8 +992,8 @@ low energy:
 
 foggy:
 - Cap do_it at 1 item. ONLY the most automatic single physical gesture — no decisions at all.
-- Every focus task is a single physical gesture: "press the button", "open the fridge", "lie down".
-- Tone: very warm, slow, short sentences. "Just one thing. That's it." No compound instructions.
+- Focus task format for foggy ONLY: the task field must be SHORT and direct — 3-6 words max as a clear action label, followed by a line break and then a single gentle sentence of context. Structure it as: "eat dinner.\n\nopen whatever app is already on your phone. pick the first thing. press order. that's it." The short label must be immediately obvious — someone half-asleep should be able to read the first 4 words and know what to do.
+- Tone: very warm, slow, short sentences. No compound instructions.
 - Capture It should include a warm closing note: these ideas will still be here when the fog lifts.
 - Be aggressive about moving ambiguous items to release_it or capture_it rather than decide_later.
 - focus_subtitle: "one thing. just one."
@@ -1132,7 +1175,13 @@ Respond ONLY with valid JSON — no prose, no markdown, no backticks:
     const container = document.getElementById("focus-items");
     container.innerHTML = "";
     focus.forEach((item, i) => {
-      const strat = STRATEGIES[item.strategy] || { title: item.strategy, body: "" };
+      const stratKey = item.strategy || "";
+      let strat = STRATEGIES[stratKey];
+      if (!strat) {
+        const lower = stratKey.toLowerCase();
+        const match = Object.keys(STRATEGIES).find(k => lower.includes(k) || k.includes(lower.split(" ")[0]));
+        strat = match ? STRATEGIES[match] : { title: stratKey, body: "a strategy tailored to this task — do the smallest version of it you can imagine right now." };
+      }
       const id = "fi-" + i;
       const chipId = "fc-" + i;
       const div = document.createElement("div");
@@ -1142,7 +1191,7 @@ Respond ONLY with valid JSON — no prose, no markdown, no backticks:
           <div class="focus-dot"></div>
           <div style="flex:1">
             <div class="focus-line">
-              <span class="focus-text">${item.task}</span>
+              <span class="focus-text">${item.task.replace(/\n\n/g, '<br><span style="font-size:13px;color:var(--text-muted);font-weight:300;line-height:1.6;">&nbsp;').replace(/\n/g, '<br>')}</span>
               <button class="tag" id="${chipId}" onclick="toggleTag('${id}','${chipId}')">
                 ${item.strategy} <i class="ti ti-chevron-down"></i>
               </button>
