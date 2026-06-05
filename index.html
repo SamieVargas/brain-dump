@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>clear your mind.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+  <style>
+    /* ── RESET & BASE ─────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --purple:       #7C5CBF;
+      --purple-dark:  #5b4a8a;
+      --purple-deep:  #645491;
+      --purple-mid:   #9E8DC6;
+      --purple-light: rgba(124,92,191,0.07);
+      --purple-tag:   rgba(124,92,191,0.15);
+      --purple-tag-border: rgba(124,92,191,0.35);
+      --purple-border: rgba(124,92,191,0.25);
+      --green-bg:     #EAF3DE;
+      --green-border: #97C459;
+      --green-text:   #27500A;
+      --green-sub:    #3B6D11;
+      --green-count:  #C0DD97;
+      --green-card:   #f2f9e8;
+      --green-card-b: #C0DD97;
+      --coral-bg:     #FAECE7;
+      --coral-border: #F0997B;
+      --coral-text:   #712B13;
+      --coral-sub:    #993C1D;
+      --coral-count:  #F0997B;
+      --coral-card:   #fdf2ee;
+      --coral-card-b: #F5C4B3;
+      --pink-bg:      #FBEAF0;
+      --pink-border:  #ED93B1;
+      --pink-text:    #72243E;
+      --pink-sub:     #993556;
+      --pink-count:   #ED93B1;
+      --pink-card:    #fdf0f5;
+      --pink-card-b:  #F4C0D1;
+      --bg:           #ffffff;
+      --text:         #1a1a1a;
+      --text-muted:   #6b6b6b;
+      --radius-sm:    8px;
+      --radius-md:    12px;
+      --radius-lg:    14px;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #faf9ff;
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2rem 1rem 4rem;
+    }
+
+    .app {
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    /* ── HERO ─────────────────────────────────────────── */
+    .hero {
+      text-align: center;
+      margin-bottom: 1.75rem;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 400;
+      color: var(--purple-dark);
+      letter-spacing: -0.5px;
+      margin-bottom: 5px;
+    }
+    .hero p {
+      font-size: 13px;
+      color: var(--purple-mid);
+      font-weight: 300;
+      letter-spacing: 0.02em;
+    }
+
+    /* ── PRIVACY BAR ──────────────────────────────────── */
+    .privacy-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(124,92,191,0.06);
+      border: 0.5px solid var(--purple-border);
+      border-radius: var(--radius-md);
+      padding: 8px 14px;
+      margin-bottom: 1.25rem;
+    }
+    .privacy-bar i { font-size: 14px; color: var(--purple); }
+    .privacy-bar span { font-size: 12px; color: var(--purple-deep); flex: 1; }
+    .privacy-bar a { font-size: 12px; color: var(--purple); text-decoration: underline; cursor: pointer; white-space: nowrap; }
+
+    /* ── ENERGY SELECTOR ──────────────────────────────── */
+    .energy-wrap { margin-bottom: 1rem; }
+    .energy-label { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; display: block; }
+    .energy-row { display: flex; gap: 6px; flex-wrap: wrap; }
+    .energy-btn {
+      flex: 1;
+      min-width: 90px;
+      padding: 7px 6px;
+      border-radius: var(--radius-sm);
+      border: 0.5px solid var(--purple-border);
+      background: transparent;
+      font-size: 12px;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--purple-mid);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .energy-btn.active {
+      background: var(--purple);
+      border-color: var(--purple);
+      color: #fff;
+      font-weight: 500;
+    }
+
+    /* ── TIMER ────────────────────────────────────────── */
+    .timer-wrap { margin-bottom: 1rem; }
+    .timer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .timer-header-left { display: flex; align-items: center; gap: 10px; }
+    .timer-select {
+      font-size: 12px;
+      border: 0.5px solid var(--purple-border);
+      border-radius: 6px;
+      padding: 3px 8px;
+      color: var(--purple-deep);
+      background: transparent;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+    }
+    .timer-toggle {
+      font-size: 11px;
+      color: var(--purple-mid);
+      cursor: pointer;
+      text-decoration: underline;
+      background: none;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .timer-btns { display: flex; gap: 6px; }
+    .timer-btn {
+      padding: 5px 14px;
+      border-radius: 6px;
+      border: 0.5px solid var(--purple-border);
+      background: transparent;
+      font-size: 12px;
+      color: var(--purple-deep);
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: background 0.15s;
+    }
+    .timer-btn:hover { background: rgba(124,92,191,0.06); }
+    .timer-btn.primary { background: var(--purple); color: #fff; border-color: var(--purple); }
+    .timer-btn.primary:hover { background: var(--purple-dark); }
+    .timer-visual {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: rgba(124,92,191,0.06);
+      border: 0.5px solid var(--purple-border);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+    }
+    .timer-ring svg { display: block; }
+    .timer-info { flex: 1; }
+    .timer-time {
+      font-family: 'DM Mono', monospace;
+      font-size: 24px;
+      color: var(--purple-deep);
+      line-height: 1;
+      margin-bottom: 3px;
+    }
+    .timer-status { font-size: 11px; color: var(--purple-mid); }
+
+    /* ── DUMP AREA ────────────────────────────────────── */
+    .dump-box {
+      background: #fff;
+      border: 0.5px solid var(--purple-border);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .dump-example-tag {
+      display: inline-block;
+      font-size: 10px;
+      background: rgba(124,92,191,0.1);
+      color: var(--purple);
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+    .dump-box textarea {
+      width: 100%;
+      min-height: 120px;
+      border: none;
+      outline: none;
+      resize: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--text);
+      background: transparent;
+    }
+    .dump-box textarea::placeholder { color: rgba(124,92,191,0.35); }
+    .dump-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 0.5px solid rgba(124,92,191,0.1);
+    }
+    .dump-hint { font-size: 11px; color: rgba(124,92,191,0.4); transition: opacity 0.3s; }
+    .dump-desc { font-size: 11px; color: var(--text-muted); }
+
+    /* ── SORT BUTTON ──────────────────────────────────── */
+    .sort-wrap { text-align: center; margin-bottom: 0.75rem; }
+    .sort-btn {
+      background: var(--purple);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-md);
+      padding: 12px 32px;
+      font-size: 15px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s;
+      letter-spacing: 0.01em;
+    }
+    .sort-btn:hover { background: var(--purple-dark); }
+    .sort-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .emergency-btn {
+      display: block;
+      text-align: center;
+      font-size: 12px;
+      color: var(--purple-mid);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      margin-bottom: 1.25rem;
+      text-decoration: underline;
+    }
+
+    /* ── DIVIDER ──────────────────────────────────────── */
+    .divider { height: 0.5px; background: rgba(124,92,191,0.15); margin: 1.25rem 0; }
+
+    /* ── SECTION LABEL ────────────────────────────────── */
+    .section-label {
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--purple-mid);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    /* ── BUCKETS ──────────────────────────────────────── */
+    .buckets-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 1.25rem;
+    }
+    .bucket {
+      border-radius: var(--radius-lg);
+      padding: 14px 16px;
+      border: 0.5px solid;
+    }
+    .bucket-do     { background: rgba(124,92,191,0.07); border-color: rgba(124,92,191,0.3); }
+    .bucket-decide { background: var(--green-bg);  border-color: var(--green-border); }
+    .bucket-capture{ background: var(--coral-bg);  border-color: var(--coral-border); }
+    .bucket-release{ background: var(--pink-bg);   border-color: var(--pink-border); }
+
+    .bucket-head { display: flex; align-items: center; gap: 6px; margin-bottom: 3px; }
+    .bucket-title { font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 500; }
+    .bucket-do .bucket-title     { color: var(--purple-dark); }
+    .bucket-decide .bucket-title { color: var(--green-text); }
+    .bucket-capture .bucket-title{ color: var(--coral-text); }
+    .bucket-release .bucket-title{ color: var(--pink-text); }
+
+    .bucket-count {
+      font-size: 10px;
+      font-weight: 500;
+      padding: 2px 7px;
+      border-radius: 20px;
+    }
+    .bucket-do .bucket-count     { background: rgba(124,92,191,0.2); color: var(--purple-dark); }
+    .bucket-decide .bucket-count { background: var(--green-count); color: var(--green-text); }
+    .bucket-capture .bucket-count{ background: var(--coral-count); color: var(--coral-text); }
+    .bucket-release .bucket-count{ background: var(--pink-count);  color: var(--pink-text); }
+
+    .bucket-sub { font-size: 11px; margin-bottom: 10px; }
+    .bucket-do .bucket-sub     { color: rgba(124,92,191,0.7); }
+    .bucket-decide .bucket-sub { color: var(--green-sub); }
+    .bucket-capture .bucket-sub{ color: var(--coral-sub); }
+    .bucket-release .bucket-sub{ color: var(--pink-sub); }
+
+    .items-list { display: flex; flex-direction: column; gap: 5px; min-height: 20px; }
+    .item-card {
+      border-radius: var(--radius-sm);
+      padding: 5px 10px;
+      font-size: 12px;
+      border: 0.5px solid;
+      animation: flyIn 0.4s cubic-bezier(.22,.68,0,1.2) both;
+    }
+    .bucket-do .item-card     { background: rgba(124,92,191,0.1); border-color: rgba(124,92,191,0.25); color: var(--purple-dark); }
+    .bucket-decide .item-card { background: var(--green-card); border-color: var(--green-card-b); color: var(--green-text); }
+    .bucket-capture .item-card{ background: var(--coral-card); border-color: var(--coral-card-b); color: var(--coral-text); }
+    .bucket-release .item-card{ background: var(--pink-card);  border-color: var(--pink-card-b);  color: var(--pink-text); }
+
+    @keyframes flyIn {
+      from { opacity: 0; transform: translateY(-8px) scale(0.96); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .bucket-empty {
+      font-size: 11px;
+      color: rgba(124,92,191,0.35);
+      font-style: italic;
+    }
+
+    /* ── FOCUS SECTION ────────────────────────────────── */
+    .focus-section {
+      background: rgba(124,92,191,0.07);
+      border: 0.5px solid rgba(124,92,191,0.25);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .focus-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      color: #645491;
+      margin-bottom: 2px;
+    }
+    .focus-sub {
+      font-size: 12px;
+      color: #9E8DC6;
+      margin-bottom: 1rem;
+    }
+    .focus-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+    .focus-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--purple);
+      flex-shrink: 0;
+      margin-top: 7px;
+    }
+    .focus-line {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 7px;
+      flex: 1;
+    }
+    .focus-text { font-size: 15px; color: var(--text); line-height: 1.4; }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      font-size: 10px;
+      font-weight: 500;
+      background: rgba(124,92,191,0.15);
+      color: #7C6DA3;
+      border: 0.5px solid rgba(124,92,191,0.35);
+      border-radius: 20px;
+      padding: 0px 6px;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      white-space: nowrap;
+      line-height: 0.75;
+      height: 15px;
+      position: relative;
+      top: -1px;
+    }
+    .tag i { font-size: 8px; color: #7C6DA3; transition: transform 0.2s; }
+    .tag.open i { transform: rotate(180deg); }
+    .strategy-expand {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.25s ease, opacity 0.2s;
+      opacity: 0;
+      width: 100%;
+    }
+    .strategy-expand.open { max-height: 160px; opacity: 1; }
+    .expansion-panel {
+      margin-top: 6px;
+      background: #fff;
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      border: 0.5px solid rgba(124,92,191,0.2);
+    }
+    .expansion-title { font-size: 11px; font-weight: 500; color: #7D70A2; margin-bottom: 3px; }
+    .expansion-body  { font-size: 11px; color: #646461; line-height: 1.6; }
+    .focus-divider { height: 0.5px; background: rgba(124,92,191,0.15); margin: 10px 0; }
+
+    /* gentle / mental-load output */
+    .focus-gentle { display: none; }
+    .focus-gentle-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      color: #645491;
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+    .focus-gentle-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-style: italic;
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+
+    /* ── START CTA ────────────────────────────────────── */
+    .start-cta {
+      width: 100%;
+      background: var(--purple-dark);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-md);
+      padding: 12px;
+      font-size: 15px;
+      font-family: 'Playfair Display', serif;
+      font-weight: 400;
+      cursor: pointer;
+      margin-bottom: 1rem;
+      transition: background 0.15s;
+      letter-spacing: 0.01em;
+    }
+    .start-cta:hover { background: var(--purple); }
+    .start-cta.hidden { display: none; }
+
+    /* ── BOTTOM ROW ───────────────────────────────────── */
+    .bottom-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .streak-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--purple);
+      background: rgba(124,92,191,0.1);
+      border-radius: 20px;
+      padding: 5px 12px;
+    }
+    .streak-pill i { font-size: 14px; }
+    .action-btns { display: flex; gap: 6px; }
+    .action-btn {
+      background: #fff;
+      border: 0.5px solid var(--purple-border);
+      border-radius: var(--radius-sm);
+      padding: 6px 12px;
+      font-size: 12px;
+      color: var(--purple-deep);
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: background 0.15s;
+    }
+    .action-btn:hover { background: rgba(124,92,191,0.06); }
+    .action-btn i { font-size: 14px; }
+
+    /* ── POMODORO OVERLAY ─────────────────────────────── */
+    .pomo-overlay {
+      display: none;
+      background: rgba(124,92,191,0.06);
+      border: 0.5px solid var(--purple-border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+    .pomo-overlay.visible { display: block; animation: flyIn 0.3s ease both; }
+    .pomo-task-label { font-size: 11px; color: var(--purple-mid); margin-bottom: 4px; }
+    .pomo-task-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px;
+      color: var(--purple-dark);
+      font-style: italic;
+      margin-bottom: 1.25rem;
+      line-height: 1.4;
+    }
+    .pomo-ring-wrap { display: flex; justify-content: center; margin-bottom: 0.75rem; position: relative; }
+    .pomo-ring-wrap svg { display: block; }
+    .pomo-ring-center {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+    .pomo-time {
+      font-family: 'DM Mono', monospace;
+      font-size: 28px;
+      color: var(--purple-deep);
+      line-height: 1;
+    }
+    .pomo-phase-label { font-size: 10px; color: var(--purple-mid); margin-top: 3px; }
+    .pomo-status { font-size: 12px; color: var(--purple-mid); margin-bottom: 1.25rem; }
+    .pomo-btns { display: flex; gap: 8px; justify-content: center; margin-bottom: 1rem; }
+    .pomo-btn {
+      padding: 8px 18px;
+      border-radius: var(--radius-md);
+      border: 0.5px solid var(--purple-border);
+      background: #fff;
+      font-size: 12px;
+      color: var(--purple-deep);
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: background 0.15s;
+    }
+    .pomo-btn:hover { background: rgba(124,92,191,0.06); }
+    .pomo-btn.primary { background: var(--purple); color: #fff; border-color: var(--purple); }
+    .pomo-btn.primary:hover { background: var(--purple-dark); }
+    .pomo-dots { display: flex; gap: 8px; justify-content: center; margin-bottom: 1rem; }
+    .pomo-dot { width: 9px; height: 9px; border-radius: 50%; background: rgba(124,92,191,0.2); }
+    .pomo-dot.done { background: var(--purple); }
+    .pomo-dot.current { background: var(--purple); box-shadow: 0 0 0 2px rgba(124,92,191,0.2); }
+    .pomo-next-task {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 0.5px solid rgba(124,92,191,0.15);
+    }
+    .pomo-next-label { font-size: 10px; color: var(--purple-mid); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 5px; }
+    .pomo-next-name { font-size: 13px; color: var(--purple-deep); font-family: 'Playfair Display', serif; font-style: italic; }
+    .pomo-close {
+      display: block;
+      font-size: 12px;
+      color: var(--purple-mid);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      text-decoration: underline;
+      margin: 1rem auto 0;
+    }
+
+    /* ── LOADING STATE ────────────────────────────────── */
+    .loading-dots {
+      display: none;
+      text-align: center;
+      padding: 1rem;
+      color: var(--purple-mid);
+      font-size: 13px;
+    }
+    .loading-dots.visible { display: block; }
+    .dot-pulse { display: inline-block; animation: pulse 1.2s infinite; }
+    .dot-pulse:nth-child(2) { animation-delay: 0.2s; }
+    .dot-pulse:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes pulse { 0%,80%,100%{opacity:.2} 40%{opacity:1} }
+
+    /* ── ERROR ────────────────────────────────────────── */
+    .error-msg {
+      display: none;
+      background: #fff0f0;
+      border: 0.5px solid #f0c0c0;
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      font-size: 12px;
+      color: #a33;
+      margin-bottom: 1rem;
+    }
+    .error-msg.visible { display: block; }
+
+    /* ── OUTPUT HIDDEN UNTIL SORTED ───────────────────── */
+    .output-section { display: none; }
+    .output-section.visible { display: block; }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- HERO -->
+  <div class="hero">
+    <h1>clear your mind.</h1>
+    <p>set a timer &middot; don't filter &middot; just go</p>
+  </div>
+
+  <!-- PRIVACY BAR -->
+  <div class="privacy-bar">
+    <i class="ti ti-lock" aria-hidden="true"></i>
+    <span>everything stays on your device &mdash; nothing is stored or shared</span>
+    <a href="https://github.com/SamieVargas/brain-dump" target="_blank" rel="noopener">
+      view the code <i class="ti ti-external-link" style="font-size:11px"></i>
+    </a>
+  </div>
+
+  <!-- ENERGY SELECTOR -->
+  <div class="energy-wrap">
+    <span class="energy-label">how are you right now?</span>
+    <div class="energy-row">
+      <button class="energy-btn active" onclick="setEnergy(this)">overwhelmed</button>
+      <button class="energy-btn" onclick="setEnergy(this)">scattered</button>
+      <button class="energy-btn" onclick="setEnergy(this)">anxious</button>
+      <button class="energy-btn" onclick="setEnergy(this)">low energy</button>
+      <button class="energy-btn" onclick="setEnergy(this)">foggy</button>
+    </div>
+  </div>
+
+  <!-- TIMER -->
+  <div class="timer-wrap">
+    <div class="timer-header">
+      <div class="timer-header-left">
+        <select class="timer-select" id="timer-select" onchange="setDuration(this.value)">
+          <option value="5">5 min</option>
+          <option value="7">7 min</option>
+          <option value="10" selected>10 min</option>
+        </select>
+        <button class="timer-toggle" id="timer-toggle" onclick="toggleTimer()">hide timer</button>
+      </div>
+      <div class="timer-btns">
+        <button class="timer-btn" onclick="resetTimer()">reset</button>
+        <button class="timer-btn primary" id="start-btn" onclick="startTimer()">start</button>
+      </div>
+    </div>
+    <div id="timer-block">
+      <div class="timer-visual">
+        <div class="timer-ring">
+          <svg width="56" height="56" viewBox="0 0 56 56">
+            <circle cx="28" cy="28" r="24" fill="none" stroke="rgba(124,92,191,0.2)" stroke-width="4"/>
+            <circle cx="28" cy="28" r="24" fill="none" stroke="#7C5CBF" stroke-width="4"
+              stroke-dasharray="150.8" stroke-dashoffset="0" stroke-linecap="round"
+              transform="rotate(-90 28 28)" id="ring-progress"/>
+          </svg>
+        </div>
+        <div class="timer-info">
+          <div class="timer-time" id="timer-display">10:00</div>
+          <div class="timer-status" id="timer-status">ready when you are</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DUMP AREA -->
+  <div class="dump-box">
+    <div class="dump-example-tag" id="example-tag">example — clear to write your own</div>
+    <textarea id="dump-text"
+      placeholder="just type — no filtering, no fixing, no thinking about it...">I need to finish the quarterly deck but I keep opening Twitter, also I owe Sarah an email from like two weeks ago, I've been thinking about starting a ceramics class, my manager meeting is tomorrow and I haven't prepped, I'm stressed about money but I don't even know why, I want to redesign my whole morning routine, groceries, why did I say that weird thing in the meeting today, I should probably meditate more, the apartment is a mess but I can't start cleaning...</textarea>
+    <div class="dump-footer">
+      <span class="dump-hint" id="dump-hint">don't filter — just type everything</span>
+      <span class="dump-desc">no data leaves your session</span>
+    </div>
+  </div>
+
+  <!-- SORT -->
+  <div class="sort-wrap">
+    <button class="sort-btn" id="sort-btn" onclick="runSort()">sort it out →</button>
+  </div>
+  <button class="emergency-btn" onclick="runEmergency()">just give me one thing to do right now</button>
+
+  <!-- ERROR -->
+  <div class="error-msg" id="error-msg"></div>
+
+  <!-- LOADING -->
+  <div class="loading-dots" id="loading">
+    <span class="dot-pulse">·</span>
+    <span class="dot-pulse">·</span>
+    <span class="dot-pulse">·</span>
+    sorting your thoughts
+  </div>
+
+  <!-- OUTPUT -->
+  <div class="output-section" id="output-section">
+    <div class="divider"></div>
+
+    <div class="section-label">your buckets</div>
+    <div class="buckets-grid">
+      <div class="bucket bucket-do">
+        <div class="bucket-head">
+          <span class="bucket-title">do it</span>
+          <span class="bucket-count" id="count-do">0</span>
+        </div>
+        <div class="bucket-sub">you have energy for this today</div>
+        <div class="items-list" id="items-do"></div>
+      </div>
+      <div class="bucket bucket-decide">
+        <div class="bucket-head">
+          <span class="bucket-title">decide later</span>
+          <span class="bucket-count" id="count-decide">0</span>
+        </div>
+        <div class="bucket-sub">real, but not right now</div>
+        <div class="items-list" id="items-decide"></div>
+      </div>
+      <div class="bucket bucket-capture">
+        <div class="bucket-head">
+          <span class="bucket-title">capture it</span>
+          <span class="bucket-count" id="count-capture">0</span>
+        </div>
+        <div class="bucket-sub">worth keeping, not yet actionable</div>
+        <div class="items-list" id="items-capture"></div>
+      </div>
+      <div class="bucket bucket-release">
+        <div class="bucket-head">
+          <span class="bucket-title">release it</span>
+          <span class="bucket-count" id="count-release">0</span>
+        </div>
+        <div class="bucket-sub">not yours to carry right now</div>
+        <div class="items-list" id="items-release"></div>
+      </div>
+    </div>
+
+    <!-- FOCUS: task-heavy -->
+    <div class="focus-section" id="focus-task">
+      <div class="focus-title">your focus today</div>
+      <div class="focus-sub" id="focus-sub">3 things — in order of activation energy</div>
+      <div id="focus-items"></div>
+    </div>
+
+    <!-- FOCUS: mental-load -->
+    <div class="focus-section focus-gentle" id="focus-mental">
+      <div class="focus-gentle-title" id="gentle-title">your mind needed clearing more than your list needed doing.</div>
+      <div class="focus-gentle-sub" id="gentle-sub">most of what came out today wasn't tasks — it was weight. that's the work. one small anchor to keep you tethered:</div>
+      <div class="focus-item">
+        <div class="focus-dot"></div>
+        <div style="flex:1">
+          <div class="focus-line">
+            <span class="focus-text" id="gentle-anchor"></span>
+            <button class="tag" id="gentle-tag" onclick="toggleTag('gentle-expand','gentle-tag')">
+              reset first <i class="ti ti-chevron-down"></i>
+            </button>
+          </div>
+          <div class="strategy-expand" id="gentle-expand">
+            <div class="expansion-panel">
+              <div class="expansion-title">reset before tasking</div>
+              <div class="expansion-body" id="gentle-expand-body"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="start-cta" id="start-cta" onclick="showPomo()">start the first one →</button>
+
+    <div class="bottom-row">
+      <div class="streak-pill">
+        <i class="ti ti-flame" aria-hidden="true"></i>
+        <span id="streak-text">1 dump today</span>
+      </div>
+      <div class="action-btns">
+        <button class="action-btn" onclick="exportResults()">
+          <i class="ti ti-download" aria-hidden="true"></i> export
+        </button>
+        <button class="action-btn" onclick="copyResults()">
+          <i class="ti ti-copy" aria-hidden="true"></i> copy
+        </button>
+      </div>
+    </div>
+
+    <!-- POMODORO -->
+    <div class="pomo-overlay" id="pomo-overlay">
+      <div class="pomo-task-label">working on</div>
+      <div class="pomo-task-name" id="pomo-task-name"></div>
+      <div class="pomo-ring-wrap">
+        <svg width="130" height="130" viewBox="0 0 130 130">
+          <circle cx="65" cy="65" r="56" fill="none" stroke="rgba(124,92,191,0.15)" stroke-width="7"/>
+          <circle cx="65" cy="65" r="56" fill="none" stroke="#7C5CBF" stroke-width="7"
+            stroke-dasharray="351.86" stroke-dashoffset="0" stroke-linecap="round"
+            transform="rotate(-90 65 65)" id="pomo-ring"/>
+        </svg>
+        <div class="pomo-ring-center">
+          <div class="pomo-time" id="pomo-display">25:00</div>
+          <div class="pomo-phase-label" id="pomo-phase">focus</div>
+        </div>
+      </div>
+      <div class="pomo-status" id="pomo-status">ready when you are</div>
+      <div class="pomo-btns">
+        <button class="pomo-btn primary" id="pomo-toggle" onclick="togglePomo()">start</button>
+        <button class="pomo-btn" onclick="finishEarly()">done early</button>
+      </div>
+      <div class="pomo-dots" id="pomo-dots"></div>
+      <div class="pomo-next-task" id="pomo-next-wrap">
+        <div class="pomo-next-label">up next</div>
+        <div class="pomo-next-name" id="pomo-next-name"></div>
+      </div>
+      <button class="pomo-close" onclick="closePomo()">← back to my list</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ── CONFIG ────────────────────────────────────────────
+  // Replace with your deployed Cloudflare Worker URL
+  const WORKER_URL = "https://brain-dump-proxy.YOUR-SUBDOMAIN.workers.dev";
+
+  // ── STATE ─────────────────────────────────────────────
+  let currentEnergy = "overwhelmed";
+  let totalSec = 600, remaining = 600, running = false, timerInterval = null, timerVisible = true;
+  let sortedData = null;
+  let doTasks = [];
+  let pomoIdx = 0, pomoSec = 1500, pomoRunning = false, pomoInterval = null, pomoPhase = "focus";
+  let dumpCount = parseInt(localStorage.getItem("bd-count") || "0");
+  let lastDump = localStorage.getItem("bd-last") || "";
+
+  const STRATEGIES = {
+    "5-min rule": {
+      title: "the 5-minute rule",
+      body: "commit to just 5 minutes. ADHD brains resist starting, not doing — once in motion, continuing is far easier. the rule gives your brain permission to stop, which paradoxically makes it easier to begin."
+    },
+    "eat the frog": {
+      title: "eat the frog",
+      body: "do the thing you're most likely to avoid first. high-dread tasks loom large in ADHD working memory and drain bandwidth even while you're doing other things. clearing it early frees your brain for the rest."
+    },
+    "small movement": {
+      title: "small movement",
+      body: "physical action — even tiny — shifts your nervous system state and builds momentum. it's a pattern interrupt that makes the next task feel more possible."
+    },
+    "body double": {
+      title: "body double",
+      body: "work alongside someone — in person, on video, or virtually via Focusmate. having another presence activates the ADHD brain's social attention system, making it dramatically easier to start and sustain focus."
+    },
+    "time boxing": {
+      title: "time boxing",
+      body: "set a hard stop time before you begin. tasks that could expand infinitely (research, email, planning) need a container. knowing it ends at 3pm makes starting at 2pm feel safe."
+    },
+    "temptation bundling": {
+      title: "temptation bundling",
+      body: "pair a boring task with something you actually enjoy — your favourite playlist, a good coffee, a walk. the enjoyable thing is only allowed during the task. it makes the mundane feel like a treat."
+    },
+    "micro-commitment": {
+      title: "micro-commitment",
+      body: "when even 5 minutes feels like too much, commit only to opening the file, writing one word, or putting on your shoes. the goal is contact, not completion. starting is the entire job."
+    },
+    "reset first": {
+      title: "reset before tasking",
+      body: "when the dump is mostly emotional weight — worries, guilt, vague dread — trying to 'do' something often backfires. a short physical reset shifts your nervous system state first, making any task that follows easier to start."
+    }
+  };
+
+  // ── SYSTEM PROMPT ─────────────────────────────────────
+  function buildSystemPrompt(energy) {
+    return `You are a compassionate AI assistant that helps people with ADHD (and ADHD-adjacent brains) sort through a brain dump.
+
+The user's current energy state is: ${energy}
+
+Your job:
+1. Read their brain dump holistically
+2. Sort every item into exactly one of these four buckets:
+   - do_it: tasks they have energy for TODAY, based on their stated energy state
+   - decide_later: real things that need attention but not today
+   - capture_it: ideas, interests, or things worth keeping but not yet actionable
+   - release_it: worries, guilt, vague dread, things outside their control
+
+3. Based on the bucket composition and energy state, determine if this is a "task_heavy" or "mental_load" dump:
+   - task_heavy: enough do_it items to work with (2+ items)
+   - mental_load: dump is mostly release_it and capture_it, very few real tasks
+
+4. For task_heavy: pick the top 3 do_it items ordered by activation energy (easiest to start first), assign each a strategy from: ["5-min rule", "eat the frog", "small movement", "body double", "time boxing", "temptation bundling", "micro-commitment"]
+
+5. For mental_load: suggest one gentle physical anchor task
+
+Energy state guidance:
+- overwhelmed: include up to 3 do_it items, normal strategy assignment
+- scattered: reorder so lowest-activation task is first, add time boxing where relevant
+- anxious: reduce do_it to 1-2 items max, prioritize "5-min rule" and "micro-commitment"  
+- low energy: reduce do_it to 1 item max, prefer "small movement" and "temptation bundling"
+- foggy: reduce do_it to 1 item max, always suggest physical movement as anchor
+
+Respond ONLY with valid JSON in this exact structure:
+{
+  "output_type": "task_heavy" or "mental_load",
+  "buckets": {
+    "do_it": ["item1", "item2"],
+    "decide_later": ["item1"],
+    "capture_it": ["item1"],
+    "release_it": ["item1", "item2"]
+  },
+  "focus": [
+    {"task": "rewritten task as a small concrete action", "strategy": "strategy name"},
+    {"task": "...", "strategy": "..."},
+    {"task": "...", "strategy": "..."}
+  ],
+  "gentle_anchor": "one small physical action (only used when output_type is mental_load)",
+  "gentle_note": "one short warm sentence acknowledging the mental weight"
+}`;
+  }
+
+  // ── ENERGY ────────────────────────────────────────────
+  function setEnergy(btn) {
+    document.querySelectorAll(".energy-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentEnergy = btn.textContent.trim();
+  }
+
+  // ── TIMER ─────────────────────────────────────────────
+  const CIRC = 150.8;
+  function setDuration(v) {
+    totalSec = parseInt(v) * 60;
+    remaining = totalSec;
+    running = false;
+    clearInterval(timerInterval);
+    document.getElementById("start-btn").textContent = "start";
+    document.getElementById("timer-status").textContent = "ready when you are";
+    updateTimerDisplay();
+  }
+  function updateTimerDisplay() {
+    const m = Math.floor(remaining / 60), s = remaining % 60;
+    document.getElementById("timer-display").textContent = m + ":" + String(s).padStart(2, "0");
+    document.getElementById("ring-progress").style.strokeDashoffset = CIRC * (1 - remaining / totalSec);
+  }
+  function startTimer() {
+    if (running) {
+      running = false; clearInterval(timerInterval);
+      document.getElementById("start-btn").textContent = "resume";
+      document.getElementById("timer-status").textContent = "paused";
+      return;
+    }
+    if (remaining <= 0) { resetTimer(); return; }
+    running = true;
+    document.getElementById("start-btn").textContent = "pause";
+    document.getElementById("timer-status").textContent = "dumping — don't filter";
+    timerInterval = setInterval(() => {
+      if (remaining <= 0) {
+        clearInterval(timerInterval); running = false;
+        document.getElementById("timer-status").textContent = "time's up — ready to sort?";
+        document.getElementById("start-btn").textContent = "done";
+        return;
+      }
+      remaining--;
+      updateTimerDisplay();
+    }, 1000);
+  }
+  function resetTimer() {
+    clearInterval(timerInterval); running = false; remaining = totalSec;
+    document.getElementById("start-btn").textContent = "start";
+    document.getElementById("timer-status").textContent = "ready when you are";
+    updateTimerDisplay();
+  }
+  function toggleTimer() {
+    timerVisible = !timerVisible;
+    document.getElementById("timer-block").style.display = timerVisible ? "block" : "none";
+    document.getElementById("timer-select").style.display = timerVisible ? "" : "none";
+    document.getElementById("timer-toggle").textContent = timerVisible ? "hide timer" : "show timer";
+  }
+  updateTimerDisplay();
+
+  // ── DUMP AREA HINT ────────────────────────────────────
+  const ta = document.getElementById("dump-text");
+  const hint = document.getElementById("dump-hint");
+  const exTag = document.getElementById("example-tag");
+  ta.addEventListener("focus", () => { hint.style.opacity = "0"; });
+  ta.addEventListener("blur", () => { if (!ta.value.trim()) hint.style.opacity = "1"; });
+  ta.addEventListener("input", () => {
+    if (ta.value !== lastDump) exTag.style.display = "none";
+  });
+
+  // ── SORT ──────────────────────────────────────────────
+  async function runSort() {
+    const dump = ta.value.trim();
+    if (!dump) { showError("type something first — anything that's on your mind"); return; }
+
+    clearError();
+    document.getElementById("sort-btn").disabled = true;
+    document.getElementById("loading").classList.add("visible");
+    document.getElementById("output-section").classList.remove("visible");
+
+    try {
+      const response = await fetch(WORKER_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          system: buildSystemPrompt(currentEnergy),
+          messages: [{ role: "user", content: dump }]
+        })
+      });
+
+      const data = await response.json();
+      const raw = data.content[0].text;
+      const clean = raw.replace(/```json|```/g, "").trim();
+      sortedData = JSON.parse(clean);
+
+      renderOutput(sortedData);
+      updateStreak();
+
+    } catch (err) {
+      showError("something went wrong — check your connection and try again");
+      console.error(err);
+    } finally {
+      document.getElementById("sort-btn").disabled = false;
+      document.getElementById("loading").classList.remove("visible");
+    }
+  }
+
+  function renderOutput(data) {
+    // buckets
+    renderBucket("do", data.buckets.do_it || []);
+    renderBucket("decide", data.buckets.decide_later || []);
+    renderBucket("capture", data.buckets.capture_it || []);
+    renderBucket("release", data.buckets.release_it || []);
+
+    const taskHeavy = data.output_type === "task_heavy";
+    document.getElementById("focus-task").style.display = taskHeavy ? "block" : "none";
+    document.getElementById("focus-mental").style.display = taskHeavy ? "none" : "block";
+    document.getElementById("start-cta").classList.toggle("hidden", !taskHeavy);
+
+    if (taskHeavy) {
+      renderFocusItems(data.focus || []);
+      doTasks = (data.focus || []).map(f => f.task);
+      pomoIdx = 0;
+    } else {
+      document.getElementById("gentle-anchor").textContent = data.gentle_anchor || "";
+      document.getElementById("gentle-sub").textContent = data.gentle_note || "most of what came out today wasn't tasks — it was weight. that's the work.";
+    }
+
+    document.getElementById("output-section").classList.add("visible");
+    document.getElementById("output-section").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function renderBucket(name, items) {
+    const list = document.getElementById("items-" + name);
+    const count = document.getElementById("count-" + name);
+    list.innerHTML = "";
+    count.textContent = items.length;
+    if (items.length === 0) {
+      list.innerHTML = '<span class="bucket-empty">nothing here</span>';
+      return;
+    }
+    items.forEach((item, i) => {
+      const card = document.createElement("div");
+      card.className = "item-card";
+      card.style.animationDelay = (i * 0.07) + "s";
+      card.textContent = item;
+      list.appendChild(card);
+    });
+  }
+
+  function renderFocusItems(focus) {
+    const container = document.getElementById("focus-items");
+    container.innerHTML = "";
+    focus.forEach((item, i) => {
+      const strat = STRATEGIES[item.strategy] || { title: item.strategy, body: "" };
+      const id = "fi-" + i;
+      const chipId = "fc-" + i;
+      const div = document.createElement("div");
+      div.innerHTML = `
+        ${i > 0 ? '<div class="focus-divider"></div>' : ""}
+        <div class="focus-item">
+          <div class="focus-dot"></div>
+          <div style="flex:1">
+            <div class="focus-line">
+              <span class="focus-text">${item.task}</span>
+              <button class="tag" id="${chipId}" onclick="toggleTag('${id}','${chipId}')">
+                ${item.strategy} <i class="ti ti-chevron-down"></i>
+              </button>
+            </div>
+            <div class="strategy-expand" id="${id}">
+              <div class="expansion-panel">
+                <div class="expansion-title">${strat.title}</div>
+                <div class="expansion-body">${strat.body}</div>
+              </div>
+            </div>
+          </div>
+        </div>`;
+      container.appendChild(div);
+    });
+  }
+
+  function toggleTag(id, tagId) {
+    document.getElementById(id).classList.toggle("open");
+    document.getElementById(tagId).classList.toggle("open");
+  }
+
+  // ── EMERGENCY MODE ────────────────────────────────────
+  async function runEmergency() {
+    const dump = ta.value.trim();
+    if (!dump) { showError("type something first — even one word is fine"); return; }
+
+    clearError();
+    document.getElementById("sort-btn").disabled = true;
+    document.getElementById("loading").classList.add("visible");
+
+    try {
+      const response = await fetch(WORKER_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          system: `You are a compassionate ADHD assistant. The user needs ONE thing to do right now. 
+Read their brain dump and respond ONLY with valid JSON: {"one_thing": "one small concrete action sentence", "why": "one short sentence on why this one"}`,
+          messages: [{ role: "user", content: dump }]
+        })
+      });
+      const data = await response.json();
+      const raw = data.content[0].text.replace(/```json|```/g, "").trim();
+      const parsed = JSON.parse(raw);
+      alert(`one thing right now:\n\n${parsed.one_thing}\n\n${parsed.why}`);
+    } catch {
+      alert("couldn't connect — but here's a rule: pick the smallest thing on your list and open it. just open it.");
+    } finally {
+      document.getElementById("sort-btn").disabled = false;
+      document.getElementById("loading").classList.remove("visible");
+    }
+  }
+
+  // ── STREAK ────────────────────────────────────────────
+  function updateStreak() {
+    dumpCount++;
+    localStorage.setItem("bd-count", dumpCount);
+    const text = dumpCount === 1 ? "1 dump today" : `${dumpCount} dumps this week`;
+    document.getElementById("streak-text").textContent = text;
+  }
+
+  // ── EXPORT / COPY ─────────────────────────────────────
+  function buildExportText() {
+    if (!sortedData) return "";
+    const b = sortedData.buckets;
+    const f = sortedData.focus || [];
+    let out = `brain dump — ${new Date().toLocaleDateString()}\nenergy: ${currentEnergy}\n\n`;
+    out += `DO IT\n${(b.do_it||[]).map(i=>"• "+i).join("\n")}\n\n`;
+    out += `DECIDE LATER\n${(b.decide_later||[]).map(i=>"• "+i).join("\n")}\n\n`;
+    out += `CAPTURE IT\n${(b.capture_it||[]).map(i=>"• "+i).join("\n")}\n\n`;
+    out += `RELEASE IT\n${(b.release_it||[]).map(i=>"• "+i).join("\n")}\n\n`;
+    if (f.length) {
+      out += `YOUR FOCUS TODAY\n${f.map((i,n)=>`${n+1}. ${i.task} [${i.strategy}]`).join("\n")}`;
+    }
+    return out;
+  }
+
+  function exportResults() {
+    const text = buildExportText();
+    if (!text) return;
+    const blob = new Blob([text], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = `brain-dump-${new Date().toISOString().slice(0,10)}.txt`;
+    a.click(); URL.revokeObjectURL(url);
+  }
+
+  function copyResults() {
+    const text = buildExportText();
+    if (!text) return;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.querySelector('[onclick="copyResults()"]');
+      btn.textContent = "✓ copied";
+      setTimeout(() => { btn.innerHTML = '<i class="ti ti-copy"></i> copy'; }, 2000);
+    });
+  }
+
+  // ── POMODORO ──────────────────────────────────────────
+  const POMO_CIRC = 351.86;
+  function showPomo() {
+    if (!doTasks.length) return;
+    pomoIdx = 0; pomoSec = 1500; pomoPhase = "focus"; pomoRunning = false;
+    clearInterval(pomoInterval);
+    updatePomoDisplay();
+    renderPomoDots();
+    document.getElementById("pomo-task-name").textContent = doTasks[0];
+    updatePomoNext();
+    document.getElementById("pomo-overlay").classList.add("visible");
+    document.getElementById("pomo-overlay").scrollIntoView({ behavior: "smooth" });
+  }
+
+  function togglePomo() {
+    if (pomoRunning) {
+      pomoRunning = false; clearInterval(pomoInterval);
+      document.getElementById("pomo-toggle").textContent = "resume";
+      document.getElementById("pomo-status").textContent = "paused — take a breath";
+      return;
+    }
+    pomoRunning = true;
+    document.getElementById("pomo-toggle").textContent = "pause";
+    document.getElementById("pomo-status").textContent =
+      pomoPhase === "focus" ? `session ${pomoIdx + 1} of ${doTasks.length} · next: 5 min break` : "break time — step away";
+    pomoInterval = setInterval(() => {
+      if (pomoSec <= 0) {
+        clearInterval(pomoInterval); pomoRunning = false;
+        if (pomoPhase === "focus") {
+          pomoPhase = "break"; pomoSec = 300;
+          document.getElementById("pomo-phase").textContent = "break";
+          document.getElementById("pomo-status").textContent = "5 min break — you earned it";
+          document.getElementById("pomo-toggle").textContent = "start break";
+        } else {
+          pomoPhase = "focus"; pomoSec = 1500;
+          pomoIdx = Math.min(pomoIdx + 1, doTasks.length - 1);
+          document.getElementById("pomo-task-name").textContent = doTasks[pomoIdx];
+          document.getElementById("pomo-phase").textContent = "focus";
+          document.getElementById("pomo-status").textContent = "next task loaded — ready when you are";
+          document.getElementById("pomo-toggle").textContent = "start";
+          updatePomoNext();
+          renderPomoDots();
+        }
+        return;
+      }
+      pomoSec--;
+      updatePomoDisplay();
+    }, 1000);
+  }
+
+  function finishEarly() {
+    clearInterval(pomoInterval); pomoRunning = false;
+    pomoIdx = Math.min(pomoIdx + 1, doTasks.length - 1);
+    pomoPhase = "focus"; pomoSec = 1500;
+    document.getElementById("pomo-task-name").textContent = doTasks[pomoIdx];
+    document.getElementById("pomo-status").textContent = "next task loaded — ready when you are";
+    document.getElementById("pomo-toggle").textContent = "start";
+    document.getElementById("pomo-phase").textContent = "focus";
+    updatePomoDisplay(); updatePomoNext(); renderPomoDots();
+  }
+
+  function updatePomoDisplay() {
+    const m = Math.floor(pomoSec / 60), s = pomoSec % 60;
+    document.getElementById("pomo-display").textContent = m + ":" + String(s).padStart(2, "0");
+    const max = pomoPhase === "focus" ? 1500 : 300;
+    document.getElementById("pomo-ring").style.strokeDashoffset = POMO_CIRC * (1 - pomoSec / max);
+  }
+
+  function updatePomoNext() {
+    const next = doTasks[pomoIdx + 1];
+    const wrap = document.getElementById("pomo-next-wrap");
+    wrap.style.display = next ? "block" : "none";
+    if (next) document.getElementById("pomo-next-name").textContent = next;
+  }
+
+  function renderPomoDots() {
+    const dots = document.getElementById("pomo-dots");
+    dots.innerHTML = doTasks.map((_, i) =>
+      `<div class="pomo-dot ${i < pomoIdx ? 'done' : i === pomoIdx ? 'current' : ''}"></div>`
+    ).join("");
+  }
+
+  function closePomo() {
+    clearInterval(pomoInterval); pomoRunning = false;
+    document.getElementById("pomo-overlay").classList.remove("visible");
+    document.querySelector(".hero").scrollIntoView({ behavior: "smooth" });
+  }
+
+  // ── ERROR ─────────────────────────────────────────────
+  function showError(msg) {
+    const el = document.getElementById("error-msg");
+    el.textContent = msg; el.classList.add("visible");
+  }
+  function clearError() {
+    document.getElementById("error-msg").classList.remove("visible");
+  }
+</script>
+</body>
+</html>
