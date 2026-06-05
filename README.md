@@ -1,6 +1,6 @@
 # Brain dump
 
-**[try it](https://samievargas.github.io/brain-dump)**
+**[Try it](https://samievargas.github.io/brain-dump)**
 
 ---
 
@@ -34,7 +34,7 @@ The buckets also adapt. Things you'd normally put on a to-do list sometimes belo
 
 ---
 
-## privacy
+## Privacy
 
 Your data never leaves your device. The brain dump text goes to the AI to get sorted and is immediately discarded, nothing is logged, stored, or shared anywhere. the only thing that persists locally is your dump count for the streak counter, which lives in your browser's localStorage and goes nowhere.
 
@@ -42,7 +42,7 @@ The code is fully open so you can verify this yourself. There is no database, no
 
 ---
 
-## architecture
+## Architecture
 
 ```
 Your browser
