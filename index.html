@@ -225,6 +225,34 @@
     }
     .dump-hint { font-size: 11px; color: rgba(124,92,191,0.4); transition: opacity 0.3s; }
     .dump-desc { font-size: 11px; color: var(--text-muted); }
+    .mic-btn {
+      background: none;
+      border: 0.5px solid var(--purple-border);
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--purple-mid);
+      transition: all 0.15s;
+      flex-shrink: 0;
+    }
+    .mic-btn:hover { background: rgba(124,92,191,0.08); color: var(--purple); }
+    .mic-btn.recording {
+      background: rgba(124,92,191,0.12);
+      border-color: var(--purple);
+      color: var(--purple);
+      animation: micPulse 1s ease-in-out infinite;
+    }
+    .mic-btn i { font-size: 14px; }
+    @keyframes micPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(124,92,191,0.3); }
+      50% { box-shadow: 0 0 0 5px rgba(124,92,191,0); }
+    }
+    .mic-status { font-size: 11px; color: var(--purple); display: none; }
+    .mic-status.visible { display: inline; }
 
     /* ── SORT BUTTON ──────────────────────────────────── */
     .sort-wrap { text-align: center; margin-bottom: 0.75rem; }
@@ -658,7 +686,13 @@
       placeholder="just type — no filtering, no fixing, no thinking about it...">I need to finish the quarterly deck but I keep opening Twitter, also I owe Sarah an email from like two weeks ago, I've been thinking about starting a ceramics class, my manager meeting is tomorrow and I haven't prepped, I'm stressed about money but I don't even know why, I want to redesign my whole morning routine, groceries, why did I say that weird thing in the meeting today, I should probably meditate more, the apartment is a mess but I can't start cleaning...</textarea>
     <div class="dump-footer">
       <span class="dump-hint" id="dump-hint">don't filter — just type everything</span>
-      <span class="dump-desc">no data leaves your session</span>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span class="mic-status" id="mic-status">listening…</span>
+        <span class="dump-desc">no data leaves your session</span>
+        <button class="mic-btn" id="mic-btn" onclick="toggleVoice()" aria-label="voice input" title="speak your dump">
+          <i class="ti ti-microphone" aria-hidden="true"></i>
+        </button>
+      </div>
     </div>
   </div>
 
@@ -758,7 +792,10 @@
       </div>
       <div class="action-btns">
         <button class="action-btn" onclick="exportResults()">
-          <i class="ti ti-download" aria-hidden="true"></i> export
+          <i class="ti ti-download" aria-hidden="true"></i> .txt
+        </button>
+        <button class="action-btn" onclick="exportPDF()">
+          <i class="ti ti-file-type-pdf" aria-hidden="true"></i> pdf
         </button>
         <button class="action-btn" onclick="copyResults()">
           <i class="ti ti-copy" aria-hidden="true"></i> copy
@@ -800,7 +837,8 @@
 
 <script>
   // ── CONFIG ────────────────────────────────────────────
-  const WORKER_URL = "https://brain-dump-proxy.samievargas.workers.dev";
+  // Replace with your deployed Cloudflare Worker URL
+  const WORKER_URL = "https://brain-dump-proxy.YOUR-SUBDOMAIN.workers.dev";
 
   // ── STATE ─────────────────────────────────────────────
   let currentEnergy = "overwhelmed";
@@ -852,45 +890,89 @@
 
 The user's current energy state is: ${energy}
 
-Your job:
-1. Read their brain dump holistically
-2. Sort every item into exactly one of these four buckets:
-   - do_it: tasks they have energy for TODAY, based on their stated energy state
-   - decide_later: real things that need attention but not today
-   - capture_it: ideas, interests, or things worth keeping but not yet actionable
-   - release_it: worries, guilt, vague dread, things outside their control
+YOUR JOB:
+1. Read the brain dump holistically before sorting anything.
 
-3. Based on the bucket composition and energy state, determine if this is a "task_heavy" or "mental_load" dump:
-   - task_heavy: enough do_it items to work with (2+ items)
-   - mental_load: dump is mostly release_it and capture_it, very few real tasks
+2. Sort every item into exactly one bucket:
+   - do_it: tasks they have energy for TODAY. NEVER put decisions or cognitive planning tasks in do_it for low energy or foggy states.
+   - decide_later: real things that need attention but not today. For foggy state, prefer Capture It over Decide Later for ambiguous items.
+   - capture_it: ideas, creative impulses, things worth keeping but not yet actionable. Flag items mentioned with energy or detail — these have momentum.
+   - release_it: worries, guilt, vague dread, "what will people think" spirals, things outside their control. REWRITE every release item as a statement of release (not a description of the worry). E.g. instead of "anxiety about being judged" write "the coffee walk injury is not a verdict on you."
 
-4. For task_heavy: pick the top 3 do_it items ordered by activation energy (easiest to start first), assign each a strategy from: ["5-min rule", "eat the frog", "small movement", "body double", "time boxing", "temptation bundling", "micro-commitment"]
+3. Look for tasks that can run in parallel (e.g. "set Roomba while you eat") and note them as a pair in the focus list.
 
-5. For mental_load: suggest one gentle physical anchor task
+4. Determine output type:
+   - task_heavy: 2+ actionable do_it items
+   - mental_load: dump is mostly release_it/capture_it, very few real tasks
 
-Energy state guidance:
-- overwhelmed: include up to 3 do_it items, normal strategy assignment
-- scattered: reorder so lowest-activation task is first, add time boxing where relevant
-- anxious: reduce do_it to 1-2 items max, prioritize "5-min rule" and "micro-commitment"  
-- low energy: reduce do_it to 1 item max, prefer "small movement" and "temptation bundling"
-- foggy: reduce do_it to 1 item max, always suggest physical movement as anchor
+5. For task_heavy: write focus tasks with a built-in scope limiter — every task should feel already half-done when you read it. Include the constraint in the task text itself ("write just one bullet", "literally just press the button", "even one sentence is enough"). Order by activation energy, easiest first.
 
-Respond ONLY with valid JSON in this exact structure:
+6. For mental_load: one gentle physical anchor only.
+
+ENERGY STATE RULES — bucket sizing, task language, and tone ALL must match:
+
+overwhelmed:
+- Cap do_it at 5 items. Focus: 3 items.
+- Look for tasks that stack (run in background or parallel) and group them.
+- Flag time-sensitive items with a quiet time signal ("tonight", "before bed").
+- Tone: steady and matter-of-fact. Grounding, not cheerful. Acknowledge volume: "you had a lot in there."
+- focus_subtitle: "3 things — you had a lot in there, here's what matters today"
+- cta_text: "start the first one →"
+
+scattered:
+- Cap do_it at 5 items. Focus: 3 items, lowest-activation first.
+- Aggressively assign time boxing to focus tasks ("for 20 minutes only").
+- If dump spans many life domains (work + personal + social + creative), name it: note in the focus subtitle.
+- Release rabbit-hole items explicitly: novelty pulls that feel urgent but aren't.
+- Tone: warm but lane-focused. "Just this one thing first. The rest will wait."
+- focus_subtitle: "3 things — pick this lane first, the others will wait"
+- cta_text: "start the first one →"
+
+anxious:
+- Cap do_it at 3 items. Focus: 2 items max.
+- ALL "what will others think" items go directly to release_it, never decide_later.
+- Prioritize "5-min rule" and "micro-commitment" strategies.
+- Never use "should" or "need to" in task framing. Use "if it feels okay" and "when you're ready."
+- Release items need the most careful reframing of any state — each must end as a release statement.
+- Tone: permission-giving, gentle, slow. "You don't have to do all of this."
+- focus_subtitle: "two things — gently, when you're ready"
+- cta_text: "when you're ready →"
+
+low energy:
+- Cap do_it at 2 items. ONLY physical or single-action tasks. No decisions, no cognitive work.
+- Pre-make decisions inside the task text — don't leave choices for the user. ("open a delivery app — whichever requires less thought" not "decide on dinner")
+- If context clues suggest enjoyable things (games, music, shows), use them in temptation bundling suggestions specifically.
+- Validate rest explicitly in the focus subtitle.
+- Tone: soft, permissive. "That's it. Nothing more today."
+- focus_subtitle: "one thing — that's enough for today"
+- cta_text: "start when you're ready →"
+
+foggy:
+- Cap do_it at 1 item. ONLY the most automatic single physical gesture — no decisions at all.
+- Every focus task is a single physical gesture: "press the button", "open the fridge", "lie down".
+- Tone: very warm, slow, short sentences. "Just one thing. That's it." No compound instructions.
+- Capture It should include a warm closing note: these ideas will still be here when the fog lifts.
+- Be aggressive about moving ambiguous items to release_it or capture_it rather than decide_later.
+- focus_subtitle: "one thing. just one."
+- cta_text: "just this one →"
+
+Respond ONLY with valid JSON — no prose, no markdown, no backticks:
 {
   "output_type": "task_heavy" or "mental_load",
+  "focus_subtitle": "the subtitle string for the focus card based on energy state",
+  "cta_text": "the start button text based on energy state",
   "buckets": {
-    "do_it": ["item1", "item2"],
+    "do_it": ["item1"],
     "decide_later": ["item1"],
     "capture_it": ["item1"],
-    "release_it": ["item1", "item2"]
+    "release_it": ["reframed as a release statement, not a description of worry"]
   },
   "focus": [
-    {"task": "rewritten task as a small concrete action", "strategy": "strategy name"},
-    {"task": "...", "strategy": "..."},
+    {"task": "scoped concrete action with built-in constraint", "strategy": "strategy name"},
     {"task": "...", "strategy": "..."}
   ],
-  "gentle_anchor": "one small physical action (only used when output_type is mental_load)",
-  "gentle_note": "one short warm sentence acknowledging the mental weight"
+  "gentle_anchor": "one physical gesture (mental_load only)",
+  "gentle_note": "one warm sentence acknowledging mental weight (mental_load only)"
 }`;
   }
 
@@ -1011,6 +1093,9 @@ Respond ONLY with valid JSON in this exact structure:
     document.getElementById("focus-task").style.display = taskHeavy ? "block" : "none";
     document.getElementById("focus-mental").style.display = taskHeavy ? "none" : "block";
     document.getElementById("start-cta").classList.toggle("hidden", !taskHeavy);
+
+    if (data.focus_subtitle) document.getElementById("focus-sub").textContent = data.focus_subtitle;
+    if (data.cta_text) document.getElementById("start-cta").textContent = data.cta_text;
 
     if (taskHeavy) {
       renderFocusItems(data.focus || []);
@@ -1154,7 +1239,76 @@ Read their brain dump and respond ONLY with valid JSON: {"one_thing": "one small
     });
   }
 
-  // ── POMODORO ──────────────────────────────────────────
+  function exportPDF() {
+    if (!sortedData) return;
+    const b = sortedData.buckets;
+    const f = sortedData.focus || [];
+    const date = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+    const bucketColors = {
+      do_it:       { bg: 'rgba(124,92,191,0.10)', border: 'rgba(124,92,191,0.3)',  title: '#3C3489', sub: '#534AB7', item_bg: 'rgba(124,92,191,0.07)', item_border: 'rgba(124,92,191,0.2)',  item_text: '#3C3489' },
+      decide_later:{ bg: '#EAF3DE',               border: '#97C459',               title: '#27500A', sub: '#3B6D11', item_bg: '#f2f9e8',              item_border: '#C0DD97',              item_text: '#27500A' },
+      capture_it:  { bg: '#FAECE7',               border: '#F0997B',               title: '#712B13', sub: '#993C1D', item_bg: '#fdf2ee',              item_border: '#F5C4B3',              item_text: '#712B13' },
+      release_it:  { bg: '#FBEAF0',               border: '#ED93B1',               title: '#72243E', sub: '#993556', item_bg: '#fdf0f5',              item_border: '#F4C0D1',              item_text: '#72243E' },
+    };
+    const bucketLabels = { do_it: 'do it', decide_later: 'decide later', capture_it: 'capture it', release_it: 'release it' };
+    const bucketSubs   = { do_it: 'you have energy for this today', decide_later: 'real, but not right now', capture_it: 'worth keeping, not yet actionable', release_it: 'not yours to carry right now' };
+
+    const makeBucket = (key) => {
+      const items = b[key] || [];
+      const c = bucketColors[key];
+      const itemRows = items.map(i => `
+        <div style="background:${c.item_bg};border:0.5px solid ${c.item_border};border-radius:6px;padding:5px 10px;font-size:11px;color:${c.item_text};margin-bottom:4px;">${i}</div>
+      `).join('');
+      return `
+        <div style="background:${c.bg};border:0.5px solid ${c.border};border-radius:12px;padding:12px 14px;break-inside:avoid;">
+          <div style="font-family:'Playfair Display',Georgia,serif;font-size:13px;font-weight:500;color:${c.title};margin-bottom:2px;">${bucketLabels[key]}</div>
+          <div style="font-size:10px;color:${c.sub};margin-bottom:8px;">${bucketSubs[key]}</div>
+          ${itemRows || '<div style="font-size:10px;color:#aaa;font-style:italic;">nothing here</div>'}
+        </div>`;
+    };
+
+    const focusRows = f.map((item, i) => `
+      <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;">
+        <div style="width:7px;height:7px;border-radius:50%;background:#7C5CBF;flex-shrink:0;margin-top:5px;"></div>
+        <div>
+          <span style="font-size:13px;color:#1a1a1a;">${item.task}</span>
+          <span style="font-size:10px;background:rgba(124,92,191,0.15);color:#7C6DA3;border:0.5px solid rgba(124,92,191,0.3);border-radius:20px;padding:1px 7px;margin-left:6px;white-space:nowrap;">${item.strategy}</span>
+        </div>
+      </div>`).join('<div style="height:0.5px;background:rgba(124,92,191,0.12);margin:6px 0;"></div>');
+
+    const html = `<!DOCTYPE html><html><head>
+      <meta charset="UTF-8"/>
+      <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+      <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'DM Sans', sans-serif; background: #faf9ff; color: #1a1a1a; padding: 32px; max-width: 700px; margin: 0 auto; }
+        @media print { body { padding: 16px; } .no-print { display: none; } }
+      </style>
+    </head><body>
+      <div style="text-align:center;margin-bottom:24px;">
+        <div style="font-family:'Playfair Display',Georgia,serif;font-size:26px;font-weight:400;color:#5b4a8a;margin-bottom:4px;">clear your mind.</div>
+        <div style="font-size:12px;color:#9E8DC6;">${date} &middot; energy: ${currentEnergy}</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;">
+        ${makeBucket('do_it')}${makeBucket('decide_later')}${makeBucket('capture_it')}${makeBucket('release_it')}
+      </div>
+      ${f.length ? `
+      <div style="background:rgba(124,92,191,0.07);border:0.5px solid rgba(124,92,191,0.25);border-radius:12px;padding:14px 16px;">
+        <div style="font-family:'Playfair Display',Georgia,serif;font-size:15px;color:#645491;margin-bottom:3px;">your focus today</div>
+        <div style="font-size:11px;color:#9E8DC6;margin-bottom:12px;">${document.getElementById('focus-sub').textContent}</div>
+        ${focusRows}
+      </div>` : ''}
+      <div style="margin-top:20px;text-align:center;font-size:10px;color:#c4b4e0;">
+        made with brain dump &middot; samievargas.github.io/brain-dump
+      </div>
+      <script>window.onload = () => { window.print(); }<\/script>
+    </body></html>`;
+
+    const win = window.open('', '_blank');
+    win.document.write(html);
+    win.document.close();
+  }
   const POMO_CIRC = 351.86;
   function showPomo() {
     if (!doTasks.length) return;
@@ -1240,6 +1394,77 @@ Read their brain dump and respond ONLY with valid JSON: {"one_thing": "one small
     clearInterval(pomoInterval); pomoRunning = false;
     document.getElementById("pomo-overlay").classList.remove("visible");
     document.querySelector(".hero").scrollIntoView({ behavior: "smooth" });
+  }
+
+  // ── VOICE INPUT ───────────────────────────────────────
+  let recognition = null;
+  let isRecording = false;
+
+  function toggleVoice() {
+    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+      showError("voice input isn't supported in this browser — try Chrome");
+      return;
+    }
+    if (isRecording) {
+      stopVoice();
+      return;
+    }
+    startVoice();
+  }
+
+  function startVoice() {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognition = new SR();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US';
+
+    const micBtn = document.getElementById("mic-btn");
+    const micStatus = document.getElementById("mic-status");
+    const textarea = document.getElementById("dump-text");
+
+    let existingText = textarea.value;
+    if (existingText && !existingText.endsWith(' ')) existingText += ' ';
+
+    recognition.onstart = () => {
+      isRecording = true;
+      micBtn.classList.add("recording");
+      micBtn.querySelector("i").className = "ti ti-microphone-off";
+      micStatus.classList.add("visible");
+      exTag.style.display = "none";
+    };
+
+    recognition.onresult = (e) => {
+      let interim = '';
+      let final = '';
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        const t = e.results[i][0].transcript;
+        if (e.results[i].isFinal) final += t;
+        else interim += t;
+      }
+      if (final) existingText += final;
+      textarea.value = existingText + interim;
+      textarea.scrollTop = textarea.scrollHeight;
+    };
+
+    recognition.onerror = (e) => {
+      if (e.error === 'not-allowed') showError("microphone access was blocked — check your browser permissions");
+      stopVoice();
+    };
+
+    recognition.onend = () => { stopVoice(); };
+
+    recognition.start();
+  }
+
+  function stopVoice() {
+    if (recognition) { try { recognition.stop(); } catch(e) {} recognition = null; }
+    isRecording = false;
+    const micBtn = document.getElementById("mic-btn");
+    const micStatus = document.getElementById("mic-status");
+    micBtn.classList.remove("recording");
+    micBtn.querySelector("i").className = "ti ti-microphone";
+    micStatus.classList.remove("visible");
   }
 
   // ── ERROR ─────────────────────────────────────────────
