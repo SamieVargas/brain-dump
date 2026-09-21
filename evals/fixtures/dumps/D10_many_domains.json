@@ -1,0 +1,9 @@
+{
+  "id": "D10_many_domains",
+  "dump": "work: the Q3 review, the hiring loop feedback, the flaky test. home: the boiler service, cat to the vet. social: Sam's birthday thing, reply to the group chat. creative: the zine, the podcast idea, sketching again.",
+  "stress": [
+    "domains"
+  ],
+  "expect_output_type": "task_heavy",
+  "$comment": "expect_output_type is the shape the graders check under the routing rule; it is a judgement written before any model run, not a model output"
+}

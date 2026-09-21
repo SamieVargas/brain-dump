@@ -1,0 +1,9 @@
+{
+  "id": "D18_guilt_heavy",
+  "dump": "I haven't called dad in a month. I keep not going to the gym I'm paying for. the plant died. I said I'd help Rob move and I didn't. the tax stuff is late again and it's my own fault.",
+  "stress": [
+    "release"
+  ],
+  "expect_output_type": "mental_load",
+  "$comment": "expect_output_type is the shape the graders check under the routing rule; it is a judgement written before any model run, not a model output"
+}

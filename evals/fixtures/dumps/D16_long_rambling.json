@@ -1,0 +1,9 @@
+{
+  "id": "D16_long_rambling",
+  "dump": "okay so where do I even start, the car thing, the car has been making that noise again and I keep meaning to book it in but every time I think about it I remember the last garage overcharged me and then I get annoyed and don't do it, and then there's the wedding present for Lena which I've been putting off because I don't know what to get and the registry is all expensive, and work is a whole other thing, the migration is behind and it's kind of my fault, and I need to write the retro notes, and I haven't done the expenses, oh and the fridge smells.",
+  "stress": [
+    "long"
+  ],
+  "expect_output_type": "task_heavy",
+  "$comment": "expect_output_type is the shape the graders check under the routing rule; it is a judgement written before any model run, not a model output"
+}

@@ -1,0 +1,9 @@
+{
+  "id": "D04_almost_empty",
+  "dump": "tired.",
+  "stress": [
+    "empty"
+  ],
+  "expect_output_type": "mental_load",
+  "$comment": "expect_output_type is the shape the graders check under the routing rule; it is a judgement written before any model run, not a model output"
+}

@@ -1,0 +1,9 @@
+{
+  "id": "D20_foggy_single_gesture",
+  "dump": "can't think. dinner. the email. the thing for tomorrow. I don't know.",
+  "stress": [
+    "foggy"
+  ],
+  "expect_output_type": "task_heavy",
+  "$comment": "expect_output_type is the shape the graders check under the routing rule; it is a judgement written before any model run, not a model output"
+}

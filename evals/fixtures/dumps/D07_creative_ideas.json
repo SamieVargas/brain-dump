@@ -1,0 +1,9 @@
+{
+  "id": "D07_creative_ideas",
+  "dump": "idea for a short story about a lighthouse keeper who collects lost gloves. also could redo the kitchen shelving with pegboard. reply to the freelancer about the logo. book flights before the price goes up. maybe learn the cello?",
+  "stress": [
+    "capture"
+  ],
+  "expect_output_type": "task_heavy",
+  "$comment": "expect_output_type is the shape the graders check under the routing rule; it is a judgement written before any model run, not a model output"
+}

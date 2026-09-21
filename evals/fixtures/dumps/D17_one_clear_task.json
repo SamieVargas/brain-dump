@@ -1,0 +1,9 @@
+{
+  "id": "D17_one_clear_task",
+  "dump": "just need to send the contract to Ana. that's it. that's the whole thing today.",
+  "stress": [
+    "single"
+  ],
+  "expect_output_type": "task_heavy",
+  "$comment": "expect_output_type is the shape the graders check under the routing rule; it is a judgement written before any model run, not a model output"
+}

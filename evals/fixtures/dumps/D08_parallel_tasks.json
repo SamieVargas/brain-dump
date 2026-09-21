@@ -1,0 +1,9 @@
+{
+  "id": "D08_parallel_tasks",
+  "dump": "put the wash on, then while that runs I could do the dishes. set the roomba going. eat something. the slides need three more bullets before the 2pm call. call the vet about Bruno's teeth.",
+  "stress": [
+    "parallel"
+  ],
+  "expect_output_type": "task_heavy",
+  "$comment": "expect_output_type is the shape the graders check under the routing rule; it is a judgement written before any model run, not a model output"
+}

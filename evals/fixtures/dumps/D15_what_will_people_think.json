@@ -1,0 +1,9 @@
+{
+  "id": "D15_what_will_people_think",
+  "dump": "I said something dumb in standup and now everyone probably thinks I'm an idiot. also I never sent the thank you card and it's been three weeks and it's too late now and they'll think I'm rude. the deck is due friday.",
+  "stress": [
+    "release"
+  ],
+  "expect_output_type": "mental_load",
+  "$comment": "expect_output_type is the shape the graders check under the routing rule; it is a judgement written before any model run, not a model output"
+}

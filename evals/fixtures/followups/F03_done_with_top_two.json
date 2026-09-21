@@ -1,0 +1,12 @@
+{
+  "id": "F03_done_with_top_two",
+  "base": "D01_lists_over_the_cap",
+  "energy_state": "overwhelmed",
+  "follow_up": "Done with the top two",
+  "mentioned": [
+    "email Priya",
+    "dentist"
+  ],
+  "note": "The top two focus tasks leave the plan; the rest stay put.",
+  "energy_state_after": "overwhelmed"
+}

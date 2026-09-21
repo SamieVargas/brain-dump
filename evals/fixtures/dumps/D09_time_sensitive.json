@@ -1,0 +1,9 @@
+{
+  "id": "D09_time_sensitive",
+  "dump": "the insurance form has to be in by tonight. tomorrow is the last day to register for the course. pick up the parcel from the depot before it closes at six. water the tomatoes before it gets dark.",
+  "stress": [
+    "time"
+  ],
+  "expect_output_type": "task_heavy",
+  "$comment": "expect_output_type is the shape the graders check under the routing rule; it is a judgement written before any model run, not a model output"
+}

@@ -1,0 +1,9 @@
+{
+  "id": "D06_worries_only",
+  "dump": "what if the presentation goes badly. what if they figure out I don't know what I'm doing. mum's health. the mortgage renewal. I keep replaying the thing I said at the party.",
+  "stress": [
+    "release"
+  ],
+  "expect_output_type": "mental_load",
+  "$comment": "expect_output_type is the shape the graders check under the routing rule; it is a judgement written before any model run, not a model output"
+}
