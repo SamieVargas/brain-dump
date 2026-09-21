@@ -22,7 +22,7 @@ const API_VERSION = '2023-06-01';
 
 // ── the doors ───────────────────────────────────────────────────────────────
 
-export const RATE = { max: 20, windowMs: 10 * 60_000 }; // per IP
+export const RATE = { max: 20, windowMs: 60_000 }; // per IP; matches the binding's one-minute period
 const buckets = new Map(); // in-memory fallback; the RATE_LIMITER binding is the real one
 
 async function rateLimited(env, key, now) {
