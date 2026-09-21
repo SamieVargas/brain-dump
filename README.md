@@ -14,6 +14,10 @@ It also noticed I hadn't eaten dinner at 7:30pm and made that my first priority,
 
 ---
 
+## How it works, technically
+
+Brain Dump works directly against the Anthropic Messages API with no framework, routing calls through a Cloudflare Worker so the key never touches the browser, and most of the real work is in a dynamic system prompt that changes its rules, caps, and tone based on the energy state the user picks, then forces a strict JSON contract that the frontend parses and renders straight from, which is prompt-enforced structured output. The model does the classification, sorting every item into one of four buckets and deciding whether the dump is task-heavy or mental-load so the UI can branch on that, and there is a second prompt and schema for an emergency one-thing mode with a hard-coded fallback if the call fails. Early users' feedback drove a single-step simplification to the capture flow. It is a single-turn structured generation, so there is no tool calling, retrieval, or agent loop in it, and I would rather say that plainly.
+
 ## How it works
 
 1. Pick how you're feeling right now (overwhelmed, scattered, anxious, low energy, or foggy, they each produce different output)
