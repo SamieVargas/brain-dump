@@ -1,0 +1,9 @@
+{
+  "id": "D05_single_anchor",
+  "dump": "everything feels like too much. I don't even know what's on the list, I just know I've been staring at the wall for an hour and my chest is tight. I haven't had water today.",
+  "stress": [
+    "anchor"
+  ],
+  "expect_output_type": "mental_load",
+  "$comment": "expect_output_type is the shape the graders check under the routing rule; it is a judgement written before any model run, not a model output"
+}

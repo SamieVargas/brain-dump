@@ -1,0 +1,11 @@
+{
+  "id": "F05_add_one",
+  "base": "D17_one_clear_task",
+  "energy_state": "low energy",
+  "follow_up": "also I need to pick up milk",
+  "mentioned": [
+    "milk"
+  ],
+  "note": "One item added; the existing item stays.",
+  "energy_state_after": "low energy"
+}

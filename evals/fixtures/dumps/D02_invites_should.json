@@ -1,0 +1,9 @@
+{
+  "id": "D02_invites_should",
+  "dump": "I should really finish the report. I need to stop putting it off. I should also go to the gym and I really need to call my sister back because she's been waiting for weeks. I should be better at this.",
+  "stress": [
+    "banned"
+  ],
+  "expect_output_type": "task_heavy",
+  "$comment": "expect_output_type is the shape the graders check under the routing rule; it is a judgement written before any model run, not a model output"
+}

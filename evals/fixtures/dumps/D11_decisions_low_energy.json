@@ -1,0 +1,9 @@
+{
+  "id": "D11_decisions_low_energy",
+  "dump": "need to decide whether to take the contract or not. also have to pick a dinner, either cook the chicken or order. choose a colour for the hallway. and figure out which gym to join.",
+  "stress": [
+    "decisions"
+  ],
+  "expect_output_type": "task_heavy",
+  "$comment": "expect_output_type is the shape the graders check under the routing rule; it is a judgement written before any model run, not a model output"
+}

@@ -611,6 +611,36 @@
     }
     .error-msg.visible { display: block; }
 
+    /* the plan arriving, before it is a plan */
+    .live-pane {
+      display: none; margin: 0.75rem 0 0; padding: 0.9rem 1rem; max-height: 9rem; overflow: hidden;
+      font-family: 'DM Mono', monospace; font-size: 11.5px; line-height: 1.5; color: var(--text-muted);
+      background: var(--purple-light); border: 1px solid var(--purple-border); border-radius: 10px;
+      white-space: pre-wrap; word-break: break-word; opacity: .85;
+    }
+    .live-pane.visible { display: block; }
+
+    /* change something? */
+    .replan { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--purple-border); }
+    .replan-label { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
+    .replan-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+    .replan-chip {
+      font-family: 'DM Sans', sans-serif; font-size: 12.5px; padding: 6px 11px; border-radius: 999px; cursor: pointer;
+      background: var(--purple-tag); border: 1px solid var(--purple-tag-border); color: var(--purple-dark);
+    }
+    .replan-chip:hover { background: var(--purple-border); }
+    .replan-form { display: flex; gap: 8px; }
+    .replan-form input {
+      flex: 1; font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 9px 12px; border-radius: 8px;
+      border: 1px solid var(--purple-border); background: #fff; color: inherit;
+    }
+    .replan-form input:focus { outline: 2px solid var(--purple-mid); outline-offset: 1px; }
+    .replan-form button {
+      font-family: 'DM Sans', sans-serif; font-size: 13px; padding: 9px 14px; border-radius: 8px; cursor: pointer;
+      background: var(--purple); color: #fff; border: 0;
+    }
+    .replan-form button:disabled { opacity: .5; cursor: default; }
+
     /* ── OUTPUT HIDDEN UNTIL SORTED ───────────────────── */
     .output-section { display: none; }
     .output-section.visible { display: block; }
@@ -713,6 +743,7 @@
     <span class="dot-pulse">·</span>
     sorting your thoughts
   </div>
+  <pre class="live-pane" id="live-pane" aria-live="polite"></pre>
 
   <!-- OUTPUT -->
   <div class="output-section" id="output-section">
@@ -785,6 +816,20 @@
     </div>
 
     <button class="start-cta" id="start-cta" onclick="showPomo()">start the first one →</button>
+
+    <!-- RE-PLAN -->
+    <div class="replan" id="replan">
+      <div class="replan-label">change something?</div>
+      <div class="replan-chips">
+        <button class="replan-chip" type="button" onclick="followUp(this.textContent)">I have 20 minutes</button>
+        <button class="replan-chip" type="button" onclick="followUp(this.textContent)">Move the first one to tomorrow</button>
+        <button class="replan-chip" type="button" onclick="followUp(this.textContent)">Done with the top two</button>
+      </div>
+      <form class="replan-form" onsubmit="event.preventDefault(); followUp(document.getElementById('replan-text').value)">
+        <input id="replan-text" placeholder="or say what changed" maxlength="500" autocomplete="off">
+        <button type="submit" id="replan-btn">re-plan →</button>
+      </form>
+    </div>
 
     <div class="bottom-row">
       <div class="streak-pill">
@@ -928,96 +973,83 @@
     }
   };
 
-  // ── SYSTEM PROMPT ─────────────────────────────────────
-  function buildSystemPrompt(energy) {
-    return `You are a compassionate AI assistant that helps people with ADHD (and ADHD-adjacent brains) sort through a brain dump.
+  // ── SESSION, HISTORY, STREAMING ───────────────────────
+  // The prompts live on the worker now. The page sends a mode, the energy
+  // state, the dump and (for a follow-up) the conversation so far, and
+  // nothing else. Anyone who can reach the worker can run these prompts and
+  // only these.
+  let sessionToken = null;
+  async function session() {
+    if (sessionToken) return sessionToken;
+    try {
+      const r = await fetch(WORKER_URL + "/session");
+      if (r.ok) sessionToken = (await r.json()).token;
+    } catch (e) { /* the worker may run without sessions; the POST will say */ }
+    return sessionToken;
+  }
+  session();
 
-The user's current energy state is: ${energy}
+  // The conversation: the original dump, each plan as the assistant's own
+  // JSON, each follow-up as a user turn. Page and sessionStorage only.
+  const HISTORY_KEY = "bd-history";
+  const HISTORY_MAX = 8;
+  function loadHistory() { try { return JSON.parse(sessionStorage.getItem(HISTORY_KEY) || "[]"); } catch (e) { return []; } }
+  function saveHistory(h) { try { sessionStorage.setItem(HISTORY_KEY, JSON.stringify(h.slice(-HISTORY_MAX))); } catch (e) {} }
+  let history = loadHistory();
 
-YOUR JOB:
-1. Read the brain dump holistically before sorting anything.
+  // Time to first token and time to render, kept for the last ten sorts so
+  // the streaming change can be measured rather than felt.
+  function recordTiming(t0, tFirst, meta) {
+    const entry = {
+      at: new Date().toISOString(),
+      first_token_ms: tFirst === null ? null : Math.round(tFirst - t0),
+      render_ms: Math.round(performance.now() - t0),
+      cache_read: meta && meta.usage ? meta.usage.cache_read_input_tokens || 0 : null,
+      parse_path: meta ? meta.parse_path : null,
+      contract: meta ? meta.contract : null,
+    };
+    let all = [];
+    try { all = JSON.parse(sessionStorage.getItem("bd-timings") || "[]"); } catch (e) {}
+    all.push(entry);
+    try { sessionStorage.setItem("bd-timings", JSON.stringify(all.slice(-10))); } catch (e) {}
+    console.info("brain dump timing", entry);
+  }
 
-2. Sort every item into exactly one bucket:
-   - do_it: tasks they have energy for TODAY. NEVER put decisions or cognitive planning tasks in do_it for low energy or foggy states.
-   - decide_later: real things that need attention but not today. For foggy state, prefer Capture It over Decide Later for ambiguous items.
-   - capture_it: ideas, creative impulses, things worth keeping but not yet actionable. Flag items mentioned with energy or detail — these have momentum.
-   - release_it: worries, guilt, vague dread, "what will people think" spirals, things outside their control. REWRITE every release item as a statement of release (not a description of the worry). E.g. instead of "anxiety about being judged" write "the coffee walk injury is not a verdict on you."
+  async function callWorker(body, { onDelta } = {}) {
+    const token = await session();
+    const headers = { "Content-Type": "application/json" };
+    if (token) headers["x-bd-session"] = token;
+    const res = await fetch(WORKER_URL + "/sort", { method: "POST", headers, body: JSON.stringify(body) });
+    if (res.status === 401 && token) { sessionToken = null; return callWorker(body, { onDelta }); }
+    if (!res.ok) {
+      let msg = "something went wrong — check your connection and try again";
+      try { msg = (await res.json()).message || msg; } catch (e) {}
+      throw new Error(msg);
+    }
+    if (!body.stream) return res.json();
 
-3. Look for tasks that can run in parallel (e.g. "set Roomba while you eat") and note them as a pair in the focus list.
-
-4. Determine output type:
-   - task_heavy: 2+ actionable do_it items
-   - mental_load: dump is mostly release_it/capture_it, very few real tasks
-
-5. For task_heavy: write focus tasks with a built-in scope limiter — every task should feel already half-done when you read it. ALWAYS lead with the explicit task name first, then add framing/context after. Include the constraint in the task text itself ("write just one bullet", "literally just press the button", "even one sentence is enough"). Order by activation energy, easiest first.
-
-6. For mental_load: one gentle physical anchor only. CRITICAL: gentle_note must ONLY acknowledge the emotional weight — never put an action, task, or instruction inside it. Actions belong in gentle_anchor only. Bad: "You had a lot in there. Food first, everything else later." Good: "You had a lot in there. That's a lot to be carrying." The anchor task goes in the bullet, not the note.
-
-ENERGY STATE RULES — bucket sizing, task language, and tone ALL must match:
-
-overwhelmed:
-- Cap do_it at 5 items. Focus: 3 items.
-- Look for tasks that stack (run in background or parallel) and group them.
-- Flag time-sensitive items with a quiet time signal ("tonight", "before bed").
-- Tone: steady and matter-of-fact. Grounding, not cheerful. Acknowledge volume: "you had a lot in there."
-- focus_subtitle: "3 things — you had a lot in there, here's what matters today"
-- cta_text: "start the first one →"
-
-scattered:
-- Cap do_it at 5 items. Focus: 3 items, lowest-activation first.
-- Aggressively assign time boxing to focus tasks ("for 20 minutes only").
-- If dump spans many life domains (work + personal + social + creative), name it: note in the focus subtitle.
-- Release rabbit-hole items explicitly: novelty pulls that feel urgent but aren't.
-- Tone: warm but lane-focused. "Just this one thing first. The rest will wait."
-- focus_subtitle: "3 things — pick this lane first, the others will wait"
-- cta_text: "start the first one →"
-
-anxious:
-- Cap do_it at 3 items. Focus: 2 items max.
-- ALL "what will others think" items go directly to release_it, never decide_later.
-- Prioritize "5-min rule" and "micro-commitment" strategies.
-- Never use "should" or "need to" in task framing. Use "if it feels okay" and "when you're ready."
-- Release items need the most careful reframing of any state — each must end as a release statement.
-- Tone: permission-giving, gentle, slow. "You don't have to do all of this."
-- focus_subtitle: "two things — gently, when you're ready"
-- cta_text: "when you're ready →"
-
-low energy:
-- Cap do_it at 2 items. ONLY physical or single-action tasks. No decisions, no cognitive work.
-- Pre-make decisions inside the task text — don't leave choices for the user. ("open a delivery app — whichever requires less thought" not "decide on dinner")
-- If context clues suggest enjoyable things (games, music, shows), use them in temptation bundling suggestions specifically.
-- Validate rest explicitly in the focus subtitle.
-- Tone: soft, permissive. "That's it. Nothing more today."
-- focus_subtitle: "one thing — that's enough for today"
-- cta_text: "start when you're ready →"
-
-foggy:
-- Cap do_it at 1 item. ONLY the most automatic single physical gesture — no decisions at all.
-- Focus task format for foggy ONLY: the task field must be SHORT and direct — 3-6 words max as a clear action label, followed by a line break and then a single gentle sentence of context. Structure it as: "eat dinner.\n\nopen whatever app is already on your phone. pick the first thing. press order. that's it." The short label must be immediately obvious — someone half-asleep should be able to read the first 4 words and know what to do.
-- Tone: very warm, slow, short sentences. No compound instructions.
-- Capture It should include a warm closing note: these ideas will still be here when the fog lifts.
-- Be aggressive about moving ambiguous items to release_it or capture_it rather than decide_later.
-- focus_subtitle: "one thing. just one."
-- cta_text: "just this one →"
-
-Respond ONLY with valid JSON — no prose, no markdown, no backticks:
-{
-  "output_type": "task_heavy" or "mental_load",
-  "focus_subtitle": "the subtitle string for the focus card based on energy state",
-  "cta_text": "the start button text based on energy state",
-  "buckets": {
-    "do_it": ["item1"],
-    "decide_later": ["item1"],
-    "capture_it": ["item1"],
-    "release_it": ["reframed as a release statement, not a description of worry"]
-  },
-  "focus": [
-    {"task": "scoped concrete action with built-in constraint", "strategy": "strategy name"},
-    {"task": "...", "strategy": "..."}
-  ],
-  "gentle_anchor": "one physical gesture (mental_load only)",
-  "gentle_note": "one warm sentence acknowledging mental weight (mental_load only)"
-}`;
+    // Server-sent events straight from the API, then one bd_meta event from
+    // the worker with the usage and the parse path.
+    const reader = res.body.getReader();
+    const dec = new TextDecoder();
+    let buf = "", text = "", meta = null;
+    for (;;) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      buf += dec.decode(value, { stream: true });
+      let i;
+      while ((i = buf.indexOf("\n\n")) >= 0) {
+        const chunk = buf.slice(0, i); buf = buf.slice(i + 2);
+        const ev = (chunk.match(/^event: (\S+)/m) || [])[1];
+        const line = chunk.split("\n").find(l => l.startsWith("data: "));
+        if (!line) continue;
+        let data;
+        try { data = JSON.parse(line.slice(6)); } catch (e) { continue; }
+        if (data.type === "content_block_delta" && data.delta && data.delta.type === "text_delta") { text += data.delta.text; if (onDelta) onDelta(text); }
+        if (ev === "bd_meta") meta = data;
+      }
+    }
+    return { text, meta };
   }
 
   // ── ENERGY ────────────────────────────────────────────
@@ -1090,41 +1122,68 @@ Respond ONLY with valid JSON — no prose, no markdown, no backticks:
   });
 
   // ── SORT ──────────────────────────────────────────────
-  async function runSort() {
-    const dump = ta.value.trim();
+  async function runSort(opts) {
+    const followUpText = opts && opts.followUp ? opts.followUp : null;
+    const dump = followUpText || ta.value.trim();
     if (!dump) { showError("type something first — anything that's on your mind"); return; }
 
     clearError();
+    const pane = document.getElementById("live-pane");
     document.getElementById("sort-btn").disabled = true;
+    document.getElementById("replan-btn").disabled = true;
     document.getElementById("loading").classList.add("visible");
-    document.getElementById("output-section").classList.remove("visible");
+    pane.textContent = ""; pane.classList.add("visible");
+    if (!followUpText) document.getElementById("output-section").classList.remove("visible");
 
+    const body = { mode: "sort", energy_state: currentEnergy, dump, stream: true };
+    if (followUpText && history.length) body.history = history.slice(-HISTORY_MAX);
+
+    const t0 = performance.now();
+    let tFirst = null;
     try {
-      const response = await fetch(WORKER_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          system: buildSystemPrompt(currentEnergy),
-          messages: [{ role: "user", content: dump }]
-        })
-      });
-
-      const data = await response.json();
-      const raw = data.content[0].text;
-      const clean = raw.replace(/```json|```/g, "").trim();
+      const { text, meta } = await callWorker(body, { onDelta: (t) => { if (tFirst === null) tFirst = performance.now(); pane.textContent = t; } });
+      const clean = text.replace(/```json|```/g, "").trim();
       sortedData = JSON.parse(clean);
-
       renderOutput(sortedData);
-      updateStreak();
+
+      if (!followUpText) { history = [{ role: "user", content: dump }]; updateStreak(); }
+      else history.push({ role: "user", content: dump });
+      history.push({ role: "assistant", content: text });
+      saveHistory(history);
+      recordTiming(t0, tFirst, meta);
 
     } catch (err) {
-      showError("something went wrong — check your connection and try again");
+      showError(err.message || "something went wrong — check your connection and try again");
       console.error(err);
     } finally {
       document.getElementById("sort-btn").disabled = false;
+      document.getElementById("replan-btn").disabled = false;
       document.getElementById("loading").classList.remove("visible");
+      pane.classList.remove("visible");
     }
   }
+
+  // A follow-up re-plans under the same contract. The energy state is
+  // whatever is selected now, so it can change mid-conversation.
+  function followUp(text) {
+    text = (text || "").trim();
+    if (!text) return;
+    if (!history.some(t => t.role === "assistant")) { showError("sort something first, then change it"); return; }
+    document.getElementById("replan-text").value = "";
+    runSort({ followUp: text });
+  }
+
+  // Coming back to the tab: the last plan is still here.
+  (function restoreLastPlan() {
+    const last = [...history].reverse().find(t => t.role === "assistant");
+    if (!last) return;
+    try {
+      sortedData = JSON.parse(last.content.replace(/```json|```/g, "").trim());
+      renderOutput(sortedData);
+      const first = history.find(t => t.role === "user");
+      if (first && !ta.value) ta.value = first.content;
+    } catch (e) { /* an old or broken plan; start fresh */ }
+  })();
 
   function renderOutput(data) {
     // buckets
@@ -1215,6 +1274,8 @@ Respond ONLY with valid JSON — no prose, no markdown, no backticks:
   }
 
   // ── EMERGENCY MODE ────────────────────────────────────
+  // Its own mode on the worker, its own schema, and a hard-coded fallback
+  // here that never came from a model.
   async function runEmergency() {
     const dump = ta.value.trim();
     if (!dump) { showError("type something first — even one word is fine"); return; }
@@ -1224,20 +1285,9 @@ Respond ONLY with valid JSON — no prose, no markdown, no backticks:
     document.getElementById("loading").classList.add("visible");
 
     try {
-      const response = await fetch(WORKER_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          system: `You are a compassionate ADHD assistant. The user needs ONE thing to do right now. 
-Read their brain dump and respond ONLY with valid JSON: {"one_thing": "one small concrete action sentence", "why": "one short sentence on why this one"}`,
-          messages: [{ role: "user", content: dump }]
-        })
-      });
-      const data = await response.json();
-      const raw = data.content[0].text.replace(/```json|```/g, "").trim();
-      const parsed = JSON.parse(raw);
-      alert(`one thing right now:\n\n${parsed.one_thing}\n\n${parsed.why}`);
-    } catch {
+      const { plan } = await callWorker({ mode: "emergency", dump });
+      alert(`one thing right now:\n\n${plan.one_thing}\n\n${plan.why}`);
+    } catch (e) {
       alert("couldn't connect — but here's a rule: pick the smallest thing on your list and open it. just open it.");
     } finally {
       document.getElementById("sort-btn").disabled = false;

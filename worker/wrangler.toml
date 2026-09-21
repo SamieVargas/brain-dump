@@ -2,5 +2,22 @@ name = "brain-dump-proxy"
 main = "index.js"
 compatibility_date = "2024-01-01"
 
+# Secrets, set with `wrangler secret put NAME`, never in this file:
+#   ANTHROPIC_API_KEY   spends real money
+#   SESSION_SECRET      signs the per-session tokens the page attaches; openssl rand -base64 32
+
 [vars]
-# ANTHROPIC_API_KEY is set via: wrangler secret put ANTHROPIC_API_KEY
+# Comma-separated origins the page is served from. "*" only for local development.
+ALLOWED_ORIGINS = "https://samievargas.github.io,https://samievargas.com"
+# native | prompt. Native asks the API for the JSON schema; prompt relies on the
+# prompt and the tolerant parser. Both are measured in evals/.
+CONTRACT = "native"
+# Tokens per UTC day before the worker rests until tomorrow. Per isolate.
+DAILY_TOKEN_BUDGET = "1500000"
+
+# Per-IP rate limit. The binding holds across isolates; without it the worker
+# falls back to an in-memory counter with the same numbers.
+[[ratelimits]]
+name = "RATE_LIMITER"
+namespace_id = "1001"
+simple = { limit = 20, period = 600 }

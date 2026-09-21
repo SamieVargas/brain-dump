@@ -1,0 +1,13 @@
+{
+  "name": "brain-dump",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "python3 -m http.server 8790",
+    "test": "node scripts/snapshot.mjs --check && node --test tests/*.test.mjs",
+    "snapshot": "node scripts/snapshot.mjs",
+    "evals": "node evals/run.js",
+    "evals:ablation": "node evals/run.js --ablation",
+    "load-test": "node scripts/load-test.mjs"
+  }
+}

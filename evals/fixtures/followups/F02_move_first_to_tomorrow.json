@@ -1,0 +1,11 @@
+{
+  "id": "F02_move_first_to_tomorrow",
+  "base": "D09_time_sensitive",
+  "energy_state": "overwhelmed",
+  "follow_up": "Move the first one to tomorrow",
+  "mentioned": [
+    "insurance"
+  ],
+  "note": "The first focus task moves to decide_later; everything else stays.",
+  "energy_state_after": "overwhelmed"
+}

@@ -1,0 +1,9 @@
+{
+  "id": "D03_mixed_task_and_load",
+  "dump": "laundry is still in the machine. I keep thinking about what Dan said in the meeting and whether everyone thinks I'm not pulling my weight. need to send the numbers to finance by five. haven't eaten since breakfast. the garden idea is still floating around, raised beds maybe.",
+  "stress": [
+    "mixed"
+  ],
+  "expect_output_type": "task_heavy",
+  "$comment": "expect_output_type is the shape the graders check under the routing rule; it is a judgement written before any model run, not a model output"
+}

@@ -1,0 +1,11 @@
+{
+  "id": "F04_energy_change",
+  "base": "D03_mixed_task_and_load",
+  "energy_state": "scattered",
+  "follow_up": "actually I'm anxious now, can we make it gentler",
+  "mentioned": [
+    "numbers"
+  ],
+  "note": "The state changes mid-conversation; the caps and the tone follow it, the items survive.",
+  "energy_state_after": "anxious"
+}

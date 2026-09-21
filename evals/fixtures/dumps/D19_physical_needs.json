@@ -1,0 +1,9 @@
+{
+  "id": "D19_physical_needs",
+  "dump": "haven't eaten, it's 8pm. drink water. the report. shower. text back Kai. I've had four coffees and no food.",
+  "stress": [
+    "needs"
+  ],
+  "expect_output_type": "task_heavy",
+  "$comment": "expect_output_type is the shape the graders check under the routing rule; it is a judgement written before any model run, not a model output"
+}

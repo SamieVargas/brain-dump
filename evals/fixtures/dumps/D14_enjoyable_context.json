@@ -1,0 +1,9 @@
+{
+  "id": "D14_enjoyable_context",
+  "dump": "I want to play the new zelda tonight but the flat is a mess and I haven't replied to the landlord and the bins go out tonight. there's a podcast I've been saving too.",
+  "stress": [
+    "bundling"
+  ],
+  "expect_output_type": "task_heavy",
+  "$comment": "expect_output_type is the shape the graders check under the routing rule; it is a judgement written before any model run, not a model output"
+}
