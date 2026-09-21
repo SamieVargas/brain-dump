@@ -1,0 +1,90 @@
+// The constants the prompts, the schemas, the graders and the client all
+// read. One source, so the four buckets, the five energy states and the
+// per-state caps cannot drift between the prompt that asks for them and the
+// code that checks them.
+
+export const MODEL = 'claude-sonnet-5';
+export const MAX_TOKENS = 1024;
+
+export const MODES = Object.freeze(['sort', 'emergency']);
+export const ENERGY_STATES = Object.freeze(['overwhelmed', 'scattered', 'anxious', 'low energy', 'foggy']);
+export const BUCKETS = Object.freeze(['do_it', 'decide_later', 'capture_it', 'release_it']);
+export const OUTPUT_TYPES = Object.freeze(['task_heavy', 'mental_load']);
+export const CONTRACTS = Object.freeze(['native', 'prompt']);
+
+// Per-state caps on do_it and on the focus list. These are prompt
+// instructions today; the native contract carries the same numbers.
+export const CAPS = Object.freeze({
+  overwhelmed: { do_it: 5, focus: 3 },
+  scattered: { do_it: 5, focus: 3 },
+  anxious: { do_it: 3, focus: 2 },
+  'low energy': { do_it: 2, focus: 1 },
+  foggy: { do_it: 1, focus: 1 },
+});
+
+// Phrasing the prompt bans in task and note text. The anxious state bans
+// "should" and "need to" outright; the rest of the list holds everywhere.
+export const BANNED_PHRASES = Object.freeze({
+  all: ['you must', 'you have to', 'just do it', 'stop procrastinating', 'lazy'],
+  anxious: ['should', 'need to'],
+});
+
+// The strategies the client can expand; the prompt is told to pick from them.
+export const STRATEGIES = Object.freeze([
+  '5-min rule', 'eat the frog', 'body doubling', 'temptation bundling', 'micro-commitment',
+  'physical reset', 'pre-decided task', 'time boxing', 'pair it', 'one gesture',
+]);
+
+// The follow-up chips the client offers under a plan.
+export const FOLLOW_UP_CHIPS = Object.freeze(['I have 20 minutes', 'Move the first one to tomorrow', 'Done with the top two']);
+export const HISTORY_TURN_CAP = 6;
+export const DUMP_MAX_CHARS = 8000;
+export const FOLLOW_UP_MAX_CHARS = 500;
+
+/** The sort contract as a JSON Schema. Built from the constants above. */
+export function sortSchema() {
+  const strings = { type: 'array', items: { type: 'string' } };
+  return {
+    type: 'object',
+    properties: {
+      output_type: { type: 'string', enum: [...OUTPUT_TYPES] },
+      focus_subtitle: { type: 'string' },
+      cta_text: { type: 'string' },
+      buckets: {
+        type: 'object',
+        properties: Object.fromEntries(BUCKETS.map((b) => [b, strings])),
+        required: [...BUCKETS],
+        additionalProperties: false,
+      },
+      focus: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: { task: { type: 'string' }, strategy: { type: 'string' } },
+          required: ['task', 'strategy'],
+          additionalProperties: false,
+        },
+      },
+      gentle_anchor: { type: 'string' },
+      gentle_note: { type: 'string' },
+    },
+    required: ['output_type', 'focus_subtitle', 'cta_text', 'buckets', 'focus', 'gentle_anchor', 'gentle_note'],
+    additionalProperties: false,
+  };
+}
+
+/** The emergency one-thing contract. */
+export function emergencySchema() {
+  return {
+    type: 'object',
+    properties: { one_thing: { type: 'string' }, why: { type: 'string' } },
+    required: ['one_thing', 'why'],
+    additionalProperties: false,
+  };
+}
+
+/** The hard-coded fallback when the emergency call fails. Never the model's. */
+export const EMERGENCY_FALLBACK = Object.freeze({
+  one_thing: 'pick the smallest thing on your list and open it. just open it.',
+  why: "couldn't reach the sorter, so here's the rule that always works.",
+});
