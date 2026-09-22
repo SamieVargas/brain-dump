@@ -15,6 +15,10 @@
 // mid-run), stops the grid and writes what completed to <date>-partial.md
 // and .json, marked PARTIAL, with exit code 130. latest.json is left alone.
 // A second Ctrl+C aborts outright.
+//
+// Every run keeps its own JSON (<date>.json, <date>-ablation.json) and
+// latest.json accumulates: a grid run keeps the last ablation, an ablation run
+// keeps the last grid, so neither overwrites the other's rows.
 
 import { readFile, readdir, writeFile, mkdir } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
@@ -92,13 +96,14 @@ export async function main({ call, runs = 5, states = ENERGY_STATES, contracts =
             continue;
           }
           errorsInARow = 0;
-          grades.push(gradeSort({ text: r.text, stopReason: r.stopReason, state: 'anxious', fixture: target }));
+          grades.push({ ...gradeSort({ text: r.text, stopReason: r.stopReason, state: 'anxious', fixture: target }), stop_reason: r.stopReason ?? null });
         }
         out[arm] = {
           runs: grades.length,
           banned_phrasing: grades.filter((g) => g.violations?.banned_phrasing?.length).length,
           cap_respected: grades.filter((g) => !g.violations?.cap_respected?.length).length,
           hard_fails: grades.filter((g) => g.hard_fail).length,
+          truncated: grades.filter((g) => g.stop_reason === 'max_tokens').length,
         };
       }
       process.stdout.write('\n');
@@ -123,7 +128,7 @@ export async function main({ call, runs = 5, states = ENERGY_STATES, contracts =
               }
               errorsInARow = 0;
               const g = gradeSort({ text: r.text, stopReason: r.stopReason, state, fixture: d });
-              report.rows.push({ id: d.id, state, contract, parse: g.parse, valid_json: g.valid_json, hard_fail: g.hard_fail, violations: g.violations, usage: r.usage, ms: r.ms });
+              report.rows.push({ id: d.id, state, contract, parse: g.parse, valid_json: g.valid_json, hard_fail: g.hard_fail, violations: g.violations, stop_reason: r.stopReason ?? null, usage: r.usage, ms: r.ms });
             }
           }
         }
@@ -184,7 +189,7 @@ function summarize(report) {
   const nativeFails = rows.filter((r) => r.contract === 'native' && r.parse === 'failed').length;
   const cacheReads = rows.map((r) => r.usage?.cache_read_input_tokens ?? 0);
   const cacheShare = rows.length ? cacheReads.filter((x) => x > 0).length / rows.length : 0;
-  return { byState, byContract, native_hard_fails: nativeFails, cache_read_share: cacheShare, mean_ms: rows.length ? Math.round(rows.reduce((n, r) => n + r.ms, 0) / rows.length) : null, errors: report.rows.length - rows.length };
+  return { byState, byContract, native_hard_fails: nativeFails, truncated: rows.filter((r) => r.stop_reason === 'max_tokens').length, cache_read_share: cacheShare, mean_ms: rows.length ? Math.round(rows.reduce((n, r) => n + r.ms, 0) / rows.length) : null, errors: report.rows.length - rows.length };
 }
 
 function render(report) {
@@ -196,7 +201,7 @@ function render(report) {
     for (const [state, v] of Object.entries(s.byState)) lines.push(`| ${state} | ${v.runs} | ${v.hard_fails} | ${pct(v.cap, v.runs)} | ${pct(v.banned, v.runs)} | ${pct(v.routing, v.runs)} | ${pct(v.schema, v.runs)} | ${pct(v.strategy, v.runs)} |`);
     lines.push('', '## Parse outcome per contract', '', '| Contract | Runs | Native | Recovered | Failed | Cap violations |', '| --- | --- | --- | --- | --- | --- |');
     for (const [c, v] of Object.entries(s.byContract)) lines.push(`| ${c} | ${v.runs} | ${v.native} | ${v.recovered} | ${v.failed} | ${pct(v.cap, v.runs)} |`);
-    lines.push('', `Hard fail on the native path (valid_json failing): **${s.native_hard_fails}** · cache reads on ${pct(Math.round(s.cache_read_share * report.rows.length), report.rows.length)} of runs · mean latency ${s.mean_ms} ms · errors ${s.errors}`);
+    lines.push('', `Hard fail on the native path (valid_json failing): **${s.native_hard_fails}** · cut off at max_tokens (${MAX_TOKENS}): ${s.truncated} of ${report.rows.length} · cache reads on ${pct(Math.round(s.cache_read_share * report.rows.length), report.rows.length)} of runs · mean latency ${s.mean_ms} ms · errors ${s.errors}`);
   }
   if (report.followups.length) {
     lines.push('', '## Follow-ups: revision preserves', '', '| Conversation | Parsed | Items lost |', '| --- | --- | --- |');
@@ -204,8 +209,8 @@ function render(report) {
   }
   if (report.ablation) {
     const a = report.ablation;
-    lines.push('', `## Ablation · ${a.fixture} · anxious · 20 runs per arm`, '', '| Arm | Banned phrasing violations | Cap respected | Hard fails |', '| --- | --- | --- | --- |');
-    for (const arm of ['as_written', 'examples_and_bans_removed']) if (a[arm]) lines.push(`| ${arm.replace(/_/g, ' ')} | ${a[arm].banned_phrasing}/${a[arm].runs} | ${a[arm].cap_respected}/${a[arm].runs} | ${a[arm].hard_fails} |`);
+    lines.push('', `## Ablation · ${a.fixture} · anxious · 20 runs per arm`, '', '| Arm | Banned phrasing violations | Cap respected | Hard fails | Cut off at max_tokens |', '| --- | --- | --- | --- | --- |');
+    for (const arm of ['as_written', 'examples_and_bans_removed']) if (a[arm]) lines.push(`| ${arm.replace(/_/g, ' ')} | ${a[arm].banned_phrasing}/${a[arm].runs} | ${a[arm].cap_respected}/${a[arm].runs} | ${a[arm].hard_fails} | ${a[arm].truncated ?? 0} |`);
     lines.push('', 'A tie is a tie. The arms are paired: same dump, same state, same session.');
   }
   lines.push('');
@@ -216,12 +221,21 @@ async function save(report, dir) {
   await mkdir(dir, { recursive: true });
   const md = render(report);
   const stem = `${report.ran_at.slice(0, 10)}${report.ablation ? '-ablation' : ''}${report.partial ? '-partial' : ''}`;
-  const json = JSON.stringify({ ...report, summary: report.rows.length ? summarize(report) : null }, null, 2);
+  const full = { ...report, summary: report.rows.length ? summarize(report) : null };
   await writeFile(join(dir, `${stem}.md`), md);
-  // A partial run keeps its own JSON so latest.json always describes a full one.
-  await writeFile(join(dir, report.partial ? `${stem}.json` : 'latest.json'), json);
+  await writeFile(join(dir, `${stem}.json`), JSON.stringify(full, null, 2));
+  // latest.json accumulates across runs, so a grid run keeps the last ablation
+  // and an ablation run keeps the last grid's rows. A partial run never touches it.
+  if (!report.partial) {
+    let prior = {};
+    try { prior = JSON.parse(await readFile(join(dir, 'latest.json'), 'utf8')); } catch { /* first run */ }
+    const latest = report.ablation
+      ? { ...prior, model: report.model, prompt_version: report.prompt_version, ablation: report.ablation, ablation_ran_at: report.ran_at }
+      : { ...prior, ...full, ablation: prior.ablation ?? null, ablation_ran_at: prior.ablation_ran_at ?? null };
+    await writeFile(join(dir, 'latest.json'), JSON.stringify(latest, null, 2));
+  }
   console.log(md);
-  console.log(`wrote ${join(dir, stem + '.md')} and ${report.partial ? stem + '.json' : 'latest.json'}`);
+  console.log(`wrote ${join(dir, stem + '.md')} and .json${report.partial ? '' : ', latest.json updated'}`);
   if (report.partial) return 130;
   const hard = report.rows.filter((r) => r.contract === 'native' && r.parse === 'failed').length;
   return hard ? 1 : 0;

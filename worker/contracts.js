@@ -4,7 +4,10 @@
 // code that checks them.
 
 export const MODEL = 'claude-sonnet-5';
-export const MAX_TOKENS = 1024;
+// 2,048, not 1,024: the 2026-09-22 eval on Sonnet 5 hit the 1,024 cap on
+// 483 of 500 native runs, so the budget, not the rules, was what the table
+// measured. Unused budget costs nothing; a cut-off plan costs the whole call.
+export const MAX_TOKENS = 2048;
 
 export const MODES = Object.freeze(['sort', 'emergency']);
 export const ENERGY_STATES = Object.freeze(['overwhelmed', 'scattered', 'anxious', 'low energy', 'foggy']);
