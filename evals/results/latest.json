@@ -1,0 +1,40 @@
+{
+  "ran_at": "2026-09-22T18:19:00.764Z",
+  "model": "claude-sonnet-5",
+  "prompt_version": "sort@v2",
+  "runs": 5,
+  "states": [
+    "overwhelmed",
+    "scattered",
+    "anxious",
+    "low energy",
+    "foggy"
+  ],
+  "contracts": [
+    "native",
+    "prompt"
+  ],
+  "rows": [],
+  "followups": [],
+  "ablation": {
+    "fixture": "D02_invites_should",
+    "state": "anxious",
+    "as_written": {
+      "runs": 20,
+      "banned_phrasing": 0,
+      "cap_respected": 20,
+      "hard_fails": 19
+    },
+    "examples_and_bans_removed": {
+      "runs": 20,
+      "banned_phrasing": 0,
+      "cap_respected": 20,
+      "hard_fails": 18
+    }
+  },
+  "planned": 40,
+  "planned_followups": 0,
+  "partial": false,
+  "stopped_by": null,
+  "summary": null
+}
