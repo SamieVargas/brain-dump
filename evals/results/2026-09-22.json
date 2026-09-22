@@ -703,22 +703,7 @@
       }
     }
   ],
-  "ablation": {
-    "fixture": "D02_invites_should",
-    "state": "anxious",
-    "as_written": {
-      "runs": 20,
-      "banned_phrasing": 0,
-      "cap_respected": 20,
-      "hard_fails": 19
-    },
-    "examples_and_bans_removed": {
-      "runs": 20,
-      "banned_phrasing": 0,
-      "cap_respected": 20,
-      "hard_fails": 18
-    }
-  },
+  "ablation": null,
   "planned": 20,
   "planned_followups": 5,
   "partial": false,
@@ -749,6 +734,5 @@
     "cache_read_share": 0.95,
     "mean_ms": 17453,
     "errors": 0
-  },
-  "ablation_ran_at": null
+  }
 }
