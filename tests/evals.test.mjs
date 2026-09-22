@@ -58,17 +58,52 @@ test('five errors in a row stop the grid and are named in the table', async () =
   assert.match(md, /Stopped early: 5 errors in a row/);
 });
 
-test('a full run writes <date>.md and latest.json with exit 0', async () => {
+test('a full run writes <date>.md, <date>.json and latest.json with exit 0', async () => {
   const out = await mkdtemp(join(tmpdir(), 'bd-evals-'));
   const code = await quiet(() => main({ call: async () => reply(), runs: 1, states: ['foggy'], contracts: ['native'], out }));
   assert.equal(code, 0);
   const files = (await readdir(out)).sort();
   assert.ok(files.includes('latest.json'), files.join(', '));
   assert.ok(files.some((f) => /^\d{4}-\d{2}-\d{2}\.md$/.test(f)), files.join(', '));
+  assert.ok(files.some((f) => /^\d{4}-\d{2}-\d{2}\.json$/.test(f)), files.join(', '));
   const json = JSON.parse(await readFile(join(out, 'latest.json'), 'utf8'));
   assert.equal(json.partial, false);
   assert.equal(json.rows.length, 20);
   assert.equal(json.followups.length, 5);
+  assert.equal(json.summary.truncated, 0);
+  assert.equal(json.rows[0].stop_reason, 'end_turn');
+});
+
+test('an ablation after a grid run keeps the grid rows in latest.json, and the reverse', async () => {
+  const out = await mkdtemp(join(tmpdir(), 'bd-evals-'));
+  await quiet(() => main({ call: async () => reply(), runs: 1, states: ['foggy'], contracts: ['native'], out }));
+  await quiet(() => main({ call: async () => reply(), ablation: true, out }));
+  let json = JSON.parse(await readFile(join(out, 'latest.json'), 'utf8'));
+  assert.equal(json.rows.length, 20, 'the grid rows survive the ablation run');
+  assert.equal(json.ablation.as_written.runs, 20);
+  assert.ok(json.ablation_ran_at);
+  await quiet(() => main({ call: async () => reply(), runs: 1, states: ['anxious'], contracts: ['prompt'], out }));
+  json = JSON.parse(await readFile(join(out, 'latest.json'), 'utf8'));
+  assert.equal(json.rows[0].state, 'anxious', 'the new grid replaces the old');
+  assert.equal(json.ablation.as_written.runs, 20, 'and the ablation survives the grid run');
+  const files = await readdir(out);
+  assert.ok(files.some((f) => f.endsWith('-ablation.json')), files.join(', '));
+});
+
+test('a reply cut off at max_tokens is counted, not just failed', async () => {
+  const out = await mkdtemp(join(tmpdir(), 'bd-evals-'));
+  let calls = 0;
+  const call = async () => {
+    calls += 1;
+    return calls % 2 ? { ...reply(), text: plan.slice(0, 40), stopReason: 'max_tokens' } : reply();
+  };
+  const code = await quiet(() => main({ call, runs: 1, states: ['foggy'], contracts: ['native'], out }));
+  assert.equal(code, 1, 'cut-off replies are hard fails on the native path');
+  const json = JSON.parse(await readFile(join(out, 'latest.json'), 'utf8'));
+  assert.equal(json.summary.truncated, 10);
+  assert.equal(json.summary.native_hard_fails, 10);
+  const md = await readFile(join(out, (await readdir(out)).find((f) => /^\d{4}-\d{2}-\d{2}\.md$/.test(f))), 'utf8');
+  assert.match(md, /cut off at max_tokens \(\d+\): 10 of 20/);
 });
 
 test('the ablation counts its runs when interrupted', async () => {
