@@ -5,6 +5,10 @@
 //   node evals/run.js --runs=1              cheaper pass (default 5)
 //   node evals/run.js --ablation            20 runs per arm on one dump: prompt as is vs examples + bans removed
 //   node evals/run.js --states=foggy,anxious --contracts=native
+//   node evals/run.js --keep-text ...     also write every raw reply to <stem>-replies.jsonl
+//
+// A filtered run (any --states, --contracts or --runs) gets its own stem,
+// <date>-<states>-<contracts>-x<runs>, so a probe never overwrites the grid.
 //
 // Needs ANTHROPIC_API_KEY. Every grader is deterministic (evals/graders.js);
 // the offline half of this suite is `npm test`, which proves the graders and
@@ -57,11 +61,13 @@ const pct = (n, d) => (d ? `${Math.round((n / d) * 1000) / 10}%` : '—');
 
 // Runs the suite. `call` is the model client; the tests pass a stub.
 // Returns the exit code: 0 clean, 1 with a hard fail, 130 when interrupted.
-export async function main({ call, runs = 5, states = ENERGY_STATES, contracts = CONTRACTS, ablation = false, out = join(root, 'evals/results') }) {
+export async function main({ call, runs = 5, states = ENERGY_STATES, contracts = CONTRACTS, ablation = false, keepText = false, out = join(root, 'evals/results') }) {
   const dumps = await loadDir('dumps');
   const follows = await loadDir('followups');
   const ranAt = new Date().toISOString();
   const report = { ran_at: ranAt, model: MODEL, prompt_version: PROMPT_VERSION, runs, states, contracts, rows: [], followups: [], ablation: null, planned: 0, planned_followups: 0, partial: false, stopped_by: null };
+  const filtered = !ablation && (runs !== 5 || states.length !== ENERGY_STATES.length || contracts.length !== CONTRACTS.length);
+  const texts = keepText ? [] : null;
 
   // One Ctrl+C sets the flag and the loops fall through to the table; the
   // listener is `once`, so a second Ctrl+C gets node's default and aborts.
@@ -127,6 +133,7 @@ export async function main({ call, runs = 5, states = ENERGY_STATES, contracts =
                 continue;
               }
               errorsInARow = 0;
+              texts?.push({ id: d.id, state, contract, stop_reason: r.stopReason ?? null, output_tokens: r.usage?.output_tokens ?? null, text: r.text });
               const g = gradeSort({ text: r.text, stopReason: r.stopReason, state, fixture: d });
               report.rows.push({ id: d.id, state, contract, parse: g.parse, valid_json: g.valid_json, hard_fail: g.hard_fail, violations: g.violations, stop_reason: r.stopReason ?? null, usage: r.usage, ms: r.ms });
             }
@@ -158,7 +165,7 @@ export async function main({ call, runs = 5, states = ENERGY_STATES, contracts =
   }
 
   if (report.partial) console.error(`\nstopped (${report.stopped_by}) after ${completed(report)}; writing the partial table`);
-  return save(report, out);
+  return save(report, out, { filtered, texts });
 }
 
 function completed(report) {
@@ -217,10 +224,12 @@ function render(report) {
   return lines.join('\n');
 }
 
-async function save(report, dir) {
+async function save(report, dir, { filtered = false, texts = null } = {}) {
   await mkdir(dir, { recursive: true });
   const md = render(report);
-  const stem = `${report.ran_at.slice(0, 10)}${report.ablation ? '-ablation' : ''}${report.partial ? '-partial' : ''}`;
+  const tag = filtered ? `-${report.states.join('+')}-${report.contracts.join('+')}-x${report.runs}`.replace(/\s+/g, '_') : '';
+  const stem = `${report.ran_at.slice(0, 10)}${report.ablation ? '-ablation' : ''}${tag}${report.partial ? '-partial' : ''}`;
+  if (texts) await writeFile(join(dir, `${stem}-replies.jsonl`), texts.map((t) => JSON.stringify(t)).join('\n') + '\n');
   const full = { ...report, summary: report.rows.length ? summarize(report) : null };
   await writeFile(join(dir, `${stem}.md`), md);
   await writeFile(join(dir, `${stem}.json`), JSON.stringify(full, null, 2));
@@ -255,6 +264,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
     states: opt('states', ENERGY_STATES.join(',')).split(','),
     contracts: opt('contracts', CONTRACTS.join(',')).split(','),
     ablation: args.includes('--ablation'),
+    keepText: args.includes('--keep-text'),
     out: opt('out', join(root, 'evals/results')),
   }).then((code) => process.exit(code), (err) => {
     console.error(err);

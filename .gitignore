@@ -2,3 +2,5 @@
 node_modules/
 *.env
 .env.local
+# raw model replies kept by `node evals/run.js --keep-text`, a local diagnostic
+evals/results/*-replies.jsonl
