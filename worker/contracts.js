@@ -4,10 +4,12 @@
 // code that checks them.
 
 export const MODEL = 'claude-sonnet-5';
-// 2,048, not 1,024: the 2026-09-22 eval on Sonnet 5 hit the 1,024 cap on
-// 483 of 500 native runs, so the budget, not the rules, was what the table
-// measured. Unused budget costs nothing; a cut-off plan costs the whole call.
-export const MAX_TOKENS = 2048;
+// 4,096, measured on 2026-09-22: at 1,024 Sonnet 5 was cut off on 483 of 500
+// native runs, and at 2,048 on 6 of 20. The plans that finished ran 943 to
+// 1,966 tokens (median 1,445), and a six-character dump produced 1,544, so the
+// length is the model's, not the input's. Unused budget costs nothing; a
+// cut-off plan costs the whole call.
+export const MAX_TOKENS = 4096;
 
 export const MODES = Object.freeze(['sort', 'emergency']);
 export const ENERGY_STATES = Object.freeze(['overwhelmed', 'scattered', 'anxious', 'low energy', 'foggy']);

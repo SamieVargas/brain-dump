@@ -64,8 +64,8 @@ test('a full run writes <date>.md, <date>.json and latest.json with exit 0', asy
   assert.equal(code, 0);
   const files = (await readdir(out)).sort();
   assert.ok(files.includes('latest.json'), files.join(', '));
-  assert.ok(files.some((f) => /^\d{4}-\d{2}-\d{2}\.md$/.test(f)), files.join(', '));
-  assert.ok(files.some((f) => /^\d{4}-\d{2}-\d{2}\.json$/.test(f)), files.join(', '));
+  assert.ok(files.some((f) => /^\d{4}-\d{2}-\d{2}-foggy-native-x1\.md$/.test(f)), files.join(', '));
+  assert.ok(files.some((f) => /^\d{4}-\d{2}-\d{2}-foggy-native-x1\.json$/.test(f)), files.join(', '));
   const json = JSON.parse(await readFile(join(out, 'latest.json'), 'utf8'));
   assert.equal(json.partial, false);
   assert.equal(json.rows.length, 20);
@@ -102,7 +102,7 @@ test('a reply cut off at max_tokens is counted, not just failed', async () => {
   const json = JSON.parse(await readFile(join(out, 'latest.json'), 'utf8'));
   assert.equal(json.summary.truncated, 10);
   assert.equal(json.summary.native_hard_fails, 10);
-  const md = await readFile(join(out, (await readdir(out)).find((f) => /^\d{4}-\d{2}-\d{2}\.md$/.test(f))), 'utf8');
+  const md = await readFile(join(out, (await readdir(out)).find((f) => /-foggy-native-x1\.md$/.test(f))), 'utf8');
   assert.match(md, /cut off at max_tokens \(\d+\): 10 of 20/);
 });
 
@@ -122,4 +122,18 @@ test('the ablation counts its runs when interrupted', async () => {
   assert.match(md, /PARTIAL: 25 of 40 runs/);
   assert.match(md, /\| as written \| \d+\/20 \|/);
   assert.match(md, /\| examples and bans removed \| \d+\/5 \|/);
+});
+
+test('a filtered run gets its own stem and --keep-text writes the raw replies', async () => {
+  const out = await mkdtemp(join(tmpdir(), 'bd-evals-'));
+  const code = await quiet(() => main({ call: async () => reply(), runs: 1, states: ['low energy'], contracts: ['native'], keepText: true, out }));
+  assert.equal(code, 0);
+  const files = (await readdir(out)).sort();
+  assert.ok(files.some((f) => /^\d{4}-\d{2}-\d{2}-low_energy-native-x1\.md$/.test(f)), files.join(', '));
+  assert.ok(!files.some((f) => /^\d{4}-\d{2}-\d{2}\.md$/.test(f)), 'the grid stem is untouched');
+  const jsonl = await readFile(join(out, files.find((f) => f.endsWith('-replies.jsonl'))), 'utf8');
+  const lines = jsonl.trim().split('\n').map((l) => JSON.parse(l));
+  assert.equal(lines.length, 20);
+  assert.equal(lines[0].stop_reason, 'end_turn');
+  assert.equal(lines[0].text, plan);
 });
