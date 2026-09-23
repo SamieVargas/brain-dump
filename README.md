@@ -1,5 +1,7 @@
 # Brain dump
 
+[![tests](https://github.com/SamieVargas/brain-dump/actions/workflows/tests.yml/badge.svg)](https://github.com/SamieVargas/brain-dump/actions/workflows/tests.yml)
+
 **[Try it](https://samievargas.github.io/brain-dump)**
 
 ---

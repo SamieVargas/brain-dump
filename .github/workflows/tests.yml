@@ -1,0 +1,27 @@
+# The offline half of the suite: the prompt snapshots, the worker on a stub
+# upstream, the graders, the eval runner on a stub client, and the cost
+# tables. No API key, no network past the package install (and there are no
+# packages to install; npm install is here for the day there are).
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install
+        run: |
+          if [ -f package-lock.json ]; then npm ci; else npm install; fi
+      - name: Test
+        run: npm test
+        env:
+          ANTHROPIC_API_KEY: ""
