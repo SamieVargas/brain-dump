@@ -9,7 +9,13 @@ export const MODEL = 'claude-sonnet-5';
 // 1,966 tokens (median 1,445), and a six-character dump produced 1,544, so the
 // length is the model's, not the input's. Unused budget costs nothing; a
 // cut-off plan costs the whole call.
-export const MAX_TOKENS = 4096;
+//
+// 4,096 held on the twenty anxious-state eval dumps (longest reply 3,542),
+// then cut off a real overwhelmed-state dump on the live page on 2026-09-23:
+// long dumps in the high-cap states run past it, thinking included. Replies
+// stream, so there is no request timeout to protect, and 16,000 leaves room
+// for the longest dump the Worker accepts (8,000 characters).
+export const MAX_TOKENS = 16000;
 
 // List prices in USD per million tokens, the one place the evals and the
 // README compute dollars from. Read 2026-09-23 from an offline reference
