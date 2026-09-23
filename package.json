@@ -2,12 +2,16 @@
   "name": "brain-dump",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "python3 -m http.server 8790",
     "test": "node scripts/snapshot.mjs --check && node --test tests/*.test.mjs",
     "snapshot": "node scripts/snapshot.mjs",
     "evals": "node evals/run.js",
     "evals:ablation": "node evals/run.js --ablation",
+    "recost": "node scripts/recost.mjs",
     "load-test": "node scripts/load-test.mjs"
   }
 }
