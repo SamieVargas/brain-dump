@@ -55,6 +55,7 @@ The first version built its prompts in the browser and sent them to the Worker, 
 | Follow-ups, revision preserves | 2 of 5 kept everything; the other three dropped one, three and two items |
 | Ablation, D02, 20 pairs | banned phrasing 1 of 20 with the examples and bans block, 1 of 20 without; cap 20 of 20 both; a tie |
 | Output | 944 to 3,542 tokens per plan, median 1,719, mean latency 19.3 s, cache reads on 95% of calls |
+| Cost, priced 2026-09-23 | $0.0152 to $0.0544 per plan, median $0.0266, mean $0.0287, $0.5739 for the twenty; the follow-ups and the ablation did not record usage before 2026-09-23 |
 
 Two of those are the findings. The anxious rule bans "should" and "need to", the prompt says so, and the model wrote "need to" in nearly a third of the plans anyway, which is what a code-side check exists to catch and what the UI should do something about. And a revision that should remove two finished items removed three, and one that should only change the energy state removed two, so `revision_preserves` is earning its place. The ablation dump was built to invite "should", and neither arm said it, so removing the examples and the ban list changed nothing on that dump; a tie is reported as a tie.
 
@@ -147,7 +148,7 @@ Note: if you're on Windows ARM, Wrangler won't install via npm. use WSL2 with Ub
 
 ## Cost
 
-About $0.01 to $0.02 per sort at roughly 2,000 to 3,000 tokens each. Cloudflare Workers free tier covers 100,000 requests per day. for personal use you're probably looking at under $5 a month even if you use it a lot.
+Measured, not estimated, as of 2026-09-23: the twenty anxious-state plans from the 2026-09-22 run, priced from the usage each row recorded at the list prices in `worker/contracts.js` ($3.00 in, $15.00 out, $3.75 cache write, $0.30 cache read per million tokens, read 2026-09-23 and marked there as an assumption to re-check against the pricing page), cost $0.0152 to $0.0544 per sort, median $0.0266, mean $0.0287, and $0.5739 for the twenty. The earlier figure here was $0.01 to $0.02 at 2,000 to 3,000 tokens; the measured plans ran 944 to 3,542 output tokens, and 85% of those were thinking tokens, which the API bills as output. At the mean, a thousand sorts cost about $28.70 and $5 a month buys about 174 sorts, five or six a day. Cloudflare Workers free tier covers 100,000 requests per day. `npm run recost` re-prices the committed results tables from their JSON whenever the price table changes, without calling the API.
 
 ---
 

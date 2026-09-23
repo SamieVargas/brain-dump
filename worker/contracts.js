@@ -11,6 +11,36 @@ export const MODEL = 'claude-sonnet-5';
 // cut-off plan costs the whole call.
 export const MAX_TOKENS = 4096;
 
+// List prices in USD per million tokens, the one place the evals and the
+// README compute dollars from. Read 2026-09-23. These are an ASSUMPTION: the
+// Sonnet-tier list price ($3 in, $15 out) was carried over from the previous
+// generation, and an offline reference dated 2026-06-24 lists claude-sonnet-5
+// at $2.00 in and $10.00 out, so the figures below may overstate the cost by
+// a third. Re-check against https://www.anthropic.com/pricing before quoting
+// them anywhere. Cache writes and reads use the standard multipliers on the
+// input price (1.25x for a five-minute write, 0.1x for a read); those are the
+// same assumption.
+export const PRICES = Object.freeze({
+  'claude-sonnet-5': Object.freeze({ input: 3.0, output: 15.0, cache_write: 3.75, cache_read: 0.3, read_on: '2026-09-23' }),
+});
+
+/**
+ * Dollars for one call from the `usage` object the API returns, or null
+ * when there is no usage to compute from (a row that predates recording,
+ * or a call that errored). Every token field the API reports is counted:
+ * uncached input, cache writes, cache reads, and output, which on Sonnet 5
+ * includes the thinking tokens.
+ */
+export function costUsd(usage, model = MODEL) {
+  const p = PRICES[model];
+  if (!p || !usage || typeof usage !== 'object') return null;
+  const fields = ['input_tokens', 'cache_creation_input_tokens', 'cache_read_input_tokens', 'output_tokens'];
+  if (!fields.some((k) => typeof usage[k] === 'number')) return null;
+  const n = (k) => Number(usage[k] ?? 0) || 0;
+  const micro = n('input_tokens') * p.input + n('cache_creation_input_tokens') * p.cache_write + n('cache_read_input_tokens') * p.cache_read + n('output_tokens') * p.output;
+  return micro / 1e6;
+}
+
 export const MODES = Object.freeze(['sort', 'emergency']);
 export const ENERGY_STATES = Object.freeze(['overwhelmed', 'scattered', 'anxious', 'low energy', 'foggy']);
 export const BUCKETS = Object.freeze(['do_it', 'decide_later', 'capture_it', 'release_it']);
