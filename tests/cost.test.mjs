@@ -59,8 +59,8 @@ test('a run prices every plan, the follow-ups and the ablation, and the tables c
   assert.ok(Math.abs(c.grid_usd - 20 * each) < 1e-12);
   assert.ok(Math.abs(c.followups_usd - 10 * each) < 1e-12);
   assert.ok(Math.abs(c.run_usd - 30 * each) < 1e-12, 'the grid run prices the grid and its follow-ups');
-  assert.equal(latest.summary.byState.anxious.cost_per_plan_usd, each);
-  assert.equal(latest.ablation.as_written.cost_usd, 20 * each);
+  assert.ok(Math.abs(latest.summary.byState.anxious.cost_per_plan_usd - each) < 1e-12, 'the per-state mean');
+  assert.ok(Math.abs(latest.ablation.as_written.cost_usd - 20 * each) < 1e-12, 'the ablation arm total');
   const ablation = JSON.parse(await readFile(join(out, (await readdir(out)).find((f) => f.endsWith('-ablation.json'))), 'utf8'));
   assert.ok(Math.abs(ablation.summary.cost.ablation_usd - 40 * each) < 1e-12);
   assert.ok(Math.abs(ablation.summary.cost.run_usd - 40 * each) < 1e-12, 'the ablation run prices its forty calls');
