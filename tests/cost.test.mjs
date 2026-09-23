@@ -68,7 +68,7 @@ test('a run prices every plan, the follow-ups and the ablation, and the tables c
   assert.match(md, /\| State \| .* \| Cost per plan \(mean, USD\) \| Cost, all runs \(USD\) \|/);
   assert.match(md, new RegExp(`\\| anxious \\| 20 \\| .* \\| ${each.toFixed(4)} \\| ${(20 * each).toFixed(4)} \\|`));
   assert.match(md, /\| Conversation \| Parsed \| Items lost \| Cost, both calls \(USD\) \|/);
-  assert.match(md, /## Cost\n\nPrices for `claude-sonnet-5`: \$3\.00 in, \$15\.00 out/);
+  assert.match(md, /## Cost\n\nPrices for `claude-sonnet-5`: \$2\.00 in, \$10\.00 out/);
   assert.match(md, new RegExp(`\\| Whole run, everything above that was priced \\| ${(30 * each).toFixed(4)} \\|`));
   assert.doesNotMatch(md, new RegExp(NOT_RECORDED));
 });

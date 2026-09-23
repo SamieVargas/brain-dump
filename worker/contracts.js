@@ -12,16 +12,14 @@ export const MODEL = 'claude-sonnet-5';
 export const MAX_TOKENS = 4096;
 
 // List prices in USD per million tokens, the one place the evals and the
-// README compute dollars from. Read 2026-09-23. These are an ASSUMPTION: the
-// Sonnet-tier list price ($3 in, $15 out) was carried over from the previous
-// generation, and an offline reference dated 2026-06-24 lists claude-sonnet-5
-// at $2.00 in and $10.00 out, so the figures below may overstate the cost by
-// a third. Re-check against https://www.anthropic.com/pricing before quoting
-// them anywhere. Cache writes and reads use the standard multipliers on the
-// input price (1.25x for a five-minute write, 0.1x for a read); those are the
-// same assumption.
+// README compute dollars from. Read 2026-09-23 from an offline reference
+// dated 2026-06-24 that lists claude-sonnet-5 at $2.00 in and $10.00 out (the
+// previous Sonnet generation was $3 / $15, so do not carry that figure over).
+// Re-check against https://www.anthropic.com/pricing before quoting these
+// anywhere. Cache writes and reads use the standard multipliers on the input
+// price (1.25x for a five-minute write, 0.1x for a read).
 export const PRICES = Object.freeze({
-  'claude-sonnet-5': Object.freeze({ input: 3.0, output: 15.0, cache_write: 3.75, cache_read: 0.3, read_on: '2026-09-23' }),
+  'claude-sonnet-5': Object.freeze({ input: 2.0, output: 10.0, cache_write: 2.5, cache_read: 0.2, read_on: '2026-09-23' }),
 });
 
 /**
