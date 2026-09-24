@@ -1,11 +1,13 @@
 {
   "id": "F01_twenty_minutes",
   "base": "D08_parallel_tasks",
-  "energy_state": "scattered",
+  "energy_state": "plenty",
+  "anxious": false,
   "follow_up": "I have 20 minutes",
   "mentioned": [
     "slides"
   ],
   "note": "The plan should shrink to what fits in twenty minutes and keep the rest in their buckets.",
-  "energy_state_after": "scattered"
+  "energy_state_after": "plenty",
+  "anxious_after": false
 }

@@ -11,7 +11,7 @@ import { main, summarize, renderTables, NOT_RECORDED } from '../evals/run.js';
 import { recost, recostMarkdown } from '../scripts/recost.mjs';
 
 const results = new URL('../evals/results/', import.meta.url);
-const plan = JSON.stringify({ output_type: 'task_heavy', focus_subtitle: 's', cta_text: 'c', buckets: { do_it: ['send the contract'], decide_later: ['gym'], capture_it: [], release_it: ['the party is not a verdict on you'] }, focus: [{ task: 'send the contract. just attach and press send.', strategy: '5-min rule' }], gentle_anchor: '', gentle_note: '' });
+const plan = JSON.stringify({ now: [{ label: 'send the contract', detail: 'just attach and press send.', why: 'you said "the contract is the one"', strategy: '5-min rule' }], later: [{ text: 'gym', tag: 'decide' }], let_go: ['the party is not a verdict on you'] });
 const usage = { input_tokens: 100, cache_creation_input_tokens: 0, cache_read_input_tokens: 3000, output_tokens: 2000 };
 const reply = () => ({ text: plan, stopReason: 'end_turn', usage: { ...usage }, ms: 1 });
 const quiet = async (fn) => {
@@ -45,7 +45,7 @@ test('costUsd prices every token field and is null with nothing to price', () =>
 test('a run prices every plan, the follow-ups and the ablation, and the tables carry the columns', async () => {
   const out = await mkdtemp(join(tmpdir(), 'bd-cost-'));
   const each = costUsd(usage);
-  await quiet(() => main({ call: async () => reply(), runs: 1, states: ['anxious'], contracts: ['native'], out }));
+  await quiet(() => main({ call: async () => reply(), runs: 1, levels: ['a little'], anxious: [true], contracts: ['native'], out }));
   await quiet(() => main({ call: async () => reply(), ablation: true, out }));
   const latest = JSON.parse(await readFile(join(out, 'latest.json'), 'utf8'));
   assert.equal(latest.rows.length, 20);
@@ -59,14 +59,14 @@ test('a run prices every plan, the follow-ups and the ablation, and the tables c
   assert.ok(Math.abs(c.grid_usd - 20 * each) < 1e-12);
   assert.ok(Math.abs(c.followups_usd - 10 * each) < 1e-12);
   assert.ok(Math.abs(c.run_usd - 30 * each) < 1e-12, 'the grid run prices the grid and its follow-ups');
-  assert.ok(Math.abs(latest.summary.byState.anxious.cost_per_plan_usd - each) < 1e-12, 'the per-state mean');
+  assert.ok(Math.abs(latest.summary.byState['a little + anxious'].cost_per_plan_usd - each) < 1e-12, 'the per-state mean');
   assert.ok(Math.abs(latest.ablation.as_written.cost_usd - 20 * each) < 1e-12, 'the ablation arm total');
   const ablation = JSON.parse(await readFile(join(out, (await readdir(out)).find((f) => f.endsWith('-ablation.json'))), 'utf8'));
   assert.ok(Math.abs(ablation.summary.cost.ablation_usd - 40 * each) < 1e-12);
   assert.ok(Math.abs(ablation.summary.cost.run_usd - 40 * each) < 1e-12, 'the ablation run prices its forty calls');
-  const md = await readFile(join(out, (await readdir(out)).find((f) => /-anxious-native-x1\.md$/.test(f))), 'utf8');
-  assert.match(md, /\| State \| .* \| Cost per plan \(mean, USD\) \| Cost, all runs \(USD\) \|/);
-  assert.match(md, new RegExp(`\\| anxious \\| 20 \\| .* \\| ${each.toFixed(4)} \\| ${(20 * each).toFixed(4)} \\|`));
+  const md = await readFile(join(out, (await readdir(out)).find((f) => /-a_little-anxious-native-x1\.md$/.test(f))), 'utf8');
+  assert.match(md, /\| Level \| .* \| Let go unique \| Why given \| Carried placed \| Cost per plan \(mean, USD\) \| Cost, all runs \(USD\) \|/);
+  assert.match(md, new RegExp(`\\| a little \\+ anxious \\| 20 \\| .* \\| ${each.toFixed(4)} \\| ${(20 * each).toFixed(4)} \\|`));
   assert.match(md, /\| Conversation \| Parsed \| Items lost \| Cost, both calls \(USD\) \|/);
   assert.match(md, /## Cost\n\nPrices for `claude-sonnet-5`: \$2\.00 in, \$10\.00 out/);
   assert.match(md, new RegExp(`\\| Whole run, everything above that was priced \\| ${(30 * each).toFixed(4)} \\|`));
@@ -88,7 +88,7 @@ test('rows without usage read "not recorded", in the JSON and in the tables', ()
 
 test('recost is a no-op on a table the runner just wrote, and rebuilds one whose cost section was removed', async () => {
   const out = await mkdtemp(join(tmpdir(), 'bd-recost-'));
-  await quiet(() => main({ call: async () => reply(), runs: 1, states: ['foggy'], contracts: ['native'], out }));
+  await quiet(() => main({ call: async () => reply(), runs: 1, levels: ['none'], anxious: [false], contracts: ['native'], out }));
   const name = (await readdir(out)).find((f) => f.endsWith('.md'));
   const fresh = await readFile(join(out, name), 'utf8');
   assert.deepEqual(await recost(out), [], 'nothing to rewrite');

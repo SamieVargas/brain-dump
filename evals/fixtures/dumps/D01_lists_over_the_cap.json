@@ -1,8 +1,13 @@
 {
   "id": "D01_lists_over_the_cap",
   "dump": "ok so today: email Priya back about the invoice, call the dentist, buy cat food, fix the leaking tap, book the car in, return the library books, write the intro for the deck, pay the electric bill, text mum back, water the plants, clear the sink, order new running shoes, cancel the trial subscription, and sort the recycling. also the thing with the landlord.",
+  "carried": [
+    "hang the shelf in the hallway",
+    "reply to the school newsletter"
+  ],
   "stress": [
-    "cap"
+    "cap",
+    "carried"
   ],
   "expect_output_type": "task_heavy",
   "$comment": "expect_output_type is the shape the graders check under the routing rule; it is a judgement written before any model run, not a model output"

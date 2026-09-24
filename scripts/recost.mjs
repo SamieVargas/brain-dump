@@ -21,10 +21,11 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 // The tables are found by their header cell, and a table runs until the
 // first line that is not a row. The Cost section runs from its heading to
 // the next heading or the end of the file.
-const TABLES = [['state', '| State |'], ['contract', '| Contract |'], ['followups', '| Conversation |'], ['ablation', '| Arm |']];
+// The state table is headed "| Level |" from sort@v3 on and "| State |" before.
+const TABLES = [['state', ['| State |', '| Level |']], ['contract', ['| Contract |']], ['followups', ['| Conversation |']], ['ablation', ['| Arm |']]];
 
-function replaceTable(lines, header, table) {
-  const i = lines.findIndex((l) => l.startsWith(header));
+function replaceTable(lines, headers, table) {
+  const i = lines.findIndex((l) => headers.some((h) => l.startsWith(h)));
   if (i < 0 || !table) return lines;
   let end = i;
   while (end < lines.length && lines[end].startsWith('|')) end += 1;
