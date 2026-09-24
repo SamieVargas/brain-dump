@@ -326,7 +326,13 @@ async function save(report, dir, { filtered = false, texts = null } = {}) {
   const anxTag = report.anxious?.length === 1 ? (report.anxious[0] ? '-anxious' : '-not_anxious') : '';
   const effortTag = report.effort && report.effort !== DEFAULT_EFFORT ? `-effort-${report.effort}` : '';
   const tag = filtered ? `-${(report.levels ?? report.states).join('+')}${anxTag}-${report.contracts.join('+')}-x${report.runs}${effortTag}`.replace(/\s+/g, '_') : '';
-  const stem = `${report.ran_at.slice(0, 10)}${report.ablation ? '-ablation' : ''}${tag}${report.partial ? '-partial' : ''}`;
+  let stem = `${report.ran_at.slice(0, 10)}${report.ablation ? '-ablation' : ''}${tag}${report.partial ? '-partial' : ''}`;
+  // A same-day run on another prompt version never overwrites the one before:
+  // the 2026-09-24 sort@v4 run once replaced the sort@v3 table this way.
+  try {
+    const prior = JSON.parse(await readFile(join(dir, `${stem}.json`), 'utf8'));
+    if (prior.prompt_version && prior.prompt_version !== report.prompt_version) stem += `-${report.prompt_version.replace(/[^a-z0-9]+/gi, '-')}`;
+  } catch { /* nothing there yet */ }
   if (texts) await writeFile(join(dir, `${stem}-replies.jsonl`), texts.map((t) => JSON.stringify(t)).join('\n') + '\n');
   // Always summarized now: an ablation run has no grid rows but has a cost.
   const full = { ...report, summary: summarize(report) };

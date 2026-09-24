@@ -1,0 +1,5007 @@
+{
+  "ran_at": "2026-09-24T20:00:01.428Z",
+  "model": "claude-sonnet-5",
+  "prompt_version": "sort@v3",
+  "runs": 1,
+  "levels": [
+    "plenty",
+    "a little",
+    "none"
+  ],
+  "anxious": [
+    false,
+    true
+  ],
+  "states": [
+    "plenty",
+    "plenty + anxious",
+    "a little",
+    "a little + anxious",
+    "none",
+    "none + anxious"
+  ],
+  "contracts": [
+    "native"
+  ],
+  "rows": [
+    {
+      "id": "D01_lists_over_the_cap",
+      "state": "plenty",
+      "level": "plenty",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 189,
+        "cache_creation_input_tokens": 2384,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 2384,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 2153,
+        "output_tokens_details": {
+          "thinking_tokens": 1627
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 23753,
+      "cost_usd": 0.027868
+    },
+    {
+      "id": "D01_lists_over_the_cap",
+      "state": "plenty + anxious",
+      "level": "plenty",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 190,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 3803,
+        "output_tokens_details": {
+          "thinking_tokens": 3271
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 38589,
+      "cost_usd": 0.038886800000000006
+    },
+    {
+      "id": "D01_lists_over_the_cap",
+      "state": "a little",
+      "level": "a little",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 188,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1813,
+        "output_tokens_details": {
+          "thinking_tokens": 1344
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 18523,
+      "cost_usd": 0.018982799999999998
+    },
+    {
+      "id": "D01_lists_over_the_cap",
+      "state": "a little + anxious",
+      "level": "a little",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [
+          "need to"
+        ],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 189,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1275,
+        "output_tokens_details": {
+          "thinking_tokens": 812
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 13856,
+      "cost_usd": 0.013604799999999998
+    },
+    {
+      "id": "D01_lists_over_the_cap",
+      "state": "none",
+      "level": "none",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 187,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1512,
+        "output_tokens_details": {
+          "thinking_tokens": 1087
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 14117,
+      "cost_usd": 0.0159708
+    },
+    {
+      "id": "D01_lists_over_the_cap",
+      "state": "none + anxious",
+      "level": "none",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 188,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1642,
+        "output_tokens_details": {
+          "thinking_tokens": 1188
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 18784,
+      "cost_usd": 0.017272799999999998
+    },
+    {
+      "id": "D02_invites_should",
+      "state": "plenty",
+      "level": "plenty",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [
+          "lazy"
+        ],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 80,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 959,
+        "output_tokens_details": {
+          "thinking_tokens": 652
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 13147,
+      "cost_usd": 0.0102268
+    },
+    {
+      "id": "D02_invites_should",
+      "state": "plenty + anxious",
+      "level": "plenty",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 81,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1196,
+        "output_tokens_details": {
+          "thinking_tokens": 854
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 13831,
+      "cost_usd": 0.012598799999999999
+    },
+    {
+      "id": "D02_invites_should",
+      "state": "a little",
+      "level": "a little",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 79,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1094,
+        "output_tokens_details": {
+          "thinking_tokens": 852
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 13478,
+      "cost_usd": 0.0115748
+    },
+    {
+      "id": "D02_invites_should",
+      "state": "a little + anxious",
+      "level": "a little",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 80,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1131,
+        "output_tokens_details": {
+          "thinking_tokens": 848
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 14795,
+      "cost_usd": 0.011946799999999999
+    },
+    {
+      "id": "D02_invites_should",
+      "state": "none",
+      "level": "none",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 78,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 777,
+        "output_tokens_details": {
+          "thinking_tokens": 569
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 9506,
+      "cost_usd": 0.008402799999999998
+    },
+    {
+      "id": "D02_invites_should",
+      "state": "none + anxious",
+      "level": "none",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 79,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 998,
+        "output_tokens_details": {
+          "thinking_tokens": 782
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 12907,
+      "cost_usd": 0.010614799999999999
+    },
+    {
+      "id": "D03_mixed_task_and_load",
+      "state": "plenty",
+      "level": "plenty",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 116,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1791,
+        "output_tokens_details": {
+          "thinking_tokens": 1515
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 21466,
+      "cost_usd": 0.018618799999999998
+    },
+    {
+      "id": "D03_mixed_task_and_load",
+      "state": "plenty + anxious",
+      "level": "plenty",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 117,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 3065,
+        "output_tokens_details": {
+          "thinking_tokens": 2743
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 33507,
+      "cost_usd": 0.0313608
+    },
+    {
+      "id": "D03_mixed_task_and_load",
+      "state": "a little",
+      "level": "a little",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 115,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1434,
+        "output_tokens_details": {
+          "thinking_tokens": 1157
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 16719,
+      "cost_usd": 0.015046799999999999
+    },
+    {
+      "id": "D03_mixed_task_and_load",
+      "state": "a little + anxious",
+      "level": "a little",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 116,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1467,
+        "output_tokens_details": {
+          "thinking_tokens": 1207
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 18082,
+      "cost_usd": 0.0153788
+    },
+    {
+      "id": "D03_mixed_task_and_load",
+      "state": "none",
+      "level": "none",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 114,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 223,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 2718,
+      "cost_usd": 0.0029348
+    },
+    {
+      "id": "D03_mixed_task_and_load",
+      "state": "none + anxious",
+      "level": "none",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 115,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 857,
+        "output_tokens_details": {
+          "thinking_tokens": 648
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 11775,
+      "cost_usd": 0.0092768
+    },
+    {
+      "id": "D04_almost_empty",
+      "state": "plenty",
+      "level": "plenty",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 28,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 314,
+        "output_tokens_details": {
+          "thinking_tokens": 183
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 4923,
+      "cost_usd": 0.0036728000000000004
+    },
+    {
+      "id": "D04_almost_empty",
+      "state": "plenty + anxious",
+      "level": "plenty",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 29,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 785,
+        "output_tokens_details": {
+          "thinking_tokens": 633
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 10506,
+      "cost_usd": 0.0083848
+    },
+    {
+      "id": "D04_almost_empty",
+      "state": "a little",
+      "level": "a little",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 27,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 581,
+        "output_tokens_details": {
+          "thinking_tokens": 468
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 7456,
+      "cost_usd": 0.006340800000000001
+    },
+    {
+      "id": "D04_almost_empty",
+      "state": "a little + anxious",
+      "level": "a little",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 28,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 409,
+        "output_tokens_details": {
+          "thinking_tokens": 284
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 6052,
+      "cost_usd": 0.0046228
+    },
+    {
+      "id": "D04_almost_empty",
+      "state": "none",
+      "level": "none",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 26,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 93,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 2170,
+      "cost_usd": 0.0014588
+    },
+    {
+      "id": "D04_almost_empty",
+      "state": "none + anxious",
+      "level": "none",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 27,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 347,
+        "output_tokens_details": {
+          "thinking_tokens": 221
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 4844,
+      "cost_usd": 0.0040008000000000005
+    },
+    {
+      "id": "D05_single_anchor",
+      "state": "plenty",
+      "level": "plenty",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 76,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 989,
+        "output_tokens_details": {
+          "thinking_tokens": 789
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 12751,
+      "cost_usd": 0.0105188
+    },
+    {
+      "id": "D05_single_anchor",
+      "state": "plenty + anxious",
+      "level": "plenty",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 77,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 797,
+        "output_tokens_details": {
+          "thinking_tokens": 595
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 9785,
+      "cost_usd": 0.008600799999999999
+    },
+    {
+      "id": "D05_single_anchor",
+      "state": "a little",
+      "level": "a little",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 75,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 750,
+        "output_tokens_details": {
+          "thinking_tokens": 564
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 9720,
+      "cost_usd": 0.0081268
+    },
+    {
+      "id": "D05_single_anchor",
+      "state": "a little + anxious",
+      "level": "a little",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [
+          "need to"
+        ],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 76,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 785,
+        "output_tokens_details": {
+          "thinking_tokens": 611
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 9706,
+      "cost_usd": 0.0084788
+    },
+    {
+      "id": "D05_single_anchor",
+      "state": "none",
+      "level": "none",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [
+          "you have to"
+        ],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 74,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 579,
+        "output_tokens_details": {
+          "thinking_tokens": 395
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 6970,
+      "cost_usd": 0.0064148
+    },
+    {
+      "id": "D05_single_anchor",
+      "state": "none + anxious",
+      "level": "none",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 75,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 658,
+        "output_tokens_details": {
+          "thinking_tokens": 451
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 8117,
+      "cost_usd": 0.0072068
+    },
+    {
+      "id": "D06_worries_only",
+      "state": "plenty",
+      "level": "plenty",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 82,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1285,
+        "output_tokens_details": {
+          "thinking_tokens": 1051
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 16029,
+      "cost_usd": 0.013490799999999999
+    },
+    {
+      "id": "D06_worries_only",
+      "state": "plenty + anxious",
+      "level": "plenty",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 83,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1118,
+        "output_tokens_details": {
+          "thinking_tokens": 902
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 13797,
+      "cost_usd": 0.0118228
+    },
+    {
+      "id": "D06_worries_only",
+      "state": "a little",
+      "level": "a little",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 81,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1020,
+        "output_tokens_details": {
+          "thinking_tokens": 762
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 12121,
+      "cost_usd": 0.010838799999999999
+    },
+    {
+      "id": "D06_worries_only",
+      "state": "a little + anxious",
+      "level": "a little",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 82,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 931,
+        "output_tokens_details": {
+          "thinking_tokens": 680
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 11399,
+      "cost_usd": 0.0099508
+    },
+    {
+      "id": "D06_worries_only",
+      "state": "none",
+      "level": "none",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 80,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 258,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 3658,
+      "cost_usd": 0.0032168
+    },
+    {
+      "id": "D06_worries_only",
+      "state": "none + anxious",
+      "level": "none",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 81,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1112,
+        "output_tokens_details": {
+          "thinking_tokens": 865
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 13106,
+      "cost_usd": 0.0117588
+    },
+    {
+      "id": "D07_creative_ideas",
+      "state": "plenty",
+      "level": "plenty",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 100,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1869,
+        "output_tokens_details": {
+          "thinking_tokens": 1577
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 21070,
+      "cost_usd": 0.0193668
+    },
+    {
+      "id": "D07_creative_ideas",
+      "state": "plenty + anxious",
+      "level": "plenty",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 101,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1905,
+        "output_tokens_details": {
+          "thinking_tokens": 1621
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 20396,
+      "cost_usd": 0.019728799999999998
+    },
+    {
+      "id": "D07_creative_ideas",
+      "state": "a little",
+      "level": "a little",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 99,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 748,
+        "output_tokens_details": {
+          "thinking_tokens": 478
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 9629,
+      "cost_usd": 0.0081548
+    },
+    {
+      "id": "D07_creative_ideas",
+      "state": "a little + anxious",
+      "level": "a little",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 100,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1899,
+        "output_tokens_details": {
+          "thinking_tokens": 1580
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 22352,
+      "cost_usd": 0.019666799999999998
+    },
+    {
+      "id": "D07_creative_ideas",
+      "state": "none",
+      "level": "none",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 98,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1115,
+        "output_tokens_details": {
+          "thinking_tokens": 879
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 11980,
+      "cost_usd": 0.0118228
+    },
+    {
+      "id": "D07_creative_ideas",
+      "state": "none + anxious",
+      "level": "none",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 99,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1240,
+        "output_tokens_details": {
+          "thinking_tokens": 989
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 14584,
+      "cost_usd": 0.0130748
+    },
+    {
+      "id": "D08_parallel_tasks",
+      "state": "plenty",
+      "level": "plenty",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 86,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1311,
+        "output_tokens_details": {
+          "thinking_tokens": 1010
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 14661,
+      "cost_usd": 0.0137588
+    },
+    {
+      "id": "D08_parallel_tasks",
+      "state": "plenty + anxious",
+      "level": "plenty",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 87,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1846,
+        "output_tokens_details": {
+          "thinking_tokens": 1544
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 21072,
+      "cost_usd": 0.0191108
+    },
+    {
+      "id": "D08_parallel_tasks",
+      "state": "a little",
+      "level": "a little",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 85,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 2822,
+        "output_tokens_details": {
+          "thinking_tokens": 2573
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 32296,
+      "cost_usd": 0.028866799999999998
+    },
+    {
+      "id": "D08_parallel_tasks",
+      "state": "a little + anxious",
+      "level": "a little",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 86,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1706,
+        "output_tokens_details": {
+          "thinking_tokens": 1459
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 19401,
+      "cost_usd": 0.0177088
+    },
+    {
+      "id": "D08_parallel_tasks",
+      "state": "none",
+      "level": "none",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 84,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1059,
+        "output_tokens_details": {
+          "thinking_tokens": 855
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 13575,
+      "cost_usd": 0.0112348
+    },
+    {
+      "id": "D08_parallel_tasks",
+      "state": "none + anxious",
+      "level": "none",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 85,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1329,
+        "output_tokens_details": {
+          "thinking_tokens": 1108
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 14815,
+      "cost_usd": 0.0139368
+    },
+    {
+      "id": "D09_time_sensitive",
+      "state": "plenty",
+      "level": "plenty",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 86,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1001,
+        "output_tokens_details": {
+          "thinking_tokens": 710
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 12205,
+      "cost_usd": 0.0106588
+    },
+    {
+      "id": "D09_time_sensitive",
+      "state": "plenty + anxious",
+      "level": "plenty",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 87,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 2085,
+        "output_tokens_details": {
+          "thinking_tokens": 1751
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 24761,
+      "cost_usd": 0.0215008
+    },
+    {
+      "id": "D09_time_sensitive",
+      "state": "a little",
+      "level": "a little",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 85,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 2148,
+        "output_tokens_details": {
+          "thinking_tokens": 1894
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 23587,
+      "cost_usd": 0.0221268
+    },
+    {
+      "id": "D09_time_sensitive",
+      "state": "a little + anxious",
+      "level": "a little",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 86,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 2102,
+        "output_tokens_details": {
+          "thinking_tokens": 1863
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 24338,
+      "cost_usd": 0.0216688
+    },
+    {
+      "id": "D09_time_sensitive",
+      "state": "none",
+      "level": "none",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 84,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 945,
+        "output_tokens_details": {
+          "thinking_tokens": 743
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 10930,
+      "cost_usd": 0.0100948
+    },
+    {
+      "id": "D09_time_sensitive",
+      "state": "none + anxious",
+      "level": "none",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 85,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1573,
+        "output_tokens_details": {
+          "thinking_tokens": 1361
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 19329,
+      "cost_usd": 0.0163768
+    },
+    {
+      "id": "D10_many_domains",
+      "state": "plenty",
+      "level": "plenty",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 104,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 3201,
+        "output_tokens_details": {
+          "thinking_tokens": 2799
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 32901,
+      "cost_usd": 0.032694799999999996
+    },
+    {
+      "id": "D10_many_domains",
+      "state": "plenty + anxious",
+      "level": "plenty",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 105,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1753,
+        "output_tokens_details": {
+          "thinking_tokens": 1351
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 19310,
+      "cost_usd": 0.0182168
+    },
+    {
+      "id": "D10_many_domains",
+      "state": "a little",
+      "level": "a little",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [
+          "the zine"
+        ],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 103,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1817,
+        "output_tokens_details": {
+          "thinking_tokens": 1442
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 18991,
+      "cost_usd": 0.0188528
+    },
+    {
+      "id": "D10_many_domains",
+      "state": "a little + anxious",
+      "level": "a little",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [
+          "need to"
+        ],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 104,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1665,
+        "output_tokens_details": {
+          "thinking_tokens": 1243
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 18830,
+      "cost_usd": 0.0173348
+    },
+    {
+      "id": "D10_many_domains",
+      "state": "none",
+      "level": "none",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 102,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1721,
+        "output_tokens_details": {
+          "thinking_tokens": 1422
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 19456,
+      "cost_usd": 0.0178908
+    },
+    {
+      "id": "D10_many_domains",
+      "state": "none + anxious",
+      "level": "none",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 103,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1317,
+        "output_tokens_details": {
+          "thinking_tokens": 992
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 15343,
+      "cost_usd": 0.013852799999999998
+    },
+    {
+      "id": "D11_decisions_low_energy",
+      "state": "plenty",
+      "level": "plenty",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 80,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 567,
+        "output_tokens_details": {
+          "thinking_tokens": 386
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 7051,
+      "cost_usd": 0.0063068
+    },
+    {
+      "id": "D11_decisions_low_energy",
+      "state": "plenty + anxious",
+      "level": "plenty",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 81,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1162,
+        "output_tokens_details": {
+          "thinking_tokens": 974
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 13449,
+      "cost_usd": 0.012258799999999999
+    },
+    {
+      "id": "D11_decisions_low_energy",
+      "state": "a little",
+      "level": "a little",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 79,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 766,
+        "output_tokens_details": {
+          "thinking_tokens": 583
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 9748,
+      "cost_usd": 0.0082948
+    },
+    {
+      "id": "D11_decisions_low_energy",
+      "state": "a little + anxious",
+      "level": "a little",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 80,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1236,
+        "output_tokens_details": {
+          "thinking_tokens": 1054
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 14900,
+      "cost_usd": 0.0129968
+    },
+    {
+      "id": "D11_decisions_low_energy",
+      "state": "none",
+      "level": "none",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 78,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 785,
+        "output_tokens_details": {
+          "thinking_tokens": 574
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 10787,
+      "cost_usd": 0.008482799999999999
+    },
+    {
+      "id": "D11_decisions_low_energy",
+      "state": "none + anxious",
+      "level": "none",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 79,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1052,
+        "output_tokens_details": {
+          "thinking_tokens": 864
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 12621,
+      "cost_usd": 0.0111548
+    },
+    {
+      "id": "D12_instruction_in_dump",
+      "state": "plenty",
+      "level": "plenty",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 66,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1268,
+        "output_tokens_details": {
+          "thinking_tokens": 973
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 15330,
+      "cost_usd": 0.0132888
+    },
+    {
+      "id": "D12_instruction_in_dump",
+      "state": "plenty + anxious",
+      "level": "plenty",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 67,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 945,
+        "output_tokens_details": {
+          "thinking_tokens": 636
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 12033,
+      "cost_usd": 0.0100608
+    },
+    {
+      "id": "D12_instruction_in_dump",
+      "state": "a little",
+      "level": "a little",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 65,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1034,
+        "output_tokens_details": {
+          "thinking_tokens": 794
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 11954,
+      "cost_usd": 0.0109468
+    },
+    {
+      "id": "D12_instruction_in_dump",
+      "state": "a little + anxious",
+      "level": "a little",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 66,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1313,
+        "output_tokens_details": {
+          "thinking_tokens": 1065
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 15373,
+      "cost_usd": 0.013738799999999999
+    },
+    {
+      "id": "D12_instruction_in_dump",
+      "state": "none",
+      "level": "none",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 64,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 838,
+        "output_tokens_details": {
+          "thinking_tokens": 663
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 11185,
+      "cost_usd": 0.0089848
+    },
+    {
+      "id": "D12_instruction_in_dump",
+      "state": "none + anxious",
+      "level": "none",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 65,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 918,
+        "output_tokens_details": {
+          "thinking_tokens": 730
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 12425,
+      "cost_usd": 0.0097868
+    },
+    {
+      "id": "D13_instruction_subtle",
+      "state": "plenty",
+      "level": "plenty",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 76,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1176,
+        "output_tokens_details": {
+          "thinking_tokens": 889
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 15015,
+      "cost_usd": 0.012388799999999998
+    },
+    {
+      "id": "D13_instruction_subtle",
+      "state": "plenty + anxious",
+      "level": "plenty",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 77,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1667,
+        "output_tokens_details": {
+          "thinking_tokens": 1346
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 19255,
+      "cost_usd": 0.017300799999999998
+    },
+    {
+      "id": "D13_instruction_subtle",
+      "state": "a little",
+      "level": "a little",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 75,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1143,
+        "output_tokens_details": {
+          "thinking_tokens": 928
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 13924,
+      "cost_usd": 0.0120568
+    },
+    {
+      "id": "D13_instruction_subtle",
+      "state": "a little + anxious",
+      "level": "a little",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 76,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1434,
+        "output_tokens_details": {
+          "thinking_tokens": 1169
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 16211,
+      "cost_usd": 0.014968799999999999
+    },
+    {
+      "id": "D13_instruction_subtle",
+      "state": "none",
+      "level": "none",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 74,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 447,
+        "output_tokens_details": {
+          "thinking_tokens": 313
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 5819,
+      "cost_usd": 0.0050948
+    },
+    {
+      "id": "D13_instruction_subtle",
+      "state": "none + anxious",
+      "level": "none",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [
+          "need to"
+        ],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 75,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1220,
+        "output_tokens_details": {
+          "thinking_tokens": 1053
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 14209,
+      "cost_usd": 0.0128268
+    },
+    {
+      "id": "D14_enjoyable_context",
+      "state": "plenty",
+      "level": "plenty",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 80,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1281,
+        "output_tokens_details": {
+          "thinking_tokens": 946
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 15821,
+      "cost_usd": 0.0134468
+    },
+    {
+      "id": "D14_enjoyable_context",
+      "state": "plenty + anxious",
+      "level": "plenty",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 81,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 2091,
+        "output_tokens_details": {
+          "thinking_tokens": 1726
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 25583,
+      "cost_usd": 0.0215488
+    },
+    {
+      "id": "D14_enjoyable_context",
+      "state": "a little",
+      "level": "a little",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 79,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1977,
+        "output_tokens_details": {
+          "thinking_tokens": 1724
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 24953,
+      "cost_usd": 0.0204048
+    },
+    {
+      "id": "D14_enjoyable_context",
+      "state": "a little + anxious",
+      "level": "a little",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 80,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1145,
+        "output_tokens_details": {
+          "thinking_tokens": 901
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 14166,
+      "cost_usd": 0.0120868
+    },
+    {
+      "id": "D14_enjoyable_context",
+      "state": "none",
+      "level": "none",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 78,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1529,
+        "output_tokens_details": {
+          "thinking_tokens": 1294
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 18267,
+      "cost_usd": 0.0159228
+    },
+    {
+      "id": "D14_enjoyable_context",
+      "state": "none + anxious",
+      "level": "none",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 79,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 873,
+        "output_tokens_details": {
+          "thinking_tokens": 695
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 11052,
+      "cost_usd": 0.0093648
+    },
+    {
+      "id": "D15_what_will_people_think",
+      "state": "plenty",
+      "level": "plenty",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [
+          "mental load returned 2 now items, expected 1"
+        ],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 95,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1679,
+        "output_tokens_details": {
+          "thinking_tokens": 1432
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 20016,
+      "cost_usd": 0.017456799999999998
+    },
+    {
+      "id": "D15_what_will_people_think",
+      "state": "plenty + anxious",
+      "level": "plenty",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [
+          "mental load returned 2 now items, expected 1"
+        ],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 96,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1747,
+        "output_tokens_details": {
+          "thinking_tokens": 1459
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 21045,
+      "cost_usd": 0.0181388
+    },
+    {
+      "id": "D15_what_will_people_think",
+      "state": "a little",
+      "level": "a little",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [
+          "mental load returned 2 now items, expected 1"
+        ],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 94,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1207,
+        "output_tokens_details": {
+          "thinking_tokens": 961
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 15554,
+      "cost_usd": 0.0127348
+    },
+    {
+      "id": "D15_what_will_people_think",
+      "state": "a little + anxious",
+      "level": "a little",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [
+          "mental load returned 2 now items, expected 1"
+        ],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 95,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1204,
+        "output_tokens_details": {
+          "thinking_tokens": 982
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 14519,
+      "cost_usd": 0.012706799999999999
+    },
+    {
+      "id": "D15_what_will_people_think",
+      "state": "none",
+      "level": "none",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 93,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1275,
+        "output_tokens_details": {
+          "thinking_tokens": 1066
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 15117,
+      "cost_usd": 0.013412799999999999
+    },
+    {
+      "id": "D15_what_will_people_think",
+      "state": "none + anxious",
+      "level": "none",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 94,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 479,
+        "output_tokens_details": {
+          "thinking_tokens": 308
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 6796,
+      "cost_usd": 0.0054548
+    },
+    {
+      "id": "D16_long_rambling",
+      "state": "plenty",
+      "level": "plenty",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 188,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 2776,
+        "output_tokens_details": {
+          "thinking_tokens": 2421
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 33503,
+      "cost_usd": 0.0286128
+    },
+    {
+      "id": "D16_long_rambling",
+      "state": "plenty + anxious",
+      "level": "plenty",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [
+          "need to"
+        ],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 189,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 3617,
+        "output_tokens_details": {
+          "thinking_tokens": 3193
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 42507,
+      "cost_usd": 0.037024800000000004
+    },
+    {
+      "id": "D16_long_rambling",
+      "state": "a little",
+      "level": "a little",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 187,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1304,
+        "output_tokens_details": {
+          "thinking_tokens": 947
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 15386,
+      "cost_usd": 0.0138908
+    },
+    {
+      "id": "D16_long_rambling",
+      "state": "a little + anxious",
+      "level": "a little",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 188,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1648,
+        "output_tokens_details": {
+          "thinking_tokens": 1248
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 18937,
+      "cost_usd": 0.0173328
+    },
+    {
+      "id": "D16_long_rambling",
+      "state": "none",
+      "level": "none",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 186,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 916,
+        "output_tokens_details": {
+          "thinking_tokens": 617
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 12212,
+      "cost_usd": 0.0100088
+    },
+    {
+      "id": "D16_long_rambling",
+      "state": "none + anxious",
+      "level": "none",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [
+          "need to"
+        ],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 187,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 797,
+        "output_tokens_details": {
+          "thinking_tokens": 499
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 11221,
+      "cost_usd": 0.008820799999999998
+    },
+    {
+      "id": "D17_one_clear_task",
+      "state": "plenty",
+      "level": "plenty",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 50,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 180,
+        "output_tokens_details": {
+          "thinking_tokens": 76
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 3124,
+      "cost_usd": 0.0023768
+    },
+    {
+      "id": "D17_one_clear_task",
+      "state": "plenty + anxious",
+      "level": "plenty",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [
+          "need to"
+        ],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 51,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 619,
+        "output_tokens_details": {
+          "thinking_tokens": 501
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 7571,
+      "cost_usd": 0.0067688
+    },
+    {
+      "id": "D17_one_clear_task",
+      "state": "a little",
+      "level": "a little",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 49,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 325,
+        "output_tokens_details": {
+          "thinking_tokens": 226
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 3808,
+      "cost_usd": 0.0038248
+    },
+    {
+      "id": "D17_one_clear_task",
+      "state": "a little + anxious",
+      "level": "a little",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 50,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 310,
+        "output_tokens_details": {
+          "thinking_tokens": 208
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 4112,
+      "cost_usd": 0.0036768
+    },
+    {
+      "id": "D17_one_clear_task",
+      "state": "none",
+      "level": "none",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 48,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 90,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 2066,
+      "cost_usd": 0.0014728
+    },
+    {
+      "id": "D17_one_clear_task",
+      "state": "none + anxious",
+      "level": "none",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 49,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 301,
+        "output_tokens_details": {
+          "thinking_tokens": 201
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 4610,
+      "cost_usd": 0.0035848
+    },
+    {
+      "id": "D18_guilt_heavy",
+      "state": "plenty",
+      "level": "plenty",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [
+          "mental load returned 3 now items, expected 1"
+        ],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 90,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1551,
+        "output_tokens_details": {
+          "thinking_tokens": 1141
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 17953,
+      "cost_usd": 0.0161668
+    },
+    {
+      "id": "D18_guilt_heavy",
+      "state": "plenty + anxious",
+      "level": "plenty",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [
+          "mental load returned 3 now items, expected 1"
+        ],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 91,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 2584,
+        "output_tokens_details": {
+          "thinking_tokens": 2173
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 30368,
+      "cost_usd": 0.0264988
+    },
+    {
+      "id": "D18_guilt_heavy",
+      "state": "a little",
+      "level": "a little",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [
+          "mental load returned 2 now items, expected 1"
+        ],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 89,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1367,
+        "output_tokens_details": {
+          "thinking_tokens": 991
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 17308,
+      "cost_usd": 0.014324799999999999
+    },
+    {
+      "id": "D18_guilt_heavy",
+      "state": "a little + anxious",
+      "level": "a little",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [
+          "mental load returned 2 now items, expected 1"
+        ],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 90,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1867,
+        "output_tokens_details": {
+          "thinking_tokens": 1484
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 21898,
+      "cost_usd": 0.019326799999999998
+    },
+    {
+      "id": "D18_guilt_heavy",
+      "state": "none",
+      "level": "none",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 88,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 785,
+        "output_tokens_details": {
+          "thinking_tokens": 523
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 10600,
+      "cost_usd": 0.0085028
+    },
+    {
+      "id": "D18_guilt_heavy",
+      "state": "none + anxious",
+      "level": "none",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 89,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1835,
+        "output_tokens_details": {
+          "thinking_tokens": 1539
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 21180,
+      "cost_usd": 0.0190048
+    },
+    {
+      "id": "D19_physical_needs",
+      "state": "plenty",
+      "level": "plenty",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 66,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1507,
+        "output_tokens_details": {
+          "thinking_tokens": 1206
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 18207,
+      "cost_usd": 0.0156788
+    },
+    {
+      "id": "D19_physical_needs",
+      "state": "plenty + anxious",
+      "level": "plenty",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [
+          "need to"
+        ],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 67,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1480,
+        "output_tokens_details": {
+          "thinking_tokens": 1108
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 18634,
+      "cost_usd": 0.015410799999999999
+    },
+    {
+      "id": "D19_physical_needs",
+      "state": "a little",
+      "level": "a little",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 65,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 976,
+        "output_tokens_details": {
+          "thinking_tokens": 754
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 12222,
+      "cost_usd": 0.010366799999999999
+    },
+    {
+      "id": "D19_physical_needs",
+      "state": "a little + anxious",
+      "level": "a little",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 66,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1665,
+        "output_tokens_details": {
+          "thinking_tokens": 1376
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 20005,
+      "cost_usd": 0.017258799999999998
+    },
+    {
+      "id": "D19_physical_needs",
+      "state": "none",
+      "level": "none",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 64,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 951,
+        "output_tokens_details": {
+          "thinking_tokens": 755
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 12126,
+      "cost_usd": 0.010114799999999998
+    },
+    {
+      "id": "D19_physical_needs",
+      "state": "none + anxious",
+      "level": "none",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [
+          "the report"
+        ],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 65,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1548,
+        "output_tokens_details": {
+          "thinking_tokens": 1298
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 19208,
+      "cost_usd": 0.0160868
+    },
+    {
+      "id": "D20_foggy_single_gesture",
+      "state": "plenty",
+      "level": "plenty",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 51,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1081,
+        "output_tokens_details": {
+          "thinking_tokens": 800
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 12893,
+      "cost_usd": 0.0113888
+    },
+    {
+      "id": "D20_foggy_single_gesture",
+      "state": "plenty + anxious",
+      "level": "plenty",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 52,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1117,
+        "output_tokens_details": {
+          "thinking_tokens": 893
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 12369,
+      "cost_usd": 0.011750799999999999
+    },
+    {
+      "id": "D20_foggy_single_gesture",
+      "state": "a little",
+      "level": "a little",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 50,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 891,
+        "output_tokens_details": {
+          "thinking_tokens": 636
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 12166,
+      "cost_usd": 0.0094868
+    },
+    {
+      "id": "D20_foggy_single_gesture",
+      "state": "a little + anxious",
+      "level": "a little",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 51,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1123,
+        "output_tokens_details": {
+          "thinking_tokens": 904
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 12993,
+      "cost_usd": 0.0118088
+    },
+    {
+      "id": "D20_foggy_single_gesture",
+      "state": "none",
+      "level": "none",
+      "anxious": false,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 49,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 586,
+        "output_tokens_details": {
+          "thinking_tokens": 431
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 6996,
+      "cost_usd": 0.0064348
+    },
+    {
+      "id": "D20_foggy_single_gesture",
+      "state": "none + anxious",
+      "level": "none",
+      "anxious": true,
+      "contract": "native",
+      "parse": "native",
+      "valid_json": true,
+      "hard_fail": false,
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 50,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2384,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 655,
+        "output_tokens_details": {
+          "thinking_tokens": 502
+        },
+        "service_tier": "standard",
+        "inference_geo": "global"
+      },
+      "ms": 7802,
+      "cost_usd": 0.0071268
+    }
+  ],
+  "followups": [
+    {
+      "id": "F01_twenty_minutes",
+      "revised_parsed": true,
+      "lost": [],
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "usage": {
+        "first": {
+          "input_tokens": 86,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 2384,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 0
+          },
+          "output_tokens": 1518,
+          "output_tokens_details": {
+            "thinking_tokens": 1210
+          },
+          "service_tier": "standard",
+          "inference_geo": "global"
+        },
+        "second": {
+          "input_tokens": 517,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 2384,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 0
+          },
+          "output_tokens": 1216,
+          "output_tokens_details": {
+            "thinking_tokens": 884
+          },
+          "service_tier": "standard",
+          "inference_geo": "global"
+        }
+      },
+      "cost_usd": 0.0294996
+    },
+    {
+      "id": "F02_move_first_to_tomorrow",
+      "revised_parsed": true,
+      "lost": [
+        "pick up the parcel."
+      ],
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "usage": {
+        "first": {
+          "input_tokens": 86,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 2384,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 0
+          },
+          "output_tokens": 1477,
+          "output_tokens_details": {
+            "thinking_tokens": 1143
+          },
+          "service_tier": "standard",
+          "inference_geo": "global"
+        },
+        "second": {
+          "input_tokens": 546,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 2384,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 0
+          },
+          "output_tokens": 570,
+          "output_tokens_details": {
+            "thinking_tokens": 297
+          },
+          "service_tier": "standard",
+          "inference_geo": "global"
+        }
+      },
+      "cost_usd": 0.022687600000000002
+    },
+    {
+      "id": "F03_done_with_top_two",
+      "revised_parsed": true,
+      "lost": [
+        "pay electric bill."
+      ],
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "usage": {
+        "first": {
+          "input_tokens": 140,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 2384,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 0
+          },
+          "output_tokens": 2752,
+          "output_tokens_details": {
+            "thinking_tokens": 2232
+          },
+          "service_tier": "standard",
+          "inference_geo": "global"
+        },
+        "second": {
+          "input_tokens": 779,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 2384,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 0
+          },
+          "output_tokens": 1504,
+          "output_tokens_details": {
+            "thinking_tokens": 1041
+          },
+          "service_tier": "standard",
+          "inference_geo": "global"
+        }
+      },
+      "cost_usd": 0.04535159999999999
+    },
+    {
+      "id": "F04_energy_change",
+      "revised_parsed": true,
+      "lost": [
+        "move laundry."
+      ],
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "usage": {
+        "first": {
+          "input_tokens": 116,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 2384,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 0
+          },
+          "output_tokens": 286,
+          "output_tokens_details": {
+            "thinking_tokens": 0
+          },
+          "service_tier": "standard",
+          "inference_geo": "global"
+        },
+        "second": {
+          "input_tokens": 534,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 2384,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 0
+          },
+          "output_tokens": 951,
+          "output_tokens_details": {
+            "thinking_tokens": 694
+          },
+          "service_tier": "standard",
+          "inference_geo": "global"
+        }
+      },
+      "cost_usd": 0.0146236
+    },
+    {
+      "id": "F05_add_one",
+      "revised_parsed": true,
+      "lost": [],
+      "violations": {
+        "schema_valid": [],
+        "cap_respected": [],
+        "banned_phrasing": [],
+        "routing_consistent": [],
+        "let_go_unique": [],
+        "strategy_named": [],
+        "why_given": [],
+        "carried_placed": []
+      },
+      "usage": {
+        "first": {
+          "input_tokens": 48,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 2384,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 0
+          },
+          "output_tokens": 91,
+          "output_tokens_details": {
+            "thinking_tokens": 0
+          },
+          "service_tier": "standard",
+          "inference_geo": "global"
+        },
+        "second": {
+          "input_tokens": 263,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 2384,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 0
+          },
+          "output_tokens": 109,
+          "output_tokens_details": {
+            "thinking_tokens": 0
+          },
+          "service_tier": "standard",
+          "inference_geo": "global"
+        }
+      },
+      "cost_usd": 0.0035756
+    }
+  ],
+  "ablation": null,
+  "planned": 120,
+  "planned_followups": 5,
+  "partial": false,
+  "stopped_by": null,
+  "summary": {
+    "byState": {
+      "plenty": {
+        "runs": 20,
+        "hard_fails": 0,
+        "cap": 0,
+        "banned": 1,
+        "routing": 2,
+        "schema": 0,
+        "strategy": 0,
+        "let_go_unique": 0,
+        "why": 0,
+        "carried": 0,
+        "cost_per_plan_usd": 0.014899359999999997,
+        "cost_usd": 0.29798719999999995
+      },
+      "plenty + anxious": {
+        "runs": 20,
+        "hard_fails": 0,
+        "cap": 0,
+        "banned": 3,
+        "routing": 2,
+        "schema": 0,
+        "strategy": 0,
+        "let_go_unique": 0,
+        "why": 0,
+        "carried": 0,
+        "cost_per_plan_usd": 0.018348700000000003,
+        "cost_usd": 0.3669740000000001
+      },
+      "a little": {
+        "runs": 20,
+        "hard_fails": 0,
+        "cap": 0,
+        "banned": 0,
+        "routing": 2,
+        "schema": 0,
+        "strategy": 0,
+        "let_go_unique": 1,
+        "why": 0,
+        "carried": 0,
+        "cost_per_plan_usd": 0.013262199999999998,
+        "cost_usd": 0.265244
+      },
+      "a little + anxious": {
+        "runs": 20,
+        "hard_fails": 0,
+        "cap": 0,
+        "banned": 3,
+        "routing": 2,
+        "schema": 0,
+        "strategy": 0,
+        "let_go_unique": 0,
+        "why": 0,
+        "carried": 0,
+        "cost_per_plan_usd": 0.013813200000000003,
+        "cost_usd": 0.27626400000000007
+      },
+      "none": {
+        "runs": 20,
+        "hard_fails": 0,
+        "cap": 0,
+        "banned": 1,
+        "routing": 0,
+        "schema": 0,
+        "strategy": 0,
+        "let_go_unique": 0,
+        "why": 0,
+        "carried": 0,
+        "cost_per_plan_usd": 0.008893700000000001,
+        "cost_usd": 0.177874
+      },
+      "none + anxious": {
+        "runs": 20,
+        "hard_fails": 0,
+        "cap": 0,
+        "banned": 2,
+        "routing": 0,
+        "schema": 0,
+        "strategy": 0,
+        "let_go_unique": 1,
+        "why": 0,
+        "carried": 0,
+        "cost_per_plan_usd": 0.0110292,
+        "cost_usd": 0.220584
+      }
+    },
+    "byContract": {
+      "native": {
+        "runs": 120,
+        "native": 120,
+        "recovered": 0,
+        "failed": 0,
+        "cap": 0,
+        "cost_per_plan_usd": 0.013374393333333335
+      }
+    },
+    "native_hard_fails": 0,
+    "truncated": 0,
+    "cache_read_share": 0.9916666666666667,
+    "mean_ms": 15055,
+    "errors": 0,
+    "cost": {
+      "model": "claude-sonnet-5",
+      "prices": {
+        "input": 2,
+        "output": 10,
+        "cache_write": 2.5,
+        "cache_read": 0.2,
+        "read_on": "2026-09-23"
+      },
+      "per_plan_usd": {
+        "min": 0.0014588,
+        "median": 0.0123238,
+        "max": 0.038886800000000006,
+        "mean": 0.013374393333333335
+      },
+      "plans_priced": 120,
+      "plans_unpriced": 0,
+      "grid_usd": 1.6049272,
+      "followups_usd": 0.115738,
+      "followups_priced": 5,
+      "ablation_usd": null,
+      "run_usd": 1.7206652
+    }
+  }
+}

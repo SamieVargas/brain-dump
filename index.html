@@ -85,21 +85,30 @@
     .go .primary { width: 100%; }
     .note { font: 400 11.5px/1.45 var(--mono); color: var(--faint); text-align: center; }
     .error { font: 400 13.5px/1.5 var(--sans); color: var(--body); background: var(--later); border-radius: 14px; padding: 10px 14px; }
-    /* the sorting loader: three pills that breathe in turn, like the favicon.
-       Swap the .pills block for the Claude Design animation; the stage line
-       and the first-task preview are driven by the stream. */
-    .loader { display: flex; align-items: center; gap: 16px; background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 18px 20px; }
-    .pills { display: flex; flex-direction: column; gap: 5px; flex: none; }
-    .pills span { display: block; height: 8px; border-radius: 999px; transform-origin: left center; animation: breathe 1.6s ease-in-out infinite; }
-    .pills span:nth-child(1) { width: 34px; background: var(--green); }
-    .pills span:nth-child(2) { width: 26px; background: var(--mint); animation-delay: .2s; }
-    .pills span:nth-child(3) { width: 18px; background: var(--green-tint); border: 1px solid var(--control); animation-delay: .4s; }
-    @keyframes breathe { 0%, 100% { transform: scaleX(.55); opacity: .5; } 50% { transform: scaleX(1); opacity: 1; } }
-    .loader-text { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-    .loader-stage { font: 400 14.5px/1.4 var(--sans); color: var(--body); }
-    .loader-first { font: 400 17px/1.3 var(--serif); color: var(--ink); }
-    .loader-note { font: 400 11.5px/1.45 var(--mono); color: var(--faint); }
-    @media (prefers-reduced-motion: reduce) { .pills span { animation: none; transform: none; opacity: 1; } }
+    /* ── sorting (5a): the plan builds in front of you. Driven by the stream:
+       your lines sit as chips while it thinks, then now, later and let go
+       fill in as each item closes. */
+    .sorting { padding: 22px 22px 40px; display: flex; flex-direction: column; gap: 18px; }
+    .sorting h1 { font: 400 28px/1.12 var(--serif); margin: 6px 0 0; }
+    .frags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .frag { font: 400 12.5px/1.35 var(--sans); padding: 6px 11px; border-radius: 14px; border: 1px solid var(--line); background: var(--card); color: var(--body);
+            opacity: 0; transform: translateY(8px); transition: opacity .35s var(--rise), transform .35s var(--rise), background .35s var(--rise), border-color .35s var(--rise), color .35s var(--rise); }
+    .frag.on { opacity: 1; transform: none; }
+    .frag.hot { background: var(--green-tint); border-color: var(--green); color: var(--green); }
+    .frags.dim .frag.on { opacity: .4; }
+    .srows { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+    .srow { border-radius: 20px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; opacity: .35; transition: opacity .4s var(--rise); }
+    .srow.on { opacity: 1; }
+    .srow.now { background: var(--task); } .srow.later { background: var(--later); } .srow.letgo { background: var(--letgo); }
+    .srow .name { font: 400 17px/1.2 var(--serif); }
+    .sitem { font: 400 12.5px/1.4 var(--sans); color: var(--body); background: var(--glass); border-radius: 11px; padding: 7px 11px; animation: land .35s var(--rise) both; }
+    .srow.now .name + .sitem { font: 400 15px/1.3 var(--serif); color: var(--ink); }
+    .smore { font: 400 11.5px/1.45 var(--mono); color: var(--meta); padding: 0 4px; }
+    @keyframes land { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    .hclock { font: 400 11.5px/1.45 var(--mono); color: var(--meta); white-space: nowrap; margin-left: auto; }
+    @media (prefers-reduced-motion: reduce) {
+      .frag, .srow { transition: none; } .frag { transform: none; } .sitem { animation: none; }
+    }
 
     /* ── plan ──────────────────────────────────────────── */
     .plan { padding: 22px 22px 40px; display: flex; flex-direction: column; gap: 18px; }
@@ -138,7 +147,11 @@
     .checks-btn { align-self: flex-start; font: 400 11.5px/1.45 var(--mono); background: none; border: 0; padding: 0 6px; color: var(--faint); text-align: left; }
     .checks { display: flex; flex-direction: column; gap: 4px; padding: 0 6px; }
     .checks span { font: 400 11.5px/1.45 var(--mono); color: var(--meta); }
-    .save { align-self: flex-start; font: 400 14px/1 var(--sans); background: none; border: 0; padding: 4px 6px; color: var(--green); }
+    .save-row { display: flex; align-items: baseline; gap: 12px; padding: 4px 6px; flex-wrap: wrap; }
+    .save { font: 400 14px/1 var(--sans); background: none; border: 0; padding: 0; color: var(--green); }
+    .orient { font: 400 11.5px/1.45 var(--mono); color: var(--faint); }
+    .orient button { font: inherit; background: none; border: 0; padding: 0; color: var(--faint); }
+    .orient button[aria-pressed="true"] { color: var(--green); }
 
     /* ── desktop ───────────────────────────────────────── */
     @media (min-width: 860px) {
@@ -181,7 +194,12 @@
       .bucket .items .sub { display: none; }
       .change { display: none; }
       .replan[data-desktop] { display: flex !important; padding: 0 4px; }
-      .checks-btn, .checks, .save { padding: 0 8px; }
+      .checks-btn, .checks, .save-row { padding: 0 8px; }
+      .sorting { max-width: 680px; margin: 0 auto; padding: 36px 40px 48px; gap: 22px; }
+      .sorting h1 { font-size: 40px; line-height: 1.08; margin: 0; }
+      .frag { font-size: 13.5px; }
+      .sitem { font-size: 13.5px; }
+      .srow .name { font-size: 20px; }
     }
     @media (max-width: 859px) { .task-foot { display: contents; } }
   </style>
@@ -191,6 +209,7 @@
 <header class="top">
   <span class="brand">clear your mind.</span>
   <span class="streak" id="streak" hidden><span class="short"></span><span class="long"></span></span>
+  <span class="hclock" id="hclock" hidden></span>
 </header>
 
 <!-- ── DUMP ──────────────────────────────────────────── -->
@@ -224,14 +243,6 @@
   </div>
 
   <div class="error" id="error" hidden></div>
-  <div class="loader rise" id="loader" role="status" aria-live="polite" hidden>
-    <div class="pills" aria-hidden="true"><span></span><span></span><span></span></div>
-    <div class="loader-text">
-      <span class="loader-stage" id="loader-stage">reading it all</span>
-      <span class="loader-first" id="loader-first" hidden></span>
-      <span class="loader-note" id="loader-note" hidden>long dumps take a little longer</span>
-    </div>
-  </div>
 
   <div class="go">
     <button class="primary" id="sort-btn" type="button">sort it →</button>
@@ -241,6 +252,17 @@
 </main>
 
 <!-- ── PLAN ──────────────────────────────────────────── -->
+<!-- ── SORTING ───────────────────────────────────────── -->
+<main class="sorting" id="sort-view" hidden aria-live="polite">
+  <h1 id="sort-stage">reading your dump</h1>
+  <div class="frags" id="sort-frags"></div>
+  <div class="srows" id="sort-rows">
+    <div class="srow now" data-row="now"><span class="name">now</span></div>
+    <div class="srow later" data-row="later"><span class="name">later</span></div>
+    <div class="srow letgo" data-row="let_go"><span class="name">let go</span></div>
+  </div>
+</main>
+
 <main class="plan" id="plan-view" hidden>
   <section class="plan-main">
     <div class="plan-head">
@@ -261,7 +283,10 @@
 
     <button class="checks-btn" id="checks-btn" type="button" aria-expanded="false"></button>
     <div class="checks" id="checks" hidden></div>
-    <button class="save" id="pdf-btn" type="button">save as PDF ↓</button>
+    <div class="save-row">
+      <button class="save" id="pdf-btn" type="button">save as PDF ↓</button>
+      <span class="orient" id="pdf-orient" role="group" aria-label="page direction"><button type="button" data-orient="portrait">vertical</button> · <button type="button" data-orient="landscape">horizontal</button></span>
+    </div>
   </section>
 
   <aside class="plan-side" id="buckets"></aside>
@@ -558,12 +583,12 @@
     return sessionToken;
   }
 
-  async function callWorker(body, { onDelta } = {}) {
+  async function callWorker(body, { onDelta, onThinking } = {}) {
     const token = await session();
     const headers = { "Content-Type": "application/json" };
     if (token) headers["x-bd-session"] = token;
     const res = await fetch(WORKER_URL + "/sort", { method: "POST", headers, body: JSON.stringify(body) });
-    if (res.status === 401 && token) { sessionToken = null; return callWorker(body, { onDelta }); }
+    if (res.status === 401 && token) { sessionToken = null; return callWorker(body, { onDelta, onThinking }); }
     if (!res.ok) {
       let msg = "something went wrong, so check your connection and try again";
       try { msg = (await res.json()).message || msg; } catch (e) {}
@@ -589,6 +614,8 @@
         let data;
         try { data = JSON.parse(line.slice(6)); } catch (e) { continue; }
         if (data.type === "content_block_delta" && data.delta && data.delta.type === "text_delta") { text += data.delta.text; if (onDelta) onDelta(text); }
+        // Thinking is never shown, only used as a heartbeat for the stage line.
+        if (onThinking && ((data.type === "content_block_start" && data.content_block && data.content_block.type === "thinking") || (data.type === "content_block_delta" && data.delta && data.delta.type === "thinking_delta"))) onThinking();
         if (data.type === "message_delta" && data.delta && data.delta.stop_reason) stopReason = data.delta.stop_reason;
         if (data.type === "error" || ev === "error") apiError = data.error || data;
         if (ev === "bd_meta") meta = data;
@@ -609,39 +636,130 @@
   }
 
   // ── SORT ──────────────────────────────────────────────
-  // The loader while a sort streams. The model thinks before it writes, so
-  // nothing arrives for a while; then "now" comes first in the reply, and the
-  // first task shows here as soon as its label has streamed, before the rest
-  // of the plan is written.
-  function startLoader(anxious, { opening = "reading it all", thinking = "sorting it into now, later and let go" } = {}) {
-    const stage = $("loader-stage"), first = $("loader-first"), note = $("loader-note");
+  // The plan so far, from a reply that is still streaming: everything up to
+  // the last value that closed, with the open brackets closed after it. Items
+  // that are half-written are left out, so each one lands whole.
+  function partialPlan(text) {
+    const stack = [];
+    let inStr = false, esc = false, cut = -1, cutStack = [];
+    for (let i = 0; i < text.length; i++) {
+      const c = text[i];
+      if (inStr) {
+        if (esc) esc = false;
+        else if (c === "\\") esc = true;
+        else if (c === '"') { inStr = false; if (stack[stack.length - 1] === "[") { cut = i + 1; cutStack = stack.slice(); } }
+        continue;
+      }
+      if (c === '"') inStr = true;
+      else if (c === "{" || c === "[") { stack.push(c); cut = i + 1; cutStack = stack.slice(); }
+      else if (c === "}" || c === "]") { stack.pop(); cut = i + 1; cutStack = stack.slice(); }
+    }
+    if (cut < 0) return null;
+    let json = text.slice(0, cut);
+    for (let k = cutStack.length - 1; k >= 0; k--) json += cutStack[k] === "{" ? "}" : "]";
+    try { return JSON.parse(json.replace(/^```(?:json)?\s*/, "")); } catch (e) { return null; }
+  }
+
+  // Up to five short lines from the person's own dump, for the chips: split
+  // on sentences and connectors, filler and "I need to" stripped, three to
+  // nine words each, so a rambling voice dump still reads as its things.
+  function dumpLines(dump) {
+    const FILLER = /^(?:so|um+|uh+|like|okay|ok|and|but|also|just|really|oh|then|dang|honestly|i guess|i think|i mean|i\s+(?:also\s+)?(?:need|want|have|got)\s+to|need\s+to|want\s+to)\b[\s,]*/i;
+    const TAIL = /\s+(?:a|an|the|to|my|i|and|of|it|that|for|in|on|is|cuz|so|like|with|but|or|if|them|me)$/i;
+    const seen = new Set(), out = [];
+    for (let t of dump.split(/[\n.!?;:,]+|\s+(?:and|but|so|cuz|because|then|oh|also|um+|okay|ok)\s+|\s+(?=i\s+(?:also\s+)?(?:need|want|have)\s+to\b)/i)) {
+      t = t.trim();
+      for (let k = 0; k < 6; k++) { const n = t.replace(FILLER, ""); if (n === t) break; t = n.trim(); }
+      if (/^(?:i|i'm|it's|it|that|there|this|much|so much|a lot)\b|^(?:they|he|she|you)\s+said\b|don'?t know|where was i|that's everything/i.test(t)) continue;
+      let w = t.split(/\s+/).filter(Boolean);
+      if (w.length < 3) continue;
+      if (w.length > 9) w = w.slice(0, 9);
+      let line = w.join(" ");
+      while (TAIL.test(line)) line = line.replace(TAIL, "");
+      if (line.split(/\s+/).length < 3) continue;
+      const key = line.toLowerCase().split(/\s+/).slice(0, 3).join(" ");
+      if (seen.has(key)) continue;
+      seen.add(key); out.push(line);
+      if (out.length === 5) break;
+    }
+    return out;
+  }
+
+  // The sorting screen (5a). Stages follow the stream: "reading your dump"
+  // when the request goes out, "thinking it through" on the first thinking
+  // event, "picking one thing" on the first text, "sorting the rest" once now
+  // has closed, and "sorted." at the end. The header keeps the level and the
+  // elapsed seconds.
+  const ROW_SHOW = 4;
+  function startSorting(dump, lvl, anxious, { withRows = true, opening = "reading your dump" } = {}) {
+    const stage = $("sort-stage"), frags = $("sort-frags"), rows = $("sort-rows");
+    const t0 = Date.now();
+    let phase = "reading", hot = 0;
     stage.textContent = opening;
-    first.hidden = true; note.hidden = true;
-    $("loader").hidden = false;
-    $("sort-btn").disabled = true; $("one-btn").disabled = true;
-    $("sort-btn").textContent = "sorting…";
-    let wrote = false, shown = false;
-    const timers = [
-      setTimeout(() => { if (!wrote) stage.textContent = thinking; }, 3500),
-      setTimeout(() => { note.hidden = false; }, 15000),
-    ];
+    frags.className = "frags";
+    frags.innerHTML = dumpLines(dump).map(t => `<span class="frag">${esc(t)}</span>`).join("");
+    const chips = [...frags.children];
+    chips.forEach((c, i) => setTimeout(() => c.classList.add("on"), 130 * i));
+    rows.hidden = !withRows;
+    rows.querySelectorAll(".srow").forEach(r => { r.classList.remove("on"); r.querySelectorAll(".sitem, .smore").forEach(n => n.remove()); });
+    const shown = { now: 0, later: 0, let_go: 0 };
+    const clock = $("hclock");
+    const tick = () => { const sec = Math.floor((Date.now() - t0) / 1000); clock.textContent = `${lvl} · ${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, "0")}`; };
+    tick(); clock.hidden = false; $("streak").hidden = true;
+    const iv = setInterval(tick, 1000);
+    let hotIv = null;
+    const think = () => {
+      if (phase !== "reading") return;
+      phase = "thinking"; stage.textContent = withRows ? "thinking it through" : opening;
+      const step = () => { chips.forEach((c, i) => c.classList.toggle("hot", i === hot % chips.length)); hot++; };
+      if (chips.length) { step(); hotIv = setInterval(step, 700); }
+    };
+    // no thinking event arrives when the model skips thinking; move on anyway
+    const fallback = setTimeout(think, 1500);
+    const land = (key, texts) => {
+      const row = rows.querySelector(`[data-row="${key}"]`);
+      row.classList.add("on");
+      for (; shown[key] < Math.min(texts.length, ROW_SHOW); shown[key]++) {
+        const el = document.createElement("span");
+        el.className = "sitem"; el.textContent = texts[shown[key]];
+        row.appendChild(el);
+      }
+      if (texts.length > ROW_SHOW) {
+        let more = row.querySelector(".smore");
+        if (!more) { more = document.createElement("span"); more.className = "smore"; row.appendChild(more); }
+        more.textContent = `+ ${texts.length - ROW_SHOW} more`;
+      }
+    };
+    const typing = () => rows.querySelector('[data-row="now"] .sitem.typing');
     return {
+      onThinking: think,
       onDelta(text) {
-        if (!wrote) { wrote = true; stage.textContent = "writing your plan"; }
-        if (shown) return;
-        const m = text.match(/"now"\s*:\s*\[\s*\{[^]*?"label"\s*:\s*"((?:[^"\\]|\\.)*)"/);
-        if (!m) return;
-        try {
-          first.textContent = "first up · " + rewriteBanned(JSON.parse('"' + m[1] + '"'), anxious).replace(/\.$/, "");
-          first.hidden = false; shown = true;
-          stage.textContent = "writing the rest";
-        } catch (e) { /* a half-escaped label; the next delta completes it */ }
+        if (phase === "reading" || phase === "thinking") {
+          phase = "writing"; stage.textContent = withRows ? "picking one thing" : opening;
+          clearInterval(hotIv); chips.forEach(c => c.classList.remove("hot")); frags.classList.add("dim");
+        }
+        if (!withRows) return;
+        const plan = partialPlan(text) || {};
+        const now = (plan.now || []).filter(t => t && t.label).map(t => rewriteBanned(t.label, anxious).replace(/\.$/, ""));
+        // the first now label types in as it streams
+        if (!now.length) {
+          const m = text.match(/"now"\s*:\s*\[\s*\{[^]*?"label"\s*:\s*"((?:[^"\\]|\\.)*)/);
+          if (m) {
+            let el = typing();
+            if (!el) { el = document.createElement("span"); el.className = "sitem typing"; rows.querySelector('[data-row="now"]').classList.add("on"); rows.querySelector('[data-row="now"]').appendChild(el); }
+            try { el.textContent = JSON.parse('"' + m[1].replace(/\\$/, "") + '"'); } catch (e) { /* mid-escape */ }
+          }
+          return;
+        }
+        const t = typing(); if (t) { t.remove(); }
+        land("now", now);
+        if ("later" in plan) { if (phase === "writing") { phase = "rest"; stage.textContent = "sorting the rest"; } land("later", (plan.later || []).filter(x => x && x.text).map(x => rewriteBanned(x.text, anxious))); }
+        if ("let_go" in plan) land("let_go", (plan.let_go || []).filter(Boolean).map(x => rewriteBanned(x, anxious)));
       },
+      done() { stage.textContent = "sorted."; },
       stop() {
-        timers.forEach(clearTimeout);
-        $("loader").hidden = true;
-        $("sort-btn").disabled = false; $("one-btn").disabled = false;
-        $("sort-btn").textContent = "sort it →";
+        clearInterval(iv); clearInterval(hotIv); clearTimeout(fallback);
+        clock.hidden = true; renderStreak();
       },
     };
   }
@@ -655,18 +773,23 @@
     if (SORT_SOURCE === "sample") {
       result = { raw: samplePlan(level, anxious, carried), source: "sample" };
     } else {
-      const loader = startLoader(anxious);
+      showView("sort");
+      const sorting = startSorting(dump, level, anxious);
       try {
         const body = { mode: "sort", energy_state: level, anxious, dump, stream: true };
         if (carried.length) body.carried = carried;
-        const { text, stopReason, apiError } = await callWorker(body, { onDelta: loader.onDelta });
+        const { text, stopReason, apiError } = await callWorker(body, { onDelta: sorting.onDelta, onThinking: sorting.onThinking });
         result = { raw: planFrom(text, stopReason, apiError), source: "live" };
+        sorting.onDelta(text);
+        sorting.done();
+        await new Promise(r => setTimeout(r, 600));
       } catch (err) {
+        sorting.stop();
+        showView("dump");
         showError(err.message || "something went wrong, so check your connection and try again");
         return;
-      } finally {
-        loader.stop();
       }
+      sorting.stop();
     }
     result.level = level; result.anxious = anxious;
     dumpCount++; try { localStorage.setItem("bd-count", dumpCount); } catch (e) {}
@@ -678,7 +801,8 @@
     const dump = ta.value.trim();
     if (!dump) { showError("type something first, even one word is fine"); return; }
     clearError();
-    const loader = startLoader(anxious, { opening: "finding one thing", thinking: "finding one thing" });
+    showView("sort");
+    const sorting = startSorting(dump, "just one thing", anxious, { withRows: false, opening: "finding one thing" });
     let one;
     try {
       const { plan } = await callWorker({ mode: "emergency", dump });
@@ -686,7 +810,7 @@
     } catch (e) {
       // Same rule as EMERGENCY_FALLBACK in worker/contracts.js, never from a model.
       one = { label: "open the smallest thing on your list.", detail: "just open it, and that counts.", why: "", strategy: "" };
-    } finally { loader.stop(); }
+    } finally { sorting.stop(); }
     result = { raw: { now: [one], later: [], let_go: [] }, source: "one", level: "none", anxious };
     startPlan();
   }
@@ -792,59 +916,80 @@
     ];
   }
 
-  // ── SAVE AS PDF ───────────────────────────────────────
-  // A print-ready page in the same palette, opened in a new tab with the
-  // print dialog up, where "save as PDF" is the destination.
+  // ── SAVE AS PDF (6b) ──────────────────────────────────
+  // A white letter page with no filled areas, so it prints light: the three
+  // buckets as thin teal, amber and rose outlines, tick boxes to check off on
+  // paper, portrait (stacked) or landscape (three columns). Opens in a new
+  // tab with the print dialog up, where "save as PDF" is the destination.
+  let pdfOrient = (() => { try { return localStorage.getItem("bd-pdf-orient") === "landscape" ? "landscape" : "portrait"; } catch (e) { return "portrait"; } })();
+  function renderOrient() {
+    $("pdf-orient").querySelectorAll("[data-orient]").forEach(b => b.setAttribute("aria-pressed", b.dataset.orient === pdfOrient));
+  }
+  $("pdf-orient").addEventListener("click", e => {
+    const b = e.target.closest("[data-orient]"); if (!b) return;
+    pdfOrient = b.dataset.orient; renderOrient();
+    try { localStorage.setItem("bd-pdf-orient", pdfOrient); } catch (err) {}
+  });
+  renderOrient();
+
   function exportPDF() {
     if (!result || !result.plan) return;
+    const wide = pdfOrient === "landscape";
     const date = new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
     const isOne = result.source === "one";
     const state = isOne ? "just one thing" : result.level + (result.anxious ? " · anxious" : "");
-    const nowRows = queue().map((t, n) => {
+    const nowRows = queue().map(t => {
       const isDone = done.includes(t.i);
-      return `<div class="task${isDone ? " done" : ""}">
-        <div class="num">${isDone ? "✓" : n + 1}</div>
-        <div><div class="label">${esc(t.label)}</div>
-          ${t.detail ? `<div class="detail">${esc(t.detail)}</div>` : ""}
-          ${t.why || t.strategy ? `<div class="why">${esc([t.why, t.strategy].filter(Boolean).join(" · "))}</div>` : ""}</div>
-      </div>`;
+      return `<div class="task${isDone ? " done" : ""}"><span class="box">${isDone ? "✓" : ""}</span>
+        <div class="tx"><span class="label">${esc(t.label)}</span>${t.detail ? `<span class="detail">${esc(t.detail)}</span>` : ""}</div></div>`;
     }).join("");
-    const list = (items, tagged) => items.length
-      ? items.map(it => `<div class="chip"><span>${esc(it.text)}</span>${tagged && it.tag ? `<span class="tag">${esc(it.tag)}</span>` : ""}</div>`).join("")
-      : `<div class="empty">nothing here</div>`;
     const later = laterItems();
-    const letGo = result.plan.let_go.map(text => ({ text }));
+    const LATER_CAP = 7;
+    const shownLater = wide ? later.slice(0, LATER_CAP) : later;
+    const laterRows = shownLater.map(it => `<div class="li"><span class="lbox"></span><span>${esc(it.text)}</span></div>`).join("")
+      + (wide && later.length > LATER_CAP ? `<span class="more">+ ${later.length - LATER_CAP} more</span>` : "");
+    const letRows = result.plan.let_go.map(t => `<span class="lg">${esc(t)}</span>`).join("");
+    const empty = `<span class="more">nothing here</span>`;
     const html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/>
       <title>brain dump · ${esc(date)}</title>
       <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Onest:wght@400;500&family=Geist+Mono:wght@400&display=swap" rel="stylesheet"/>
       <style>
+        @page { size: letter ${wide ? "landscape" : "portrait"}; margin: 0; }
         * { box-sizing: border-box; margin: 0; }
-        body { font-family: 'Onest', Helvetica, Arial, sans-serif; color: #161513; background: #f4f8f4; padding: 36px; max-width: 720px; margin: 0 auto; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-        h1 { font: 400 26px/1.1 'Young Serif', Georgia, serif; color: #1a6b5a; }
-        h2 { font: 400 19px/1.2 'Young Serif', Georgia, serif; margin-bottom: 4px; }
-        .meta { font: 400 11.5px/1.45 'Geist Mono', monospace; color: #77746b; margin: 6px 0 22px; }
-        .card { border-radius: 22px; padding: 18px 20px; margin-bottom: 12px; break-inside: avoid; }
-        .now { background: #e1f9fa; } .later { background: #fff0e3; } .letgo { background: #feeefc; }
-        .sub { font: 400 11.5px/1.45 'Geist Mono', monospace; color: #77746b; margin-bottom: 10px; }
-        .task { display: flex; gap: 12px; padding: 10px 0; border-top: 1px solid rgba(22,21,19,.08); }
-        .task:first-of-type { border-top: 0; }
-        .num { font: 400 13px/1.6 'Geist Mono', monospace; color: #1a6b5a; width: 16px; flex: none; }
-        .label { font: 400 17px/1.3 'Young Serif', Georgia, serif; }
-        .detail { font-size: 13.5px; line-height: 1.5; color: #3a3833; margin-top: 3px; }
-        .why { font-size: 12px; line-height: 1.5; color: #77746b; margin-top: 3px; }
+        :root { --teal: oklch(.55 .1 200); --amber: oklch(.55 .1 60); --rose: oklch(.55 .1 330); }
+        html, body { background: #fff; }
+        body { font-family: 'Onest', Helvetica, Arial, sans-serif; color: #161513; width: ${wide ? "11in" : "8.5in"}; min-height: ${wide ? "8.5in" : "11in"}; margin: 0 auto;
+               padding: ${wide ? "40px 40px 25px" : "50px 50px 31px"}; display: flex; flex-direction: column; gap: 19px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        .head { display: flex; align-items: baseline; }
+        .brand { font: 400 28px/1 'Young Serif', Georgia, serif; color: #1a6b5a; }
+        .date { margin-left: auto; font: 400 15px/1.4 'Geist Mono', monospace; color: #77746b; }
+        .bucket { border: 2.3px solid; border-radius: 28px; padding: ${wide ? "22px" : "22px 25px"}; display: flex; flex-direction: column; gap: 12px; break-inside: avoid; }
+        .bucket.now { border-color: var(--teal); } .bucket.later { border-color: var(--amber); } .bucket.letgo { border-color: var(--rose); gap: 8px; }
+        .bh { display: flex; ${wide ? "flex-direction: column; gap: 3px;" : "align-items: baseline; gap: 12px;"} }
+        .bn { font: 400 25px/1.2 'Young Serif', Georgia, serif; }
+        .now .bn { color: var(--teal); } .later .bn { color: var(--amber); } .letgo .bn { color: var(--rose); }
+        .bs, .more { font: 400 14px/1.4 'Geist Mono', monospace; color: #77746b; }
+        .task { display: flex; gap: 15px; align-items: flex-start; ${wide ? "padding-bottom: 12px; border-bottom: 1.5px solid #e4e2dc;" : ""} }
+        .box { flex: none; width: ${wide ? "20px" : "22px"}; height: ${wide ? "20px" : "22px"}; border: 2.3px solid var(--teal); border-radius: 6px; margin-top: 3px; color: var(--teal); font: 500 14px/17px 'Geist Mono', monospace; text-align: center; }
+        .tx { display: flex; flex-direction: column; gap: 3px; }
+        .label { font: 400 ${wide ? "20px" : "22px"}/1.25 'Young Serif', Georgia, serif; }
+        .detail { font: 400 ${wide ? "15px" : "16.5px"}/1.45 'Onest', sans-serif; color: ${wide ? "#55534c" : "#3a3833"}; }
         .task.done .label, .task.done .detail { text-decoration: line-through; color: #99968c; }
-        .chip { display: flex; gap: 10px; align-items: baseline; font-size: 13px; line-height: 1.5; color: #3a3833; background: rgba(255,255,255,.7); border-radius: 12px; padding: 7px 12px; margin-bottom: 5px; }
-        .tag { margin-left: auto; flex: none; font: 400 10.5px/1 'Geist Mono', monospace; color: #77746b; }
-        .empty { font-size: 12px; color: #99968c; }
-        .foot { font: 400 10.5px/1.4 'Geist Mono', monospace; color: #99968c; text-align: center; margin-top: 18px; }
-        @media print { body { padding: 0; background: #fff; } }
+        .lgrid { display: ${wide ? "flex; flex-direction: column" : "grid; grid-template-columns: 1fr 1fr; column-gap: 25px"}; row-gap: 8px; gap: 8px 25px; }
+        .li { display: flex; gap: 11px; align-items: flex-start; font: 400 ${wide ? "15px" : "15.5px"}/1.35 'Onest', sans-serif; color: #3a3833; }
+        .lbox { flex: none; width: 16px; height: 16px; border: 1.5px solid var(--amber); border-radius: 5px; margin-top: 3px; }
+        .lg { font: 400 ${wide ? "15px" : "15.5px"}/1.45 'Onest', sans-serif; color: #55534c; }
+        .cols { flex: 1; display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 16px; min-height: 0; }
+        .cols .later { overflow: hidden; }
+        .foot { font: 400 13px/1.4 'Geist Mono', monospace; color: #99968c; text-align: center; margin-top: auto; }
       </style></head><body>
-      <h1>clear your mind.</h1>
-      <div class="meta">${esc(date)} · ${esc(state)}</div>
-      <div class="card now"><h2>${BUCKET_NAMES.now}</h2><div class="sub">one at a time, in this order</div>${nowRows || '<div class="empty">nothing here</div>'}</div>
-      ${isOne ? "" : `<div class="card later"><h2>${BUCKET_NAMES.later}</h2><div class="sub">${BUCKET_SUBS.later}</div>${list(later, true)}</div>
-      <div class="card letgo"><h2>${BUCKET_NAMES.let_go}</h2><div class="sub">${BUCKET_SUBS.let_go}</div>${list(letGo, false)}</div>`}
-      <div class="foot">made with brain dump · samievargas.github.io/brain-dump</div>
+      <div class="head"><span class="brand">clear your mind.</span><span class="date">${esc(date)} · ${esc(state)}</span></div>
+      ${wide ? '<div class="cols">' : ""}
+      <div class="bucket now"><div class="bh"><span class="bn">${BUCKET_NAMES.now}</span><span class="bs">${wide ? "one at a time" : "one at a time, in this order"}</span></div>${nowRows || empty}</div>
+      ${isOne ? "" : `<div class="bucket later"><div class="bh"><span class="bn">${BUCKET_NAMES.later}</span><span class="bs">${BUCKET_SUBS.later}</span></div><div class="lgrid">${laterRows || empty}</div></div>
+      <div class="bucket letgo"><div class="bh"><span class="bn">${BUCKET_NAMES.let_go}</span><span class="bs">${BUCKET_SUBS.let_go}</span></div>${letRows || empty}</div>`}
+      ${wide ? "</div>" : ""}
+      <span class="foot">made with brain dump · samievargas.github.io/brain-dump</span>
       <script>window.onload = () => (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => window.print());<\/script>
       </body></html>`;
     const win = window.open("", "_blank");
@@ -893,16 +1038,17 @@
   // ── VIEWS AND PERSISTENCE ─────────────────────────────
   function showView(v) {
     $("dump-view").hidden = v !== "dump";
+    $("sort-view").hidden = v !== "sort";
     $("plan-view").hidden = v !== "plan";
     if (v === "dump") {
       setTimer(dumpMin);
       timer.onTick = renderDumpTimer;
       renderDumpTimer(); renderStates(); renderCarry(); renderStreak();
-    } else {
+    } else if (v === "plan") {
       renderStreak();
     }
     window.scrollTo(0, 0);
-    store("sessionStorage", "bd-view", v);
+    if (v !== "sort") store("sessionStorage", "bd-view", v);
   }
   $("back-btn").addEventListener("click", () => showView("dump"));
 
