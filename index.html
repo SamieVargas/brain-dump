@@ -250,10 +250,10 @@
   // ── CONFIG ────────────────────────────────────────────
   const WORKER_URL = "https://brain-dump-proxy.samievargas.workers.dev";
 
-  // "sample" shows the hand-sorted plans below for whichever state is picked;
-  // "live" posts the new request shape to the Worker. Flip it once the Worker
-  // speaks the three-state contract and the evals have been rerun.
-  const SORT_SOURCE = "sample";
+  // "live" posts the dump to the Worker (prompt sort@v3). "sample" shows the
+  // hand-sorted 23 September plans below instead, for a demo or while the
+  // Worker is down; "just one thing" calls the Worker either way.
+  const SORT_SOURCE = "live";
 
   // Names are display constants so they are easy to swap. The alternates the
   // design explored: wired · worried · wiped, full tank · half tank · fumes;
@@ -387,7 +387,7 @@
 
     // 3. duplicates: anything in let go stays only in let go.
     const letGo = plan.let_go.map(norm);
-    const inLetGo = s => { const n = norm(s); return n && letGo.some(l => l === n || l.startsWith(n + " ")); };
+    const inLetGo = s => { const n = norm(s); return n && letGo.some(l => l === n || l.startsWith(n + " ") || n.startsWith(l + " ")); };
     const dupes = [];
     plan.now = plan.now.filter(t => inLetGo(t.label) ? (dupes.push(t.label), false) : true);
     plan.later = plan.later.filter(t => inLetGo(t.text) ? (dupes.push(t.text), false) : true);
