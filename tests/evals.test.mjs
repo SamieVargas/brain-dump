@@ -137,3 +137,16 @@ test('a filtered run gets its own stem and --keep-text writes the raw replies', 
   assert.equal(lines[0].stop_reason, 'end_turn');
   assert.equal(lines[0].text, plan);
 });
+
+test('a same-day run on another prompt version gets its own stem instead of overwriting', async () => {
+  const out = await mkdtemp(join(tmpdir(), 'bd-evals-'));
+  await quiet(() => main({ call: async () => reply(), runs: 1, levels: ['none'], anxious: [false], contracts: ['native'], out }));
+  const first = (await readdir(out)).find((f) => /-none-not_anxious-native-x1\.json$/.test(f));
+  const { writeFile } = await import('node:fs/promises');
+  const old = JSON.parse(await readFile(join(out, first), 'utf8'));
+  await writeFile(join(out, first), JSON.stringify({ ...old, prompt_version: 'sort@v0' }));
+  await quiet(() => main({ call: async () => reply(), runs: 1, levels: ['none'], anxious: [false], contracts: ['native'], out }));
+  const files = await readdir(out);
+  assert.equal(JSON.parse(await readFile(join(out, first), 'utf8')).prompt_version, 'sort@v0', 'the older run is left alone');
+  assert.ok(files.some((f) => /-none-not_anxious-native-x1-sort-v\d+\.json$/.test(f)), files.join(', '));
+});
