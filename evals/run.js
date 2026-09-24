@@ -5,14 +5,15 @@
 //   node evals/run.js --runs=1              cheaper pass (default 5)
 //   node evals/run.js --ablation            20 runs per arm on one dump: prompt as is vs examples + bans removed
 //   node evals/run.js --levels=none,"a little" --anxious=on --contracts=native
+//   node evals/run.js --effort=low ...      the thinking effort to measure (default medium, the Worker's default)
 //   node evals/run.js --keep-text ...     also write every raw reply to <stem>-replies.jsonl
 //
 // A cell is a level with the anxious switch off or on, so the full grid has
 // six: plenty, a little, none, and each again with "+ anxious".
 //
 // A filtered run (any --levels, --anxious, --contracts or --runs) gets its own
-// stem, <date>-<levels>[-anxious|-not_anxious]-<contracts>-x<runs>, so a probe
-// never overwrites the grid.
+// stem, <date>-<levels>[-anxious|-not_anxious]-<contracts>-x<runs>[-effort-<e>],
+// so a probe never overwrites the grid.
 //
 // Needs ANTHROPIC_API_KEY. Every grader is deterministic (evals/graders.js);
 // the offline half of this suite is `npm test`, which proves the graders and
@@ -32,17 +33,17 @@ import { readFile, readdir, writeFile, mkdir } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { MODEL, MAX_TOKENS, ENERGY_LEVELS, CONTRACTS, PRICES, costUsd, sortSchema } from '../worker/contracts.js';
+import { MODEL, MAX_TOKENS, ENERGY_LEVELS, CONTRACTS, PRICES, DEFAULT_EFFORT, EFFORTS, costUsd, sortSchema } from '../worker/contracts.js';
 import { buildSystem, sortDynamic, dumpWithCarried, PROMPT_VERSION, sortStatic } from '../worker/prompts.js';
 import { gradeSort, revisionPreserves, validJson } from './graders.js';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const CONSECUTIVE_ERRORS = 5;
 
-function apiCall(apiKey) {
+function apiCall(apiKey, effort = DEFAULT_EFFORT) {
   return async ({ system, messages, contract }) => {
-    const body = { model: MODEL, max_tokens: MAX_TOKENS, system, messages };
-    if (contract === 'native') body.output_config = { format: { type: 'json_schema', schema: sortSchema() } };
+    const body = { model: MODEL, max_tokens: MAX_TOKENS, system, messages, output_config: { effort } };
+    if (contract === 'native') body.output_config.format = { type: 'json_schema', schema: sortSchema() };
     const t0 = Date.now();
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -75,13 +76,13 @@ const sum = (xs) => xs.reduce((n, x) => n + x, 0);
 
 // Runs the suite. `call` is the model client; the tests pass a stub.
 // Returns the exit code: 0 clean, 1 with a hard fail, 130 when interrupted.
-export async function main({ call, runs = 5, levels = ENERGY_LEVELS, anxious = ANXIOUS_MODES, contracts = CONTRACTS, ablation = false, keepText = false, out = join(root, 'evals/results') }) {
+export async function main({ call, runs = 5, levels = ENERGY_LEVELS, anxious = ANXIOUS_MODES, contracts = CONTRACTS, effort = DEFAULT_EFFORT, ablation = false, keepText = false, out = join(root, 'evals/results') }) {
   const dumps = await loadDir('dumps');
   const follows = await loadDir('followups');
   const ranAt = new Date().toISOString();
   const cells = levels.flatMap((level) => anxious.map((anx) => ({ level, anxious: anx, label: cellLabel(level, anx) })));
-  const report = { ran_at: ranAt, model: MODEL, prompt_version: PROMPT_VERSION, runs, levels, anxious, states: cells.map((c) => c.label), contracts, rows: [], followups: [], ablation: null, planned: 0, planned_followups: 0, partial: false, stopped_by: null };
-  const filtered = !ablation && (runs !== 5 || levels.length !== ENERGY_LEVELS.length || anxious.length !== ANXIOUS_MODES.length || contracts.length !== CONTRACTS.length);
+  const report = { ran_at: ranAt, model: MODEL, prompt_version: PROMPT_VERSION, effort, runs, levels, anxious, states: cells.map((c) => c.label), contracts, rows: [], followups: [], ablation: null, planned: 0, planned_followups: 0, partial: false, stopped_by: null };
+  const filtered = !ablation && (runs !== 5 || levels.length !== ENERGY_LEVELS.length || anxious.length !== ANXIOUS_MODES.length || contracts.length !== CONTRACTS.length || effort !== DEFAULT_EFFORT);
   const texts = keepText ? [] : null;
 
   // One Ctrl+C sets the flag and the loops fall through to the table; the
@@ -303,7 +304,7 @@ export function renderTables(report) {
 
 function render(report) {
   const t = renderTables(report);
-  const lines = [`# Brain Dump evals — ${report.ran_at.slice(0, 10)}${report.partial ? ` · PARTIAL: ${completed(report)}` : ''}`, '', `Model \`${report.model}\` · prompt ${report.prompt_version} · ${report.runs} runs per cell`, ''];
+  const lines = [`# Brain Dump evals — ${report.ran_at.slice(0, 10)}${report.partial ? ` · PARTIAL: ${completed(report)}` : ''}`, '', `Model \`${report.model}\` · prompt ${report.prompt_version}${report.effort ? ` · effort ${report.effort}` : ''} · ${report.runs} runs per cell`, ''];
   if (report.partial) lines.push(`Stopped early: ${report.stopped_by}. The rows below are the cells that finished, in fixture order, so a partial table over-represents the first dumps.`, '');
   if (t.state) {
     lines.push(`## Violation rate per rule, per ${t.state.startsWith('| Level') ? 'level' : 'state'}`, '', t.state);
@@ -323,7 +324,8 @@ async function save(report, dir, { filtered = false, texts = null } = {}) {
   await mkdir(dir, { recursive: true });
   const md = render(report);
   const anxTag = report.anxious?.length === 1 ? (report.anxious[0] ? '-anxious' : '-not_anxious') : '';
-  const tag = filtered ? `-${(report.levels ?? report.states).join('+')}${anxTag}-${report.contracts.join('+')}-x${report.runs}`.replace(/\s+/g, '_') : '';
+  const effortTag = report.effort && report.effort !== DEFAULT_EFFORT ? `-effort-${report.effort}` : '';
+  const tag = filtered ? `-${(report.levels ?? report.states).join('+')}${anxTag}-${report.contracts.join('+')}-x${report.runs}${effortTag}`.replace(/\s+/g, '_') : '';
   const stem = `${report.ran_at.slice(0, 10)}${report.ablation ? '-ablation' : ''}${tag}${report.partial ? '-partial' : ''}`;
   if (texts) await writeFile(join(dir, `${stem}-replies.jsonl`), texts.map((t) => JSON.stringify(t)).join('\n') + '\n');
   // Always summarized now: an ablation run has no grid rows but has a cost.
@@ -362,8 +364,14 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
     console.error(`unknown level ${unknown.join(', ')}; the levels are ${ENERGY_LEVELS.join(', ')}`);
     process.exit(2);
   }
+  const effort = opt('effort', DEFAULT_EFFORT);
+  if (!EFFORTS.includes(effort)) {
+    console.error(`unknown effort ${effort}; the levels are ${EFFORTS.join(', ')}`);
+    process.exit(2);
+  }
   main({
-    call: apiCall(apiKey),
+    call: apiCall(apiKey, effort),
+    effort,
     runs: Number(opt('runs', 5)),
     levels,
     anxious: ['off', 'on'].filter((m) => anxiousOpt.includes(m)).map((m) => m === 'on'),
