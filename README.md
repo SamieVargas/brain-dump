@@ -4,7 +4,7 @@
 
 A brain dump tool for ADHD and ADHD-adjacent brains: type everything on your mind with no filtering, pick how you feel right now, and it sorts the lot into three buckets, now, later and let go, matched to how much you have (plenty, a little or none, with a separate "feeling anxious" switch), and shows the "now" list one task at a time. **[Try it](https://samievargas.github.io/brain-dump)**. The page talks to a Cloudflare Worker at `brain-dump-proxy.samievargas.workers.dev` (`GET /session`, `POST /sort`, `GET /health`).
 
-**Redesign, 2026-09-24.** The page and the sorter both speak the three-level, three-bucket contract now (prompt `sort@v3`), but the page still shows a hand-sorted sample plan from a real 23 September dump (`SORT_SOURCE = "sample"` in `index.html`) until the new Worker is deployed with `wrangler deploy` and the evals below have been rerun on it, and then I'll flip it to `"live"`. "just one thing" calls the live Worker already, since the emergency mode didn't change. The results further down are from the old five-state prompt (`sort@v2`) and stay here as the baseline the new prompt gets compared against.
+**Redesign, 2026-09-24.** The page and the sorter both speak the three-level, three-bucket contract (prompt `sort@v3`), and the page sorts live against the Worker (`SORT_SOURCE = "live"` in `index.html`; `"sample"` swaps in a hand-sorted plan from a real 23 September dump, for a demo). The first `sort@v3` run is summarized under Evals; the older results there are from the five-state prompt (`sort@v2`) and stay as the baseline.
 
 ## Problem
 
@@ -141,6 +141,20 @@ node evals/run.js --keep-text ...               # also write every raw reply bes
 `npm run evals` runs every dump under all three levels with the anxious switch off and on, on both contracts, five runs each, plus the follow-ups, and writes the violation rate per rule per cell, the parse outcome per contract and the cost to `evals/results/`; a `valid_json` failure on the native path is the hard fail. `npm run evals:ablation` runs twenty pairs on one dump with the examples and the banned-phrasing block removed from the prompt and reports `banned_phrasing` and `cap_respected` per arm; a tie is reported as a tie. A run stopped by Ctrl+C, or by the API refusing five calls in a row when credit runs out, writes the cells that finished to `<date>-partial.md` and `.json`, marked `PARTIAL` with the count in the header and exit code 130, and leaves `latest.json` to the last full run. Every run keeps its own JSON, `latest.json` accumulates across the grid and the ablation instead of one overwriting the other, each row records the stop reason and the usage, and a filtered run gets its own filename so a probe never overwrites the grid. The graders, the fixtures, the runner's partial write and the cost tables are proven offline on every `npm test`.
 
 **The output budget, 2026-09-22.** The first keyed run measured the budget rather than the rules: with `max_tokens` at 1,024, Sonnet 5 was cut off before the JSON closed on 483 of 500 native runs and 477 of 500 prompt runs, with 0 API errors and cache reads on 99.8% of calls, and the forty plans that did fit had no cap, routing, schema or strategy violations and one banned phrase between them. A thirty-call probe at 2,048 on the anxious state was cut off on 6 of 20; the fourteen plans that finished ran 943 to 1,966 tokens with a median of 1,445, and a six-character dump produced 1,544, so the length is the model's and not the input's. The numbers below are from the same day at 4,096. On 2026-09-23 a real overwhelmed-state dump on the live page was cut off at 4,096, so the budget is 16,000 now; replies stream and unused budget costs nothing.
+
+**Results, 2026-09-24, `claude-sonnet-5`, prompt `sort@v3`.** One pass of the new grid on the native contract: 20 dumps under all three levels with the anxious switch off and on (120 plans), plus the five follow-ups. File: `evals/results/2026-09-24-plenty+a_little+none-native-x1.md`, with its JSON beside it.
+
+| Measure | Result |
+| --- | --- |
+| Parse | 120 of 120 native, 0 recovered, 0 failed, 0 cut off at 16,000; cache reads on 99.2% of calls; mean latency 15.1 s |
+| Cap respected, schema valid, strategy named, why given, carried items placed | 100% of 120 |
+| Banned phrasing | 10 of 120: "need to" 8 times with anxious on (3 plenty, 3 a little, 2 none), and "lazy" and "you have to" once each with it off; the page rewrites every one of these before it shows the plan |
+| Let go unique | 2 of 120 (D10 "the zine", D19 "the report"); the page keeps these in let go only |
+| Routing | 8 of 120 gave a mental-load dump 2 or 3 now items instead of one gentle item; none at level none, where the cap is 1 |
+| Follow-ups, revision preserves | 2 of 5 kept everything; F02, F03 and F04 each dropped one item |
+| Cost | $0.0134 per plan on average (median $0.0123, $0.0015 to $0.0389), $1.61 for the 120 plans and $1.72 with the follow-ups |
+
+Against `sort@v2` on the anxious state, "need to" went from 6 of 20 plans to 8 of 60 with anxious on, the mean cost per plan went from $0.0191 to $0.0134, and nothing was cut off. The routing rule for mental load is the one the page cannot fix on its own, so it is the next thing to tune in the prompt.
 
 **Results, 2026-09-22, `claude-sonnet-5`, prompt `sort@v2`.** One state and one contract so far (20 dumps, anxious, native, one run each, plus the five follow-ups) and the twenty-pair ablation. Files: `evals/results/2026-09-22-anxious-native-x1.md` and `2026-09-22-ablation.md`, with their JSON beside them. Cost is computed from the usage each row recorded, at the prices in `worker/contracts.js` (see below), to four decimals.
 
