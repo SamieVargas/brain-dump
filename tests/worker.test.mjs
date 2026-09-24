@@ -125,15 +125,27 @@ test('kept carry-overs ride under the dump on a first sort, and never reach the 
 test('native and prompt contracts send different request shapes', () => {
   const body = { mode: 'sort', energy_state: 'none', dump: 'x' };
   const native = requestBody(body, { contract: 'native', stream: false });
-  assert.deepEqual(native.output_config, { format: { type: 'json_schema', schema: sortSchema() } });
+  assert.deepEqual(native.output_config, { effort: 'medium', format: { type: 'json_schema', schema: sortSchema() } });
   assert.equal(native.model, 'claude-sonnet-5');
   const prompt = requestBody(body, { contract: 'prompt', stream: false });
-  assert.equal(prompt.output_config, undefined);
+  assert.deepEqual(prompt.output_config, { effort: 'medium' }, 'the prompt contract still sets effort, just no format');
   assert.equal(native.system[0].text, prompt.system[0].text, 'the prompt is identical; only the format differs');
   const follow = requestBody({ ...body, history: [{ role: 'user', content: 'd' }, { role: 'assistant', content: '{}' }] }, { contract: 'native', stream: true });
   assert.match(follow.system[1].text, /FOLLOW-UP/);
   assert.equal(follow.stream, true);
   assert.equal(sortSchema().additionalProperties, false);
+});
+
+test('effort: medium by default, the EFFORT var overrides it, anything else falls back', async () => {
+  const body = { mode: 'sort', energy_state: 'none', dump: 'x' };
+  assert.equal(requestBody(body, { contract: 'native', stream: false, effort: 'low' }).output_config.effort, 'low');
+  assert.equal(requestBody(body, { contract: 'native', stream: false, effort: 'max' }).output_config.effort, 'medium', 'only low, medium and high');
+  const { calls, fetchImpl } = upstream();
+  await post(body, { env: { ...ENV, EFFORT: 'low' }, fetchImpl });
+  assert.equal(calls[0].body.output_config.effort, 'low');
+  assert.match(logs.join('\n'), /"effort":"low"/);
+  const health = await (await handle(new Request('https://w.test/health'), { ...ENV, EFFORT: 'high' })).json();
+  assert.equal(health.effort, 'high');
 });
 
 test('the parser: native, fenced, outermost object, and a truncated response', () => {

@@ -14,7 +14,7 @@
 // timings. Never the dump, never the carried items, never the plan, never the
 // history.
 
-import { MODEL, MAX_TOKENS, MODES, ENERGY_LEVELS, CONTRACTS, HISTORY_TURN_CAP, DUMP_MAX_CHARS, FOLLOW_UP_MAX_CHARS, CARRIED_MAX_ITEMS, CARRIED_MAX_CHARS, sortSchema, emergencySchema } from './contracts.js';
+import { MODEL, MAX_TOKENS, MODES, ENERGY_LEVELS, CONTRACTS, effortFrom, HISTORY_TURN_CAP, DUMP_MAX_CHARS, FOLLOW_UP_MAX_CHARS, CARRIED_MAX_ITEMS, CARRIED_MAX_CHARS, sortSchema, emergencySchema } from './contracts.js';
 import { buildSystem, dumpWithCarried, PROMPT_VERSION } from './prompts.js';
 import { parseJson } from './parse.js';
 
@@ -146,12 +146,12 @@ export function buildMessages(body) {
 // ── the call ────────────────────────────────────────────────────────────────
 
 /** The exact body sent upstream. Exported so the tests can see both shapes. */
-export function requestBody(body, { contract, stream }) {
+export function requestBody(body, { contract, stream, effort }) {
   const followUp = !!body.history?.length;
   const system = buildSystem(body.mode, body.energy_state, { anxious: body.anxious === true, followUp });
-  const req = { model: MODEL, max_tokens: MAX_TOKENS, system, messages: buildMessages(body), stream };
+  const req = { model: MODEL, max_tokens: MAX_TOKENS, system, messages: buildMessages(body), stream, output_config: { effort: effortFrom(effort) } };
   if (contract === 'native') {
-    req.output_config = { format: { type: 'json_schema', schema: body.mode === 'emergency' ? emergencySchema() : sortSchema() } };
+    req.output_config.format = { type: 'json_schema', schema: body.mode === 'emergency' ? emergencySchema() : sortSchema() };
   }
   return req;
 }
@@ -189,7 +189,7 @@ export async function handle(request, env, { fetchImpl = fetch, now = () => Date
   if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers });
 
   if (request.method === 'GET' && url.pathname === '/health') {
-    return json({ ok: true, model: MODEL, prompt_version: PROMPT_VERSION, contract: env.CONTRACT ?? 'native', budget: budgetState(env, t0) }, 200, headers);
+    return json({ ok: true, model: MODEL, prompt_version: PROMPT_VERSION, contract: env.CONTRACT ?? 'native', effort: effortFrom(env.EFFORT), budget: budgetState(env, t0) }, 200, headers);
   }
   if (request.method === 'GET' && url.pathname === '/session') {
     if (!env.SESSION_SECRET) return json({ error: 'sessions are not configured on this worker' }, 501, headers);
@@ -224,8 +224,9 @@ export async function handle(request, env, { fetchImpl = fetch, now = () => Date
 
   const contract = body.contract ?? (CONTRACTS.includes(env.CONTRACT) ? env.CONTRACT : 'native');
   const stream = body.stream === true;
-  const req = requestBody(body, { contract, stream });
-  const meta = { mode: body.mode, energy_state: body.energy_state ?? null, anxious: body.anxious === true, dump_chars: body.dump.length, carried_items: body.carried?.length ?? 0, history_turns: body.history?.length ?? 0, contract, stream, model: MODEL, prompt_version: PROMPT_VERSION };
+  const effort = effortFrom(env.EFFORT);
+  const req = requestBody(body, { contract, stream, effort });
+  const meta = { mode: body.mode, energy_state: body.energy_state ?? null, anxious: body.anxious === true, dump_chars: body.dump.length, carried_items: body.carried?.length ?? 0, history_turns: body.history?.length ?? 0, contract, stream, model: MODEL, prompt_version: PROMPT_VERSION, effort };
 
   let upstream;
   try {

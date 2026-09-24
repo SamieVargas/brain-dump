@@ -47,6 +47,16 @@ export function costUsd(usage, model = MODEL) {
 
 export const MODES = Object.freeze(['sort', 'emergency']);
 
+// How hard the model thinks before it answers (output_config.effort). On
+// Sonnet 5 thinking is on by default at "high", and latency tracks output
+// tokens almost exactly (the 2026-09-24 run: ~1.5 s plus ~11 ms per output
+// token, thinking included), so effort is the speed lever. "medium" is the
+// default; the Worker's EFFORT var overrides it, and `--effort` on the eval
+// runner measures each level before it goes live.
+export const EFFORTS = Object.freeze(['low', 'medium', 'high']);
+export const DEFAULT_EFFORT = 'medium';
+export const effortFrom = (value) => (EFFORTS.includes(value) ? value : DEFAULT_EFFORT);
+
 // Three levels replace the five states of v2: plenty took overwhelmed and
 // scattered, a little took anxious without its tone rules, none took low
 // energy and foggy. "Feeling anxious" is its own switch now (`anxious` on the

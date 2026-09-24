@@ -12,6 +12,10 @@ ALLOWED_ORIGINS = "https://samievargas.github.io,https://samievargas.com"
 # native | prompt. Native asks the API for the JSON schema; prompt relies on the
 # prompt and the tolerant parser. Both are measured in evals/.
 CONTRACT = "native"
+# low | medium | high. How hard the model thinks before answering; the speed
+# lever, since latency tracks output tokens and thinking counts as output.
+# Measure a level with `node evals/run.js --effort=low ...` before changing it.
+EFFORT = "medium"
 # Tokens per UTC day before the worker rests until tomorrow. Per isolate.
 DAILY_TOKEN_BUDGET = "1500000"
 
