@@ -2,7 +2,17 @@
   "ran_at": "2026-09-24T22:12:10.136Z",
   "model": "claude-sonnet-5",
   "prompt_version": "sort@v4",
+  "effort": "low",
   "runs": 1,
+  "levels": [
+    "plenty",
+    "a little",
+    "none"
+  ],
+  "anxious": [
+    false,
+    true
+  ],
   "states": [
     "plenty",
     "plenty + anxious",
@@ -4874,24 +4884,7 @@
       "cost_usd": 0.003556
     }
   ],
-  "ablation": {
-    "fixture": "D02_invites_should",
-    "state": "anxious",
-    "as_written": {
-      "runs": 20,
-      "banned_phrasing": 1,
-      "cap_respected": 20,
-      "hard_fails": 0,
-      "truncated": 0
-    },
-    "examples_and_bans_removed": {
-      "runs": 20,
-      "banned_phrasing": 1,
-      "cap_respected": 20,
-      "hard_fails": 0,
-      "truncated": 0
-    }
-  },
+  "ablation": null,
   "planned": 120,
   "planned_followups": 5,
   "partial": false,
@@ -5021,16 +5014,5 @@
       "ablation_usd": null,
       "run_usd": 0.52642
     }
-  },
-  "ablation_ran_at": "2026-09-22T20:03:11.264Z",
-  "levels": [
-    "plenty",
-    "a little",
-    "none"
-  ],
-  "anxious": [
-    false,
-    true
-  ],
-  "effort": "low"
+  }
 }
