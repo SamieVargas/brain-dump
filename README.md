@@ -2,9 +2,9 @@
 
 [![tests](https://github.com/SamieVargas/brain-dump/actions/workflows/tests.yml/badge.svg)](https://github.com/SamieVargas/brain-dump/actions/workflows/tests.yml)
 
-A brain dump tool for ADHD and ADHD-adjacent brains: type everything on your mind with no filtering, pick how you feel right now, and it sorts the lot into four buckets and a focus list matched to that energy state. **[Try it](https://samievargas.github.io/brain-dump)**. The page talks to a Cloudflare Worker at `brain-dump-proxy.samievargas.workers.dev` (`GET /session`, `POST /sort`, `GET /health`).
+A brain dump tool for ADHD and ADHD-adjacent brains: type everything on your mind with no filtering, pick how you feel right now, and it sorts the lot into three buckets, now, later and let go, matched to how much you have (plenty, a little or none, with a separate "feeling anxious" switch), and shows the "now" list one task at a time. **[Try it](https://samievargas.github.io/brain-dump)**. The page talks to a Cloudflare Worker at `brain-dump-proxy.samievargas.workers.dev` (`GET /session`, `POST /sort`, `GET /health`).
 
-**Redesign in progress.** The page has moved to the new design, with three energy states (plenty, a little, none) plus a separate "feeling anxious" switch, three buckets (now, later, let go), one task on screen at a time, and the eval checks running on the page, but the Worker and the prompts still speak the five-state, four-bucket contract described below, so for now "sort it" shows a hand-sorted sample plan from a real 23 September dump for whichever state you pick (`SORT_SOURCE = "sample"` in `index.html`) and "just one thing" still calls the live Worker. Once the Worker moves to the new contract and the evals are rerun I'll flip it to `"live"` and update the rest of this README.
+**Redesign, 2026-09-24.** The page and the sorter both speak the three-level, three-bucket contract now (prompt `sort@v3`), but the page still shows a hand-sorted sample plan from a real 23 September dump (`SORT_SOURCE = "sample"` in `index.html`) until the new Worker is deployed with `wrangler deploy` and the evals below have been rerun on it, and then I'll flip it to `"live"`. "just one thing" calls the live Worker already, since the emergency mode didn't change. The results further down are from the old five-state prompt (`sort@v2`) and stay here as the baseline the new prompt gets compared against.
 
 ## Problem
 
@@ -18,21 +18,22 @@ The first version had a second problem of its own. It built its prompts in the b
 
 ```mermaid
 flowchart TD
-  P["[code] Page (index.html): capture the dump, pick the energy state,
-  POST { mode, energy_state, dump, history?, stream? } with a session token"]
+  P["[code] Page (index.html): capture the dump, pick the level and the anxious switch,
+  POST { mode, energy_state, anxious, dump, carried?, stream? } with a session token"]
   D["[code] Worker doors: session token check, 20 requests a minute per address,
   daily token budget, field whitelist and enums, 8,000-character dump cap, 6-turn history cap"]
-  A["[code] Prompt assembly from the energy state (worker/prompts.js):
+  A["[code] Prompt assembly from the level and the anxious switch (worker/prompts.js):
   static block with the cache marker, then the state line and the follow-up rule"]
   S["[code] JSON schema built from the same constants (worker/contracts.js),
   sent as output_config on the native contract"]
   M["[model] Sort and re-plan call: claude-sonnet-5, max_tokens 16,000,
-  the four buckets, the output type, the focus list and the copy"]
+  now, later and let go, with a label, detail, why and strategy per now item"]
   E["[model] Emergency one-thing call: its own prompt and its own two-field schema"]
   X["[code] Parser (worker/parse.js): as-is, then fences stripped, then the outermost object;
   the path taken is recorded on every response"]
   F["[code] Hard-coded one-thing fallback on the page when the emergency call fails"]
-  R["[code] Page renders the buckets, the focus list and the Pomodoro queue;
+  R["[code] Page checks the plan (cap, banned phrases, duplicates, every item placed),
+  then shows now one task at a time with its timer, later and let go;
   streamed deltas fill a live pane first"]
   G["[code] Evals, offline: the banned-phrase, cap, schema, routing, strategy and
   revision graders (evals/graders.js) over recorded replies"]
@@ -42,9 +43,9 @@ flowchart TD
   M -. usage, stop reason, text .-> G
 ```
 
-Brain Dump works directly against the Anthropic Messages API with no framework. It is a single-turn structured generation with a follow-up loop on top: no tool calling, no retrieval, no agent loop, and I would rather say that plainly. The model does two things and only two things: the sort (classification into the four buckets, the task-heavy or mental-load decision the UI branches on, and the copy) and the emergency one-thing answer. Everything else in the diagram is code and runs in the tests without a key.
+Brain Dump works directly against the Anthropic Messages API with no framework. It is a single-turn structured generation with a follow-up loop on top: no tool calling, no retrieval, no agent loop, and I would rather say that plainly. The model does two things and only two things: the sort (placing every item into now, later or let go, ranking now, and the copy) and the emergency one-thing answer. Everything else in the diagram is code and runs in the tests without a key.
 
-**Enforced in code.** The page posts `{ mode, energy_state, dump, history?, stream? }` and nothing else. The Worker checks every field against a whitelist and the enums, rejects anything unknown, clamps the dump at 8,000 characters and the history at six turns with the current plan always kept, and assembles the system prompt itself from `worker/prompts.js`. The rules are the ones the page carried before, moved without changing their substance, because the evals have to measure them as they are before anyone tunes them. The assembled prompt per energy state is committed under `worker/snapshots/`, and `npm test` fails if the assembly drifts. The endpoint is public, so it has doors: a per-address rate limit (20 requests per minute, through Cloudflare's rate limiting binding, with an in-memory fallback), the size caps, a daily token budget that turns into a "resting until tomorrow" message and never a stack trace, and a session token the page fetches on load and attaches to every request, signed by the Worker with no state to keep. The JSON schema for the native contract is built from the same constants that define the buckets and the output types. The parser is the fallback for the prompt contract and for anything the native path returns fenced, and the Worker records which path handled each response. A failed emergency call falls back to a hard-coded line on the page (`EMERGENCY_FALLBACK` in `worker/contracts.js` is the same rule) that never came from a model. `npm run load-test` runs the doors in Node with a stub upstream, so it costs nothing:
+**Enforced in code.** The page posts `{ mode, energy_state, anxious, dump, carried?, stream? }` and nothing else (`history` is still accepted for follow-ups and the evals). The Worker checks every field against a whitelist and the enums, rejects anything unknown, clamps the dump at 8,000 characters, the kept carry-overs at ten items of 200 characters each, and the history at six turns with the current plan always kept, and assembles the system prompt itself from `worker/prompts.js`. The rules that carried over from the five-state prompt (the release statements, the banned phrasing, the anxious tone, the single physical gesture when there is nothing left, dump text never being an instruction) keep their substance, and the rest follows the redesign. The assembled prompt per level, with the anxious switch off and on, is committed under `worker/snapshots/`, and `npm test` fails if the assembly drifts. The endpoint is public, so it has doors: a per-address rate limit (20 requests per minute, through Cloudflare's rate limiting binding, with an in-memory fallback), the size caps, a daily token budget that turns into a "resting until tomorrow" message and never a stack trace, and a session token the page fetches on load and attaches to every request, signed by the Worker with no state to keep. The JSON schema for the native contract is built from the same constants that define the buckets and the later tags. The parser is the fallback for the prompt contract and for anything the native path returns fenced, and the Worker records which path handled each response. A failed emergency call falls back to a hard-coded line on the page (`EMERGENCY_FALLBACK` in `worker/contracts.js` is the same rule) that never came from a model. `npm run load-test` runs the doors in Node with a stub upstream, so it costs nothing:
 
 | 200 requests from 5 addresses in one burst, budget 50,000 tokens | |
 |---|---|
@@ -54,21 +55,22 @@ Brain Dump works directly against the Anthropic Messages API with no framework. 
 | Refused, daily budget | 73 |
 | Spend | capped at 51,300 tokens against a burst that would have spent about 380,000 |
 
-**Asked of the model, checked only in the evals.** The per-state caps live in code (`CAPS` in `worker/contracts.js`) but they reach the model as prompt text; the schema does not clip a list and the page does not either. The same goes for the banned phrasing, the routing between the list shape and the single anchor, the strategy names, and the follow-up rule (revise the plan, keep every item the user did not mention, return the full plan under the same contract). The graders in `evals/graders.js` check each of those rules on recorded replies, offline; today nothing on the request path does.
+**Asked of the model, then checked on the page.** The per-level caps live in code (`CAPS` in `worker/contracts.js`) and reach the model as prompt text, and the schema does not clip a list, so the page runs the eval rules on every plan before it shows it: it clips `now` to the cap and moves the extras to later tagged "over cap", rewrites banned phrases ("should" and "need to" only when anxious), keeps anything that came back in let go and another bucket in let go only, and counts every item placed. It shows one faint "✓ checked, 2 small fixes" line that lists each fix in plain words. The graders in `evals/graders.js` check the same rules on recorded replies, offline, so the evals measure how often the page has to step in.
 
-| Energy state | do_it cap | Focus cap | What else the prompt asks for |
+| Level | now cap | Task timer | What else the prompt asks for |
 | --- | --- | --- | --- |
-| overwhelmed | 5 | 3 | grounding, matter-of-fact tone; group tasks that stack |
-| scattered | 5 | 3 | lowest activation first |
-| anxious | 3 | 2 | no "should", no "need to" anywhere in the plan |
-| low energy | 2 | 1 | only physical or single-action tasks, decisions pre-made in the task text |
-| foggy | 1 | 1 | one automatic physical gesture, a short label then one gentle sentence |
+| plenty | 3 | 25 min | steady tone, time signals like "before noon", pair tasks that stack |
+| a little | 2 | 15 min | plain tone, lowest activation first |
+| none | 1 | 5 min | one automatic physical gesture, a short label then one gentle sentence, the decision already made |
+| + feeling anxious | same | same | no "should" or "need to", "when you're ready" instead, "what will people think" goes to let go |
 
-**Re-planning.** Under the plan there is one input and three chips: "I have 20 minutes", "Move the first one to tomorrow", "Done with the top two". A follow-up sends the conversation so far, the original dump as the first user turn, each plan as the assistant's own JSON, each follow-up as a user turn, capped to the last six turns with the current plan always kept. The Worker adds the one follow-up rule. The energy state can change mid-conversation and the caps and tone follow it. State lives on the page and in `sessionStorage`; coming back to the tab shows the last plan.
+**Carry-over.** Unfinished `now` items and anything moved with "not today" stay in `localStorage` (`bd-carry`), and the next dump offers them behind "+ 2 things from last time" with keep and drop. Kept items are sent as `carried`, the Worker puts them under the dump with their own heading, and the sorter places them like anything else, tagging them "carried" when they land in later.
 
-**Structured output, streaming, caching.** The Worker asks the API for the JSON schema on the native contract (`output_config.format`, no beta header on current models); `CONTRACT=prompt` on the Worker, or `contract` on a request, runs the old way so the evals can score both. With `stream: true` the Worker proxies the API's server-sent events to the page, which fills a small live pane as deltas arrive and renders on the last event, then appends one event of its own with the usage and the parse path. The page keeps time to first token and time to render for its last ten sorts in `sessionStorage` and logs them to the console; those numbers are not in this README yet because measuring them needs the deployed Worker and a key. The static part of the system prompt (the job, every state's rules, the contract) carries the cache marker and the per-request part comes after it; the 2026-09-22 run recorded the static block at 3,339 cached input tokens, well over Sonnet 5's 1,024-token minimum, and `cache_read_input_tokens` is logged on every call and reported by the evals as the share of runs that read from cache.
+**Re-planning.** Under the plan there are three pills, "I have 20 minutes", "move this to tomorrow" and "done with the top two", and they work on the page without another call. The Worker still takes a follow-up for the evals: it sends the conversation so far, the original dump as the first user turn, each plan as the assistant's own JSON, each follow-up as a user turn, capped to the last six turns with the current plan always kept. The Worker adds the one follow-up rule. The level can change mid-conversation and the caps and tone follow it. The plan lives on the page and in `sessionStorage`, so coming back to the tab shows it, and "save as PDF" under the plan opens a print-ready copy (now in order with done items ticked, later with its tags, let go) for the browser's print dialog to save.
 
-**Privacy.** The brain dump text goes to the API to get sorted and is not stored anywhere by this project: there is no database, no accounts and no analytics. Logs carry mode, energy state, sizes, model, usage and timings, never the dump, the plan or the history, and a test asserts it. What persists in the browser is the dump count for the streak counter in `localStorage`, and the last plan and the last ten timings in `sessionStorage`. The code is open so you can verify this yourself.
+**Structured output, streaming, caching.** The Worker asks the API for the JSON schema on the native contract (`output_config.format`, no beta header on current models); `CONTRACT=prompt` on the Worker, or `contract` on a request, runs the old way so the evals can score both. With `stream: true` the Worker proxies the API's server-sent events to the page, which fills a small live pane as deltas arrive and renders on the last event, then appends one event of its own with the usage and the parse path. The page keeps time to first token and time to render for its last ten sorts in `sessionStorage` and logs them to the console; those numbers are not in this README yet because measuring them needs the deployed Worker and a key. The static part of the system prompt (the job, every level's rules, the contract) carries the cache marker and the per-request part comes after it; the 2026-09-22 run recorded the static block at 3,339 cached input tokens, well over Sonnet 5's 1,024-token minimum, and `cache_read_input_tokens` is logged on every call and reported by the evals as the share of runs that read from cache.
+
+**Privacy.** The brain dump text goes to the API to get sorted and is not stored anywhere by this project: there is no database, no accounts and no analytics. Logs carry mode, level, the anxious switch, sizes, the number of carried items, model, usage and timings, never the dump, the plan or the history, and a test asserts it. What persists in the browser is the dump count for the streak counter in `localStorage`, and the last plan and the last ten timings in `sessionStorage`. The code is open so you can verify this yourself.
 
 ## How to run
 
@@ -109,15 +111,16 @@ If you're on Windows ARM, Wrangler won't install via npm; use WSL2 with Ubuntu i
 The keyed commands spend real money and need `ANTHROPIC_API_KEY` in the environment:
 
 ```bash
-npm run evals                                   # 20 dumps x 5 states x 2 contracts x 5 runs, plus the 5 follow-ups
-node evals/run.js --states=anxious --contracts=native --runs=1   # a probe; gets its own filename
+npm run evals                                   # 20 dumps x 3 levels x anxious off/on x 2 contracts x 5 runs (1,200 calls), plus the 5 follow-ups
+node evals/run.js --contracts=native --runs=1   # one pass of all six cells on the native contract (120 calls), its own filename
+node evals/run.js --levels="a little" --anxious=on --contracts=native --runs=1   # a probe like the 2026-09-22 anxious run
 npm run evals:ablation                          # 20 pairs on one dump, prompt as written vs examples and bans removed
 node evals/run.js --keep-text ...               # also write every raw reply beside the table
 ```
 
 ## Evals
 
-**The set.** Twenty dumps in `evals/fixtures/dumps/` and five follow-up conversations in `evals/fixtures/followups/`, written on 2026-09-21 to stress the rules: lists over the cap, items that invite "should", mixed task and mental-load content, an almost-empty dump, a dump that only makes sense as a single anchor, two with instruction-shaped lines inside them. There are no labelled outputs. The one label each dump carries is `expect_output_type`, the shape the routing rule should produce, and it was written with the fixture before any model run. Each follow-up names the items it mentions, so the revision grader knows what was allowed to move.
+**The set.** Twenty dumps in `evals/fixtures/dumps/` and five follow-up conversations in `evals/fixtures/followups/`, written on 2026-09-21 to stress the rules: lists over the cap, items that invite "should", mixed task and mental-load content, an almost-empty dump, a dump that only makes sense as a single anchor, two with instruction-shaped lines inside them. There are no labelled outputs. The one label each dump carries is `expect_output_type`, written with the fixture before any model run; under `sort@v3` a `mental_load` dump should come back with one gentle item in now. D01 also carries two kept carry-overs, so `carried_placed` has something to check. Each follow-up names the items it mentions, so the revision grader knows what was allowed to move.
 
 **The metrics.** Every grader is deterministic and lives in `evals/graders.js`:
 
@@ -125,14 +128,17 @@ node evals/run.js --keep-text ...               # also write every raw reply bes
 | --- | --- |
 | `valid_json` | the reply parsed: `native` as-is, `recovered` through the fallback parser, or `failed` (a cut-off reply is a `failed`) |
 | `schema_valid` | the shape the client renders from, with no extra keys |
-| `cap_respected` | `do_it` and the focus list within the state's caps |
-| `banned_phrasing` | none of the banned phrases (the list comes from the prompt constants; "should" and "need to" only count when anxious) |
-| `routing_consistent` | the output type matches the fixture's expectation; foggy and low energy return one item; mental load has an anchor |
-| `strategy_named` | every focus strategy is one the prompt offered |
+| `cap_respected` | `now` within the level's cap |
+| `banned_phrasing` | none of the banned phrases in labels, details, later or let go (the list comes from the prompt constants; "should" and "need to" only count when anxious; `why` is left out because it quotes the person's own words) |
+| `routing_consistent` | `now` is never empty, and a dump the fixture marks as mental load gets one gentle item |
+| `let_go_unique` | nothing in let go also sits in now or later |
+| `strategy_named` | every now strategy is one the prompt offered |
+| `why_given` | every now item says why, so "+ why this one" is never empty |
+| `carried_placed` | every kept carry-over is somewhere in the plan |
 | `emergency_one_thing` | exactly `one_thing` and `why`, one action |
 | `revision_preserves` | after a follow-up, every item the user did not mention is still somewhere in the plan |
 
-`npm run evals` runs every dump under all five states and both contracts, five runs each, plus the follow-ups, and writes the violation rate per rule per state, the parse outcome per contract and the cost to `evals/results/`; a `valid_json` failure on the native path is the hard fail. `npm run evals:ablation` runs twenty pairs on one dump with the examples and the banned-phrasing block removed from the prompt and reports `banned_phrasing` and `cap_respected` per arm; a tie is reported as a tie. A run stopped by Ctrl+C, or by the API refusing five calls in a row when credit runs out, writes the cells that finished to `<date>-partial.md` and `.json`, marked `PARTIAL` with the count in the header and exit code 130, and leaves `latest.json` to the last full run. Every run keeps its own JSON, `latest.json` accumulates across the grid and the ablation instead of one overwriting the other, each row records the stop reason and the usage, and a filtered run gets its own filename so a probe never overwrites the grid. The graders, the fixtures, the runner's partial write and the cost tables are proven offline on every `npm test`.
+`npm run evals` runs every dump under all three levels with the anxious switch off and on, on both contracts, five runs each, plus the follow-ups, and writes the violation rate per rule per cell, the parse outcome per contract and the cost to `evals/results/`; a `valid_json` failure on the native path is the hard fail. `npm run evals:ablation` runs twenty pairs on one dump with the examples and the banned-phrasing block removed from the prompt and reports `banned_phrasing` and `cap_respected` per arm; a tie is reported as a tie. A run stopped by Ctrl+C, or by the API refusing five calls in a row when credit runs out, writes the cells that finished to `<date>-partial.md` and `.json`, marked `PARTIAL` with the count in the header and exit code 130, and leaves `latest.json` to the last full run. Every run keeps its own JSON, `latest.json` accumulates across the grid and the ablation instead of one overwriting the other, each row records the stop reason and the usage, and a filtered run gets its own filename so a probe never overwrites the grid. The graders, the fixtures, the runner's partial write and the cost tables are proven offline on every `npm test`.
 
 **The output budget, 2026-09-22.** The first keyed run measured the budget rather than the rules: with `max_tokens` at 1,024, Sonnet 5 was cut off before the JSON closed on 483 of 500 native runs and 477 of 500 prompt runs, with 0 API errors and cache reads on 99.8% of calls, and the forty plans that did fit had no cap, routing, schema or strategy violations and one banned phrase between them. A thirty-call probe at 2,048 on the anxious state was cut off on 6 of 20; the fourteen plans that finished ran 943 to 1,966 tokens with a median of 1,445, and a six-character dump produced 1,544, so the length is the model's and not the input's. The numbers below are from the same day at 4,096. On 2026-09-23 a real overwhelmed-state dump on the live page was cut off at 4,096, so the budget is 16,000 now; replies stream and unused budget costs nothing.
 
@@ -152,7 +158,7 @@ Two of those are the findings. The anxious rule bans "should" and "need to", the
 
 **Cost.** Measured, not estimated, as of 2026-09-23: the twenty anxious-state plans above, priced from the usage each row recorded at the list prices in `worker/contracts.js` ($2.00 in, $10.00 out, $2.50 cache write, $0.20 cache read per million tokens, read 2026-09-23 from an offline reference and marked there to re-check against the pricing page before quoting), cost $0.0101 to $0.0363 per sort, median $0.0178, mean $0.0191, and $0.3826 for the twenty. The earlier figure here was $0.01 to $0.02 at 2,000 to 3,000 tokens; the measured plans ran 944 to 3,542 output tokens, and 85% of those were thinking tokens, which the API bills as output. At the mean, a thousand sorts cost about $19.13 and $5 a month buys about 261 sorts, eight or nine a day. Cloudflare Workers free tier covers 100,000 requests per day. The follow-ups and the ablation did not keep usage before 2026-09-23, so their cells say so instead of estimating; the runner keeps it from now on.
 
-**Reproducing the numbers.** `npm test` proves the graders and the tables offline, including that the committed results tables carry the cost their JSON implies. `node evals/run.js --states=anxious --contracts=native --runs=1` and `npm run evals:ablation` with a key reproduce the two runs above (model outputs vary, so the counts will not match exactly). `npm run recost` re-prices every committed table from its JSON when the price table changes, without calling the API.
+**Reproducing the numbers.** `npm test` proves the graders and the tables offline, including that the committed results tables carry the cost their JSON implies. Those two runs were on `sort@v2`, which is `git show 4fc0964` and earlier; on the current prompt the closest comparison is `node evals/run.js --levels="a little" --anxious=on --contracts=native --runs=1` and `npm run evals:ablation`, which runs the same D02 dump as "a little" with anxious on (model outputs vary, so the counts will not match exactly). `npm run recost` re-prices every committed table from its JSON when the price table changes, without calling the API.
 
 ## Failure modes
 
@@ -171,27 +177,26 @@ Two of those are the findings. The anxious rule bans "should" and "need to", the
 
 ## Not built
 
-- The five-state, two-contract grid (1,000 calls); only anxious and native have been run, at 4,096. None of the eval dumps is as long as a real overwhelmed-state dump, so a long-dump fixture per state belongs in the next run.
+- Any keyed run of `sort@v3`; the numbers above are from `sort@v2`, and the first new run is the one-pass native grid (120 calls). None of the eval dumps is as long as a real long dump, so a long-dump fixture belongs in the next run.
 - The time-to-first-token and time-to-render numbers the page collects; they need the deployed Worker and a key.
-- Code-side enforcement of the rules on the request path: the caps, the banned phrases and the dropped-item check run only in the evals today, and the UI does nothing about a plan that breaks one.
+- The dropped-item check on a follow-up runs only in the evals; the page's checks cover the cap, the banned phrases, duplicates and the count.
 - A daily budget that holds across isolates (a KV counter); today it is per isolate.
 - No tool calling, no retrieval, no framework, no accounts, no server-side storage of anything a person wrote. The model pin is `claude-sonnet-5`, the current generation of the tier v1 ran on.
 - Shareable output card that looks good as a screenshot.
 - Optional history so you can see patterns over time.
 - Dark mode.
-- Mobile-native feel; it works on mobile now but wasn't designed for it first.
 
 ## Layout
 
 ```
-index.html                 the whole page: capture, energy states, the plan, the Pomodoro queue, re-planning, streaming; one file, no build step
+index.html                 the whole page: capture, levels, the plan one task at a time, the timer, carry-over, the checks, save as PDF; one file, no build step
 worker/
   index.js                 the Worker: /session, /sort, /health; the doors, validation, the call, streaming, logging
-  contracts.js             the constants everything reads: model, budget, states, buckets, caps, banned phrases, strategies, the schemas, the prices and costUsd
-  prompts.js               prompt assembly per mode and energy state; the static block, the follow-up rule, the emergency prompt
+  contracts.js             the constants everything reads: model, budget, levels, buckets, later tags, caps, timers, banned phrases, strategies, the schemas, the prices and costUsd
+  prompts.js               prompt assembly per mode, level and anxious switch; the static block, the carry-over heading, the follow-up rule, the emergency prompt
   parse.js                 the tolerant parser: native, recovered, failed
   wrangler.toml            the Worker's non-secret settings and the rate limit binding
-  snapshots/               the assembled prompt per state, committed; npm test fails on drift
+  snapshots/               the assembled prompt per level and switch, committed; npm test fails on drift
 evals/
   run.js                   the runner: the grid, the follow-ups, the ablation, partial writes, cost, the tables
   graders.js               the deterministic graders

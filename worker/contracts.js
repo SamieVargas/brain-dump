@@ -1,6 +1,6 @@
 // The constants the prompts, the schemas, the graders and the client all
-// read. One source, so the four buckets, the five energy states and the
-// per-state caps cannot drift between the prompt that asks for them and the
+// read. One source, so the three buckets, the three energy levels and the
+// per-level caps cannot drift between the prompt that asks for them and the
 // code that checks them.
 
 export const MODEL = 'claude-sonnet-5';
@@ -46,22 +46,27 @@ export function costUsd(usage, model = MODEL) {
 }
 
 export const MODES = Object.freeze(['sort', 'emergency']);
-export const ENERGY_STATES = Object.freeze(['overwhelmed', 'scattered', 'anxious', 'low energy', 'foggy']);
-export const BUCKETS = Object.freeze(['do_it', 'decide_later', 'capture_it', 'release_it']);
-export const OUTPUT_TYPES = Object.freeze(['task_heavy', 'mental_load']);
+
+// Three levels replace the five states of v2: plenty took overwhelmed and
+// scattered, a little took anxious without its tone rules, none took low
+// energy and foggy. "Feeling anxious" is its own switch now (`anxious` on the
+// request) and carries the old anxious tone rules at any level. The names are
+// what the page shows; the design's alternates were wired · worried · wiped
+// and full tank · half tank · fumes.
+export const ENERGY_LEVELS = Object.freeze(['plenty', 'a little', 'none']);
+export const BUCKETS = Object.freeze(['now', 'later', 'let_go']);
+// The tags the sorter gives a later item. "carried" marks a carry-over the
+// person kept from last time; "over cap" and "moved" are added by the page.
+export const LATER_TAGS = Object.freeze(['do', 'decide', 'idea', 'carried']);
 export const CONTRACTS = Object.freeze(['native', 'prompt']);
 
-// Per-state caps on do_it and on the focus list. These are prompt
-// instructions today; the native contract carries the same numbers.
-export const CAPS = Object.freeze({
-  overwhelmed: { do_it: 5, focus: 3 },
-  scattered: { do_it: 5, focus: 3 },
-  anxious: { do_it: 3, focus: 2 },
-  'low energy': { do_it: 2, focus: 1 },
-  foggy: { do_it: 1, focus: 1 },
-});
+// The cap on "now", per level. The prompt asks for it, the schema does not
+// clip, and the page clips anything over it into later tagged "over cap".
+export const CAPS = Object.freeze({ plenty: 3, 'a little': 2, none: 1 });
+// The task timer per level, in minutes; the page reads the same numbers.
+export const TIMER_MIN = Object.freeze({ plenty: 25, 'a little': 15, none: 5 });
 
-// Phrasing the prompt bans in task and note text. The anxious state bans
+// Phrasing the prompt bans in task and note text. "Feeling anxious" bans
 // "should" and "need to" outright; the rest of the list holds everywhere.
 export const BANNED_PHRASES = Object.freeze({
   all: ['you must', 'you have to', 'just do it', 'stop procrastinating', 'lazy'],
@@ -74,40 +79,41 @@ export const STRATEGIES = Object.freeze([
   'physical reset', 'pre-decided task', 'time boxing', 'pair it', 'one gesture',
 ]);
 
-// The follow-up chips the client offers under a plan.
-export const FOLLOW_UP_CHIPS = Object.freeze(['I have 20 minutes', 'Move the first one to tomorrow', 'Done with the top two']);
+// The re-plan pills the client offers under a plan.
+export const FOLLOW_UP_CHIPS = Object.freeze(['I have 20 minutes', 'move this to tomorrow', 'done with the top two']);
 export const HISTORY_TURN_CAP = 6;
 export const DUMP_MAX_CHARS = 8000;
 export const FOLLOW_UP_MAX_CHARS = 500;
+// Carry-overs: unfinished items from the last plan the person chose to keep.
+export const CARRIED_MAX_ITEMS = 10;
+export const CARRIED_MAX_CHARS = 200;
 
 /** The sort contract as a JSON Schema. Built from the constants above. */
 export function sortSchema() {
-  const strings = { type: 'array', items: { type: 'string' } };
   return {
     type: 'object',
     properties: {
-      output_type: { type: 'string', enum: [...OUTPUT_TYPES] },
-      focus_subtitle: { type: 'string' },
-      cta_text: { type: 'string' },
-      buckets: {
-        type: 'object',
-        properties: Object.fromEntries(BUCKETS.map((b) => [b, strings])),
-        required: [...BUCKETS],
-        additionalProperties: false,
-      },
-      focus: {
+      now: {
         type: 'array',
         items: {
           type: 'object',
-          properties: { task: { type: 'string' }, strategy: { type: 'string' } },
-          required: ['task', 'strategy'],
+          properties: { label: { type: 'string' }, detail: { type: 'string' }, why: { type: 'string' }, strategy: { type: 'string' } },
+          required: ['label', 'detail', 'why', 'strategy'],
           additionalProperties: false,
         },
       },
-      gentle_anchor: { type: 'string' },
-      gentle_note: { type: 'string' },
+      later: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: { text: { type: 'string' }, tag: { type: 'string', enum: [...LATER_TAGS] } },
+          required: ['text', 'tag'],
+          additionalProperties: false,
+        },
+      },
+      let_go: { type: 'array', items: { type: 'string' } },
     },
-    required: ['output_type', 'focus_subtitle', 'cta_text', 'buckets', 'focus', 'gentle_anchor', 'gentle_note'],
+    required: [...BUCKETS],
     additionalProperties: false,
   };
 }

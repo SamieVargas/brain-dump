@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Prompt snapshots. The prompt is assembled in code now, so the text the
-// model sees is written out per energy state and committed; `--check` diffs
+// model sees is written out per energy level, with the anxious switch off
+// and on, and committed; `--check` diffs
 // the current assembly against the committed files and fails on drift.
 //
 //   node scripts/snapshot.mjs           rewrite worker/snapshots/*.txt
@@ -9,16 +10,20 @@
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { ENERGY_STATES } from '../worker/contracts.js';
+import { ENERGY_LEVELS } from '../worker/contracts.js';
 import { renderPrompt } from '../worker/prompts.js';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const dir = join(root, 'worker/snapshots');
 const check = process.argv.includes('--check');
 
+/** The snapshot file for one level, the anxious switch and a follow-up. */
+const snapshotName = (level, { anxious = false, followUp = false } = {}) =>
+  `sort-${level.replace(' ', '-')}${anxious ? '-anxious' : ''}${followUp ? '-followup' : ''}.txt`;
+
 const files = [
-  ...ENERGY_STATES.map((s) => [`sort-${s.replace(' ', '-')}.txt`, renderPrompt('sort', s)]),
-  ...ENERGY_STATES.map((s) => [`sort-${s.replace(' ', '-')}-followup.txt`, renderPrompt('sort', s, { followUp: true })]),
+  ...ENERGY_LEVELS.flatMap((l) => [false, true].flatMap((anxious) => [false, true].map((followUp) =>
+    [snapshotName(l, { anxious, followUp }), renderPrompt('sort', l, { anxious, followUp })]))),
   ['emergency.txt', renderPrompt('emergency')],
 ];
 

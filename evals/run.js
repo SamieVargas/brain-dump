@@ -1,14 +1,18 @@
 #!/usr/bin/env node
 // Brain Dump evals, rule-graded, no labels.
 //
-//   node evals/run.js                       20 dumps × 5 states × 2 contracts × N runs, plus the 5 follow-ups
+//   node evals/run.js                       20 dumps × 3 levels × anxious off/on × 2 contracts × N runs, plus the 5 follow-ups
 //   node evals/run.js --runs=1              cheaper pass (default 5)
 //   node evals/run.js --ablation            20 runs per arm on one dump: prompt as is vs examples + bans removed
-//   node evals/run.js --states=foggy,anxious --contracts=native
+//   node evals/run.js --levels=none,"a little" --anxious=on --contracts=native
 //   node evals/run.js --keep-text ...     also write every raw reply to <stem>-replies.jsonl
 //
-// A filtered run (any --states, --contracts or --runs) gets its own stem,
-// <date>-<states>-<contracts>-x<runs>, so a probe never overwrites the grid.
+// A cell is a level with the anxious switch off or on, so the full grid has
+// six: plenty, a little, none, and each again with "+ anxious".
+//
+// A filtered run (any --levels, --anxious, --contracts or --runs) gets its own
+// stem, <date>-<levels>[-anxious|-not_anxious]-<contracts>-x<runs>, so a probe
+// never overwrites the grid.
 //
 // Needs ANTHROPIC_API_KEY. Every grader is deterministic (evals/graders.js);
 // the offline half of this suite is `npm test`, which proves the graders and
@@ -28,8 +32,8 @@ import { readFile, readdir, writeFile, mkdir } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { MODEL, MAX_TOKENS, ENERGY_STATES, CONTRACTS, PRICES, costUsd, sortSchema } from '../worker/contracts.js';
-import { buildSystem, PROMPT_VERSION, sortStatic } from '../worker/prompts.js';
+import { MODEL, MAX_TOKENS, ENERGY_LEVELS, CONTRACTS, PRICES, costUsd, sortSchema } from '../worker/contracts.js';
+import { buildSystem, sortDynamic, dumpWithCarried, PROMPT_VERSION, sortStatic } from '../worker/prompts.js';
 import { gradeSort, revisionPreserves, validJson } from './graders.js';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -57,6 +61,10 @@ async function loadDir(sub) {
   return Promise.all(names.map(async (n) => JSON.parse(await readFile(join(dir, n), 'utf8'))));
 }
 
+/** The label a cell goes by in the tables: the level, plus "+ anxious". */
+export const cellLabel = (level, anxious) => (anxious ? `${level} + anxious` : level);
+const ANXIOUS_MODES = [false, true];
+
 const pct = (n, d) => (d ? `${Math.round((n / d) * 1000) / 10}%` : '—');
 
 // Dollars, four places. A null cost is a row with no usage to price: the
@@ -67,12 +75,13 @@ const sum = (xs) => xs.reduce((n, x) => n + x, 0);
 
 // Runs the suite. `call` is the model client; the tests pass a stub.
 // Returns the exit code: 0 clean, 1 with a hard fail, 130 when interrupted.
-export async function main({ call, runs = 5, states = ENERGY_STATES, contracts = CONTRACTS, ablation = false, keepText = false, out = join(root, 'evals/results') }) {
+export async function main({ call, runs = 5, levels = ENERGY_LEVELS, anxious = ANXIOUS_MODES, contracts = CONTRACTS, ablation = false, keepText = false, out = join(root, 'evals/results') }) {
   const dumps = await loadDir('dumps');
   const follows = await loadDir('followups');
   const ranAt = new Date().toISOString();
-  const report = { ran_at: ranAt, model: MODEL, prompt_version: PROMPT_VERSION, runs, states, contracts, rows: [], followups: [], ablation: null, planned: 0, planned_followups: 0, partial: false, stopped_by: null };
-  const filtered = !ablation && (runs !== 5 || states.length !== ENERGY_STATES.length || contracts.length !== CONTRACTS.length);
+  const cells = levels.flatMap((level) => anxious.map((anx) => ({ level, anxious: anx, label: cellLabel(level, anx) })));
+  const report = { ran_at: ranAt, model: MODEL, prompt_version: PROMPT_VERSION, runs, levels, anxious, states: cells.map((c) => c.label), contracts, rows: [], followups: [], ablation: null, planned: 0, planned_followups: 0, partial: false, stopped_by: null };
+  const filtered = !ablation && (runs !== 5 || levels.length !== ENERGY_LEVELS.length || anxious.length !== ANXIOUS_MODES.length || contracts.length !== CONTRACTS.length);
   const texts = keepText ? [] : null;
 
   // One Ctrl+C sets the flag and the loops fall through to the table; the
@@ -99,7 +108,7 @@ export async function main({ call, runs = 5, states = ENERGY_STATES, contracts =
         const grades = [];
         for (let i = 0; i < armRuns && !report.partial; i++) {
           process.stdout.write(`\r  ${arm} ${i + 1}/${armRuns}   `);
-          const system = [{ type: 'text', text: stat, cache_control: { type: 'ephemeral' } }, { type: 'text', text: "The user's current energy state is: anxious" }];
+          const system = [{ type: 'text', text: stat, cache_control: { type: 'ephemeral' } }, { type: 'text', text: sortDynamic('a little', { anxious: true }) }];
           let r;
           try {
             r = await call({ system, messages: [{ role: 'user', content: target.dump }], contract: 'native' });
@@ -108,7 +117,7 @@ export async function main({ call, runs = 5, states = ENERGY_STATES, contracts =
             continue;
           }
           errorsInARow = 0;
-          grades.push({ ...gradeSort({ text: r.text, stopReason: r.stopReason, state: 'anxious', fixture: target }), stop_reason: r.stopReason ?? null, usage: r.usage ?? null, cost_usd: costUsd(r.usage) });
+          grades.push({ ...gradeSort({ text: r.text, stopReason: r.stopReason, level: 'a little', anxious: true, fixture: target }), stop_reason: r.stopReason ?? null, usage: r.usage ?? null, cost_usd: costUsd(r.usage) });
         }
         out[arm] = {
           runs: grades.length,
@@ -121,29 +130,29 @@ export async function main({ call, runs = 5, states = ENERGY_STATES, contracts =
         };
       }
       process.stdout.write('\n');
-      report.ablation = { fixture: target.id, state: 'anxious', ...out };
+      report.ablation = { fixture: target.id, state: cellLabel('a little', true), ...out };
     } else {
-      report.planned = dumps.length * states.length * contracts.length * runs;
+      report.planned = dumps.length * cells.length * contracts.length * runs;
       report.planned_followups = follows.length;
       grid: for (const d of dumps) {
-        for (const state of states) {
+        for (const { level, anxious: anx, label: state } of cells) {
           for (const contract of contracts) {
             for (let i = 0; i < runs; i++) {
               if (report.partial) break grid;
               process.stdout.write(`\r  ${d.id} · ${state} · ${contract} · ${i + 1}/${runs}      `);
-              const system = buildSystem('sort', state);
+              const system = buildSystem('sort', level, { anxious: anx });
               let r;
               try {
-                r = await call({ system, messages: [{ role: 'user', content: d.dump }], contract });
+                r = await call({ system, messages: [{ role: 'user', content: dumpWithCarried(d.dump, d.carried) }], contract });
               } catch (err) {
-                report.rows.push({ id: d.id, state, contract, error: String(err.message) });
+                report.rows.push({ id: d.id, state, level, anxious: anx, contract, error: String(err.message) });
                 failed(err);
                 continue;
               }
               errorsInARow = 0;
               texts?.push({ id: d.id, state, contract, stop_reason: r.stopReason ?? null, output_tokens: r.usage?.output_tokens ?? null, text: r.text });
-              const g = gradeSort({ text: r.text, stopReason: r.stopReason, state, fixture: d });
-              report.rows.push({ id: d.id, state, contract, parse: g.parse, valid_json: g.valid_json, hard_fail: g.hard_fail, violations: g.violations, stop_reason: r.stopReason ?? null, usage: r.usage, ms: r.ms, cost_usd: costUsd(r.usage) });
+              const g = gradeSort({ text: r.text, stopReason: r.stopReason, level, anxious: anx, fixture: d });
+              report.rows.push({ id: d.id, state, level, anxious: anx, contract, parse: g.parse, valid_json: g.valid_json, hard_fail: g.hard_fail, violations: g.violations, stop_reason: r.stopReason ?? null, usage: r.usage, ms: r.ms, cost_usd: costUsd(r.usage) });
             }
           }
         }
@@ -154,16 +163,16 @@ export async function main({ call, runs = 5, states = ENERGY_STATES, contracts =
         if (report.partial) break;
         const base = dumps.find((d) => d.id === f.base);
         process.stdout.write(`\r  ${f.id}            `);
-        const first = await call({ system: buildSystem('sort', f.energy_state), messages: [{ role: 'user', content: base.dump }], contract: 'native' });
+        const first = await call({ system: buildSystem('sort', f.energy_state, { anxious: !!f.anxious }), messages: [{ role: 'user', content: base.dump }], contract: 'native' });
         const plan = validJson(first.text, first.stopReason);
         if (!plan.ok) {
           report.followups.push({ id: f.id, error: 'first plan did not parse' });
           continue;
         }
         const history = [{ role: 'user', content: base.dump }, { role: 'assistant', content: first.text }];
-        const second = await call({ system: buildSystem('sort', f.energy_state_after, { followUp: true }), messages: [...history, { role: 'user', content: f.follow_up }], contract: 'native' });
+        const second = await call({ system: buildSystem('sort', f.energy_state_after, { anxious: !!f.anxious_after, followUp: true }), messages: [...history, { role: 'user', content: f.follow_up }], contract: 'native' });
         const revised = validJson(second.text, second.stopReason);
-        const g = revised.ok ? gradeSort({ text: second.text, stopReason: second.stopReason, state: f.energy_state_after, fixture: {} }) : null;
+        const g = revised.ok ? gradeSort({ text: second.text, stopReason: second.stopReason, level: f.energy_state_after, anxious: !!f.anxious_after, fixture: {} }) : null;
         const usage = { first: first.usage ?? null, second: second.usage ?? null };
         const both = costUsd(usage.first) !== null && costUsd(usage.second) !== null ? costUsd(usage.first) + costUsd(usage.second) : null;
         report.followups.push({ id: f.id, revised_parsed: revised.ok, lost: revised.ok ? revisionPreserves(plan.value, revised.value, f.mentioned) : null, violations: g?.violations ?? null, usage, cost_usd: both });
@@ -208,6 +217,9 @@ export function summarize(report) {
       routing: rs.filter((r) => r.violations?.routing_consistent?.length).length,
       schema: rs.filter((r) => r.violations?.schema_valid?.length).length,
       strategy: rs.filter((r) => r.violations?.strategy_named?.length).length,
+      let_go_unique: rs.filter((r) => r.violations?.let_go_unique?.length).length,
+      why: rs.filter((r) => r.violations?.why_given?.length).length,
+      carried: rs.filter((r) => r.violations?.carried_placed?.length).length,
       cost_per_plan_usd: c.mean,
       cost_usd: c.total,
     };
@@ -250,8 +262,14 @@ export function renderTables(report) {
   const s = summarize(report);
   const t = { state: null, contract: null, footer: null, followups: null, ablation: null, cost: null };
   if (report.rows.length) {
-    t.state = ['| State | Runs | Hard fails | Cap | Banned phrasing | Routing | Schema | Strategy | Cost per plan (mean, USD) | Cost, all runs (USD) |', '| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |',
-      ...Object.entries(s.byState).map(([state, v]) => `| ${state} | ${v.runs} | ${v.hard_fails} | ${pct(v.cap, v.runs)} | ${pct(v.banned, v.runs)} | ${pct(v.routing, v.runs)} | ${pct(v.schema, v.runs)} | ${pct(v.strategy, v.runs)} | ${usd(v.cost_per_plan_usd)} | ${usd(v.cost_usd)} |`)].join('\n');
+    // The v3 graders add three rules; a report from before them keeps the
+    // columns it was written with, so recost leaves its table as it was.
+    const v3 = report.rows.some((r) => r.violations && 'let_go_unique' in r.violations);
+    const extraHead = v3 ? ' Let go unique | Why given | Carried placed |' : '';
+    const extraRule = v3 ? ' --- | --- | --- |' : '';
+    const extra = (v) => (v3 ? ` ${pct(v.let_go_unique, v.runs)} | ${pct(v.why, v.runs)} | ${pct(v.carried, v.runs)} |` : '');
+    t.state = [`| ${v3 ? 'Level' : 'State'} | Runs | Hard fails | Cap | Banned phrasing | Routing | Schema | Strategy |${extraHead} Cost per plan (mean, USD) | Cost, all runs (USD) |`, `| --- | --- | --- | --- | --- | --- | --- | --- |${extraRule} --- | --- |`,
+      ...Object.entries(s.byState).map(([state, v]) => `| ${state} | ${v.runs} | ${v.hard_fails} | ${pct(v.cap, v.runs)} | ${pct(v.banned, v.runs)} | ${pct(v.routing, v.runs)} | ${pct(v.schema, v.runs)} | ${pct(v.strategy, v.runs)} |${extra(v)} ${usd(v.cost_per_plan_usd)} | ${usd(v.cost_usd)} |`)].join('\n');
     t.contract = ['| Contract | Runs | Native | Recovered | Failed | Cap violations | Cost per plan (mean, USD) |', '| --- | --- | --- | --- | --- | --- | --- |',
       ...Object.entries(s.byContract).map(([c, v]) => `| ${c} | ${v.runs} | ${v.native} | ${v.recovered} | ${v.failed} | ${pct(v.cap, v.runs)} | ${usd(v.cost_per_plan_usd)} |`)].join('\n');
     t.footer = `Hard fail on the native path (valid_json failing): **${s.native_hard_fails}** · cut off at max_tokens (${MAX_TOKENS}): ${s.truncated} of ${report.rows.length} · cache reads on ${pct(Math.round(s.cache_read_share * report.rows.length), report.rows.length)} of runs · mean latency ${s.mean_ms} ms · errors ${s.errors}`;
@@ -288,13 +306,13 @@ function render(report) {
   const lines = [`# Brain Dump evals — ${report.ran_at.slice(0, 10)}${report.partial ? ` · PARTIAL: ${completed(report)}` : ''}`, '', `Model \`${report.model}\` · prompt ${report.prompt_version} · ${report.runs} runs per cell`, ''];
   if (report.partial) lines.push(`Stopped early: ${report.stopped_by}. The rows below are the cells that finished, in fixture order, so a partial table over-represents the first dumps.`, '');
   if (t.state) {
-    lines.push('## Violation rate per rule, per state', '', t.state);
+    lines.push(`## Violation rate per rule, per ${t.state.startsWith('| Level') ? 'level' : 'state'}`, '', t.state);
     lines.push('', '## Parse outcome per contract', '', t.contract);
     lines.push('', t.footer);
   }
   if (t.followups) lines.push('', '## Follow-ups: revision preserves', '', t.followups);
   if (t.ablation) {
-    lines.push('', `## Ablation · ${report.ablation.fixture} · anxious · 20 runs per arm`, '', t.ablation);
+    lines.push('', `## Ablation · ${report.ablation.fixture} · ${report.ablation.state} · 20 runs per arm`, '', t.ablation);
     lines.push('', 'A tie is a tie. The arms are paired: same dump, same state, same session.');
   }
   lines.push('', t.cost, '');
@@ -304,7 +322,8 @@ function render(report) {
 async function save(report, dir, { filtered = false, texts = null } = {}) {
   await mkdir(dir, { recursive: true });
   const md = render(report);
-  const tag = filtered ? `-${report.states.join('+')}-${report.contracts.join('+')}-x${report.runs}`.replace(/\s+/g, '_') : '';
+  const anxTag = report.anxious?.length === 1 ? (report.anxious[0] ? '-anxious' : '-not_anxious') : '';
+  const tag = filtered ? `-${(report.levels ?? report.states).join('+')}${anxTag}-${report.contracts.join('+')}-x${report.runs}`.replace(/\s+/g, '_') : '';
   const stem = `${report.ran_at.slice(0, 10)}${report.ablation ? '-ablation' : ''}${tag}${report.partial ? '-partial' : ''}`;
   if (texts) await writeFile(join(dir, `${stem}-replies.jsonl`), texts.map((t) => JSON.stringify(t)).join('\n') + '\n');
   // Always summarized now: an ablation run has no grid rows but has a cost.
@@ -336,10 +355,18 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
     console.error('ANTHROPIC_API_KEY is not set. The offline half is `npm test`.');
     process.exit(2);
   }
+  const anxiousOpt = opt('anxious', 'off,on').split(',');
+  const levels = opt('levels', ENERGY_LEVELS.join(',')).split(',').map((l) => l.trim());
+  const unknown = levels.filter((l) => !ENERGY_LEVELS.includes(l));
+  if (unknown.length) {
+    console.error(`unknown level ${unknown.join(', ')}; the levels are ${ENERGY_LEVELS.join(', ')}`);
+    process.exit(2);
+  }
   main({
     call: apiCall(apiKey),
     runs: Number(opt('runs', 5)),
-    states: opt('states', ENERGY_STATES.join(',')).split(','),
+    levels,
+    anxious: ['off', 'on'].filter((m) => anxiousOpt.includes(m)).map((m) => m === 'on'),
     contracts: opt('contracts', CONTRACTS.join(',')).split(','),
     ablation: args.includes('--ablation'),
     keepText: args.includes('--keep-text'),

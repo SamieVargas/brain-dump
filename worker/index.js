@@ -1,20 +1,21 @@
-// The Brain Dump worker, v2.
+// The Brain Dump worker.
 //
 // v1 proxied whatever system prompt the page sent. v2 owns the prompts: the
-// client posts a mode, an energy state, the dump and an optional history, and
-// nothing else gets through. That is what makes the key safe to leave on a
+// client posts a mode, an energy level, the anxious switch, the dump, any kept
+// carry-overs and an optional history, and nothing else gets through. That is what makes the key safe to leave on a
 // public endpoint, together with the rate limit, the size caps, the daily
 // budget and the session token below.
 //
 //   GET  /session          a signed, time-limited token the page attaches to every POST
-//   POST /sort             { mode: "sort"|"emergency", energy_state, dump, history?, stream? }
+//   POST /sort             { mode: "sort"|"emergency", energy_state, anxious?, dump, carried?, history?, stream? }
 //   GET  /health           model, contract, budget
 //
-// Logs carry mode, state, sizes, model, usage and timings. Never the dump,
-// never the plan, never the history.
+// Logs carry mode, level, the anxious switch, sizes, model, usage and
+// timings. Never the dump, never the carried items, never the plan, never the
+// history.
 
-import { MODEL, MAX_TOKENS, MODES, ENERGY_STATES, CONTRACTS, HISTORY_TURN_CAP, DUMP_MAX_CHARS, FOLLOW_UP_MAX_CHARS, sortSchema, emergencySchema } from './contracts.js';
-import { buildSystem, PROMPT_VERSION } from './prompts.js';
+import { MODEL, MAX_TOKENS, MODES, ENERGY_LEVELS, CONTRACTS, HISTORY_TURN_CAP, DUMP_MAX_CHARS, FOLLOW_UP_MAX_CHARS, CARRIED_MAX_ITEMS, CARRIED_MAX_CHARS, sortSchema, emergencySchema } from './contracts.js';
+import { buildSystem, dumpWithCarried, PROMPT_VERSION } from './prompts.js';
 import { parseJson } from './parse.js';
 
 const API_URL = 'https://api.anthropic.com/v1/messages';
@@ -85,16 +86,26 @@ export async function verifySession(secret, token, now) {
 
 // ── validation ──────────────────────────────────────────────────────────────
 
-const ALLOWED_FIELDS = new Set(['mode', 'energy_state', 'dump', 'history', 'stream', 'contract']);
+const ALLOWED_FIELDS = new Set(['mode', 'energy_state', 'anxious', 'dump', 'carried', 'history', 'stream', 'contract']);
 
 /** @returns {string|null} the first problem, or null when the body is clean */
 export function validateBody(body) {
   if (!body || typeof body !== 'object' || Array.isArray(body)) return 'body must be an object';
   for (const k of Object.keys(body)) if (!ALLOWED_FIELDS.has(k)) return `unknown field "${k}"`;
   if (!MODES.includes(body.mode)) return `mode must be one of ${MODES.join(', ')}`;
-  if (body.mode === 'sort' && !ENERGY_STATES.includes(body.energy_state)) return `energy_state must be one of ${ENERGY_STATES.join(', ')}`;
+  if (body.mode === 'sort' && !ENERGY_LEVELS.includes(body.energy_state)) return `energy_state must be one of ${ENERGY_LEVELS.join(', ')}`;
+  if (body.anxious !== undefined && typeof body.anxious !== 'boolean') return 'anxious must be a boolean';
   if (typeof body.dump !== 'string' || !body.dump.trim()) return 'dump is required';
   if (body.dump.length > DUMP_MAX_CHARS) return `dump is over ${DUMP_MAX_CHARS} characters`;
+  if (body.carried !== undefined) {
+    if (body.mode !== 'sort') return 'carried is only for a sort';
+    if (!Array.isArray(body.carried)) return 'carried must be an array';
+    if (body.carried.length > CARRIED_MAX_ITEMS) return `carried is over ${CARRIED_MAX_ITEMS} items`;
+    for (const c of body.carried) {
+      if (typeof c !== 'string' || !c.trim()) return 'carried items must be non-empty strings';
+      if (c.length > CARRIED_MAX_CHARS) return `a carried item is over ${CARRIED_MAX_CHARS} characters`;
+    }
+  }
   if (body.stream !== undefined && typeof body.stream !== 'boolean') return 'stream must be a boolean';
   if (body.contract !== undefined && !CONTRACTS.includes(body.contract)) return `contract must be one of ${CONTRACTS.join(', ')}`;
   if (body.history !== undefined) {
@@ -117,7 +128,7 @@ export function validateBody(body) {
  * then the new follow-up as the last user turn.
  */
 export function buildMessages(body) {
-  if (!body.history?.length) return [{ role: 'user', content: body.dump }];
+  if (!body.history?.length) return [{ role: 'user', content: dumpWithCarried(body.dump, body.carried) }];
   const turns = body.history.slice();
   let capped = turns.slice(-HISTORY_TURN_CAP);
   const lastPlan = [...turns].reverse().find((t) => t.role === 'assistant');
@@ -137,7 +148,7 @@ export function buildMessages(body) {
 /** The exact body sent upstream. Exported so the tests can see both shapes. */
 export function requestBody(body, { contract, stream }) {
   const followUp = !!body.history?.length;
-  const system = buildSystem(body.mode, body.energy_state, { followUp });
+  const system = buildSystem(body.mode, body.energy_state, { anxious: body.anxious === true, followUp });
   const req = { model: MODEL, max_tokens: MAX_TOKENS, system, messages: buildMessages(body), stream };
   if (contract === 'native') {
     req.output_config = { format: { type: 'json_schema', schema: body.mode === 'emergency' ? emergencySchema() : sortSchema() } };
@@ -214,7 +225,7 @@ export async function handle(request, env, { fetchImpl = fetch, now = () => Date
   const contract = body.contract ?? (CONTRACTS.includes(env.CONTRACT) ? env.CONTRACT : 'native');
   const stream = body.stream === true;
   const req = requestBody(body, { contract, stream });
-  const meta = { mode: body.mode, energy_state: body.energy_state ?? null, dump_chars: body.dump.length, history_turns: body.history?.length ?? 0, contract, stream, model: MODEL, prompt_version: PROMPT_VERSION };
+  const meta = { mode: body.mode, energy_state: body.energy_state ?? null, anxious: body.anxious === true, dump_chars: body.dump.length, carried_items: body.carried?.length ?? 0, history_turns: body.history?.length ?? 0, contract, stream, model: MODEL, prompt_version: PROMPT_VERSION };
 
   let upstream;
   try {
