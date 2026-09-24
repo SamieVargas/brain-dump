@@ -4,6 +4,8 @@
 
 A brain dump tool for ADHD and ADHD-adjacent brains: type everything on your mind with no filtering, pick how you feel right now, and it sorts the lot into four buckets and a focus list matched to that energy state. **[Try it](https://samievargas.github.io/brain-dump)**. The page talks to a Cloudflare Worker at `brain-dump-proxy.samievargas.workers.dev` (`GET /session`, `POST /sort`, `GET /health`).
 
+**Redesign in progress.** The page has moved to the new design, with three energy states (plenty, a little, none) plus a separate "feeling anxious" switch, three buckets (now, later, let go), one task on screen at a time, and the eval checks running on the page, but the Worker and the prompts still speak the five-state, four-bucket contract described below, so for now "sort it" shows a hand-sorted sample plan from a real 23 September dump for whichever state you pick (`SORT_SOURCE = "sample"` in `index.html`) and "just one thing" still calls the live Worker. Once the Worker moves to the new contract and the evals are rerun I'll flip it to `"live"` and update the rest of this README.
+
 ## Problem
 
 I built this because I kept having the same problem. I'd sit down to work and my brain would be running 47 tabs at once, some of them tasks, some of them worries, some of them things I felt guilty about not doing yet, and I couldn't figure out which was which. Every productivity app I tried assumed I already knew what I needed to do, but I didn't. I just needed to get it out of my head first.
@@ -208,6 +210,6 @@ tests/
 .github/workflows/tests.yml   npm test on Node 20, no key, on every push and pull request
 ```
 
-`npm test` runs the snapshot check and then `node --test tests/*.test.mjs`; the same command runs in CI with no API key. Built with vanilla HTML, CSS and JS, the [Anthropic API](https://anthropic.com) (`claude-sonnet-5`), [Cloudflare Workers](https://workers.cloudflare.com), [Playfair Display](https://fonts.google.com/specimen/Playfair+Display) and [DM Sans](https://fonts.google.com/specimen/DM+Sans) from Google Fonts, and [Tabler Icons](https://tabler.io/icons).
+`npm test` runs the snapshot check and then `node --test tests/*.test.mjs`; the same command runs in CI with no API key. Built with vanilla HTML, CSS and JS, the [Anthropic API](https://anthropic.com) (`claude-sonnet-5`), [Cloudflare Workers](https://workers.cloudflare.com), [Young Serif](https://fonts.google.com/specimen/Young+Serif), [Onest](https://fonts.google.com/specimen/Onest) and [Geist Mono](https://fonts.google.com/specimen/Geist+Mono) from Google Fonts.
 
 Built by [Samie Vargas](https://samievargas.github.io) · [LinkedIn](https://linkedin.com/in/samievargas12) · [Kaggle](https://kaggle.com/samievargas)

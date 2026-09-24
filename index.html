@@ -4,980 +4,523 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>clear your mind.</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23f3f0fa'/><circle cx='16' cy='9' r='5' fill='%237C5CBF'/><circle cx='16' cy='17' r='5' fill='%239E8DC6' opacity='.6'/><circle cx='16' cy='25' r='5' fill='%23c9bfe8' opacity='.4'/></svg>">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%231a6b5a'/><rect x='7' y='7.5' width='18' height='4.5' rx='2.25' fill='%23ffffff'/><rect x='7' y='13.75' width='13' height='4.5' rx='2.25' fill='%238fd6bf'/><rect x='7' y='20' width='8' height='4.5' rx='2.25' fill='%23e6f1ec' fill-opacity='.55'/></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Onest:wght@400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
-    /* ── RESET & BASE ─────────────────────────────────── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --purple:       #7C5CBF;
-      --purple-dark:  #5b4a8a;
-      --purple-deep:  #645491;
-      --purple-mid:   #9E8DC6;
-      --purple-light: rgba(124,92,191,0.07);
-      --purple-tag:   rgba(124,92,191,0.15);
-      --purple-tag-border: rgba(124,92,191,0.35);
-      --purple-border: rgba(124,92,191,0.25);
-      --green-bg:     #EAF3DE;
-      --green-border: #97C459;
-      --green-text:   #27500A;
-      --green-sub:    #3B6D11;
-      --green-count:  #C0DD97;
-      --green-card:   #f2f9e8;
-      --green-card-b: #C0DD97;
-      --coral-bg:     #FAECE7;
-      --coral-border: #F0997B;
-      --coral-text:   #712B13;
-      --coral-sub:    #993C1D;
-      --coral-count:  #F0997B;
-      --coral-card:   #fdf2ee;
-      --coral-card-b: #F5C4B3;
-      --pink-bg:      #FBEAF0;
-      --pink-border:  #ED93B1;
-      --pink-text:    #72243E;
-      --pink-sub:     #993556;
-      --pink-count:   #ED93B1;
-      --pink-card:    #fdf0f5;
-      --pink-card-b:  #F4C0D1;
-      --bg:           #ffffff;
-      --text:         #1a1a1a;
-      --text-muted:   #6b6b6b;
-      --radius-sm:    8px;
-      --radius-md:    12px;
-      --radius-lg:    14px;
+      --page: #f4f8f4;
+      --card: #ffffff;
+      --line: #e0e7e0;
+      --control: #d9e0d9;
+      --ink: #161513;
+      --body: #3a3833;
+      --meta: #77746b;
+      --faint: #99968c;
+      --green: #1a6b5a;
+      --mint: #8fd6bf;
+      --green-tint: #e6f1ec;
+      --task: #e1f9fa;
+      --later: #fff0e3;
+      --letgo: #feeefc;
+      --track: #eeece6;
+      --glass: rgba(255, 255, 255, .7);
+      --serif: 'Young Serif', Georgia, serif;
+      --sans: 'Onest', Helvetica, Arial, sans-serif;
+      --mono: 'Geist Mono', ui-monospace, SFMono-Regular, monospace;
+      --rise: cubic-bezier(.2, .7, .2, 1);
     }
+    * { box-sizing: border-box; text-wrap: pretty; }
+    html, body { margin: 0; }
+    body { background: var(--page); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+    button { font-family: inherit; cursor: pointer; }
+    button:disabled { opacity: .5; cursor: default; }
+    a, .link { color: var(--green); }
+    .link { background: none; border: 0; padding: 0; font: 400 14px/1 var(--sans); white-space: nowrap; }
+    .link:hover, a:hover { color: var(--ink); }
+    [hidden] { display: none !important; }
+    :focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: #faf9ff;
-      color: var(--text);
-      min-height: 100vh;
-      padding: 2rem 1rem 4rem;
-    }
+    .rise { animation: rise .5s var(--rise) both; }
+    @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+    @media (prefers-reduced-motion: reduce) { .rise { animation: none; } .fill { transition: none !important; } }
 
-    .app {
-      max-width: 620px;
-      margin: 0 auto;
-    }
+    /* ── shell ─────────────────────────────────────────── */
+    .top { display: flex; align-items: center; gap: 12px; padding: 64px 22px 0; }
+    .brand { font: 400 17px/1 var(--serif); color: var(--green); }
+    .streak { margin-left: auto; font: 400 11.5px/1.45 var(--mono); color: var(--meta); white-space: nowrap; }
+    .streak .long { display: none; }
 
-    /* ── HERO ─────────────────────────────────────────── */
-    .hero {
-      text-align: center;
-      margin-bottom: 1.75rem;
-    }
-    .hero h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 32px;
-      font-weight: 400;
-      color: var(--purple-dark);
-      letter-spacing: -0.5px;
-      margin-bottom: 5px;
-    }
-    .hero p {
-      font-size: 13px;
-      color: var(--purple-mid);
-      font-weight: 300;
-      letter-spacing: 0.02em;
-    }
+    /* ── pills ─────────────────────────────────────────── */
+    .tint { font: 400 13px/1 var(--sans); padding: 8px 12px; border-radius: 999px; border: 0; background: var(--green-tint); color: var(--green); }
+    .pill { font: 500 14px/1 var(--sans); padding: 10px 16px; border-radius: 999px; border: 1px solid var(--control); background: var(--card); color: var(--body); }
+    .pill[aria-pressed="true"] { background: var(--green-tint); border-color: var(--green); color: var(--green); }
+    .pill.sm { font: 400 13px/1 var(--sans); padding: 8px 14px; }
+    .pill.xs { font: 400 12px/1 var(--sans); padding: 5px 10px; }
+    .primary { height: 54px; border: 0; border-radius: 999px; background: var(--green); color: #fff; font: 500 16px/1 var(--sans); }
+    .primary:hover:not(:disabled) { background: #155a4b; }
+    .glass { border: 0; border-radius: 999px; background: var(--glass); color: var(--green); }
 
-    /* ── PRIVACY BAR ──────────────────────────────────── */
-    .privacy-bar {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(124,92,191,0.06);
-      border: 0.5px solid var(--purple-border);
-      border-radius: var(--radius-md);
-      padding: 8px 14px;
-      margin-bottom: 1.25rem;
-    }
-    .privacy-bar i { font-size: 14px; color: var(--purple); }
-    .privacy-bar span { font-size: 12px; color: var(--purple-deep); flex: 1; }
-    .privacy-bar a { font-size: 12px; color: var(--purple); text-decoration: underline; cursor: pointer; white-space: nowrap; }
+    /* ── dump ──────────────────────────────────────────── */
+    .dump { padding: 22px 22px 40px; display: flex; flex-direction: column; gap: 22px; }
+    .dump h1 { font: 400 30px/1.12 var(--serif); margin: 4px 0 0; }
+    .dump-card { background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 6px; }
+    .dump-card textarea { display: block; width: 100%; height: 230px; border: 0; outline: none; resize: vertical; padding: 14px; font: 400 14.5px/1.7 var(--sans); color: var(--ink); background: transparent; }
+    .dump-card textarea::placeholder { color: var(--faint); }
+    .tools { display: flex; gap: 8px; padding: 6px 8px 8px; flex-wrap: wrap; }
+    .tint.on { background: var(--green); color: #fff; }
+    .panel { display: flex; flex-direction: column; gap: 10px; padding: 10px 12px 12px; }
+    .row { display: flex; align-items: center; gap: 6px; }
+    .clock { margin-left: auto; font: 400 15px/1 var(--mono); color: var(--meta); }
+    .track { height: 6px; background: var(--track); border-radius: 999px; overflow: hidden; }
+    .fill { height: 100%; width: 0; background: var(--green); border-radius: 999px; transition: width 1s linear; }
+    .carry-row { display: flex; align-items: center; gap: 6px; background: var(--page); border-radius: 14px; padding: 8px 8px 8px 12px; }
+    .carry-row span { flex: 1; font: 400 13.5px/1.5 var(--sans); }
+    .carry-row.dropped span { text-decoration: line-through; color: var(--faint); }
+    .ask { font: 400 13.5px/1.5 var(--sans); color: var(--meta); }
+    .states { display: flex; gap: 8px; flex-wrap: wrap; }
+    .feel { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+    .go { display: flex; flex-direction: column; gap: 14px; align-items: center; padding-top: 8px; }
+    .go .primary { width: 100%; }
+    .note { font: 400 11.5px/1.45 var(--mono); color: var(--faint); text-align: center; }
+    .error { font: 400 13.5px/1.5 var(--sans); color: var(--body); background: var(--later); border-radius: 14px; padding: 10px 14px; }
+    .live { font: 400 11.5px/1.5 var(--mono); color: var(--faint); max-height: 120px; overflow: hidden; white-space: pre-wrap; word-break: break-word; margin: 0; }
 
-    /* ── ENERGY SELECTOR ──────────────────────────────── */
-    .energy-wrap { margin-bottom: 1rem; }
-    .energy-label { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; display: block; }
-    .energy-row { display: flex; gap: 6px; flex-wrap: wrap; }
-    .energy-btn {
-      flex: 1;
-      min-width: 90px;
-      padding: 7px 6px;
-      border-radius: var(--radius-sm);
-      border: 0.5px solid var(--purple-border);
-      background: transparent;
-      font-size: 12px;
-      font-family: 'DM Sans', sans-serif;
-      color: var(--purple-mid);
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-    .energy-btn.active {
-      background: var(--purple);
-      border-color: var(--purple);
-      color: #fff;
-      font-weight: 500;
-    }
+    /* ── plan ──────────────────────────────────────────── */
+    .plan { padding: 22px 22px 40px; display: flex; flex-direction: column; gap: 18px; }
+    .plan-main { display: flex; flex-direction: column; gap: 18px; }
+    .plan-side { display: flex; flex-direction: column; gap: 10px; }
+    .plan-head { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+    .step { font: 400 11.5px/1.45 var(--mono); color: var(--meta); white-space: nowrap; }
+    .task { background: var(--task); border-radius: 28px; padding: 26px 22px 22px; display: flex; flex-direction: column; gap: 14px; }
+    .task h2 { font: 400 28px/1.15 var(--serif); margin: 0; }
+    .task .detail { font: 400 14.5px/1.55 var(--sans); color: var(--body); margin: 0; max-width: 520px; }
+    .task .why-btn { align-self: flex-start; font: 400 13px/1 var(--sans); padding: 8px 12px; }
+    .task .why { font: 400 13.5px/1.5 var(--sans); color: var(--meta); margin: 0; max-width: 520px; }
+    .timer { background: var(--card); border-radius: 18px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+    .timer .row { gap: 14px; }
+    .timer .time { font: 400 22px/1 var(--mono); }
+    .timer .tint { margin-left: auto; font: 500 13px/1 var(--sans); padding: 9px 16px; }
+    .actions { display: flex; gap: 10px; align-items: center; }
+    .actions .done { flex: 1; height: 50px; font-size: 15px; }
+    .actions .skip { height: 50px; padding: 0 18px; font: 400 15px/1 var(--sans); }
+    .restart { align-self: flex-start; font: 400 14px/1 var(--sans); background: var(--card); border: 0; border-radius: 999px; padding: 10px 16px; color: var(--green); }
+    .then { font: 400 13.5px/1.5 var(--sans); color: var(--meta); padding: 0 6px; }
+    .bucket { border-radius: 24px; padding: 16px 18px; }
+    .bucket.later { background: var(--later); }
+    .bucket.letgo { background: var(--letgo); }
+    .bucket > button { width: 100%; display: flex; align-items: center; gap: 10px; background: none; border: 0; padding: 0; color: var(--ink); text-align: left; }
+    .bucket .name { font: 400 18px/1.2 var(--serif); }
+    .bucket .count { font: 400 11.5px/1.45 var(--mono); color: var(--meta); }
+    .bucket .count .sub { display: none; }
+    .bucket .sign { margin-left: auto; flex: none; width: 28px; height: 28px; border-radius: 999px; background: rgba(255, 255, 255, .75); display: flex; align-items: center; justify-content: center; font: 500 14px/1 var(--mono); color: var(--green); }
+    .bucket .items { display: flex; flex-direction: column; gap: 6px; padding-top: 12px; }
+    .bucket .items .sub { font: 400 13.5px/1.5 var(--sans); color: var(--meta); }
+    .chip { font: 400 13.5px/1.5 var(--sans); color: var(--body); background: var(--glass); border-radius: 12px; padding: 8px 12px; display: flex; gap: 10px; align-items: baseline; }
+    .chip .tag { margin-left: auto; flex: none; font: 400 11px/1 var(--mono); color: var(--meta); }
+    .change { align-self: flex-start; font: 400 14px/1 var(--sans); background: none; border: 0; padding: 4px 6px; color: var(--green); }
+    .replan { display: flex; gap: 8px; flex-wrap: wrap; }
+    .checks-btn { align-self: flex-start; font: 400 11.5px/1.45 var(--mono); background: none; border: 0; padding: 0 6px; color: var(--faint); text-align: left; }
+    .checks { display: flex; flex-direction: column; gap: 4px; padding: 0 6px; }
+    .checks span { font: 400 11.5px/1.45 var(--mono); color: var(--meta); }
 
-    /* ── TIMER ────────────────────────────────────────── */
-    .timer-wrap { margin-bottom: 1rem; }
-    .timer-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 8px;
+    /* ── desktop ───────────────────────────────────────── */
+    @media (min-width: 860px) {
+      .top { padding: 22px 40px; }
+      .brand { font-size: 20px; }
+      .streak .short { display: none; }
+      .streak .long { display: inline; }
+      .dump { max-width: 680px; margin: 0 auto; padding: 36px 40px 48px; gap: 26px; }
+      .dump h1 { font-size: 40px; line-height: 1.08; margin: 0; }
+      .dump-card { border-radius: 26px; padding: 8px; }
+      .dump-card textarea { height: 260px; padding: 18px 20px; font-size: 15.5px; line-height: 1.75; }
+      .tools { padding: 6px 10px 10px; }
+      .tint { padding: 9px 14px; }
+      .feel { flex-direction: row; align-items: center; flex-wrap: wrap; gap: 10px; }
+      .feel .ask { margin-right: 6px; }
+      .go { flex-direction: row; gap: 22px; }
+      .go .primary { width: auto; padding: 0 34px; }
+      .note { text-align: left; }
+      .plan { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 24px; align-items: start; padding: 12px 40px 40px; max-width: 1240px; margin: 0 auto; }
+      .plan-main { gap: 16px; }
+      .plan-side { gap: 12px; padding-top: 50px; }
+      .plan-head { justify-content: flex-start; }
+      .plan-head .link { background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 9px 14px; }
+      .task { border-radius: 32px; padding: 36px 36px 30px; gap: 16px; }
+      .task h2 { font-size: 38px; line-height: 1.1; }
+      .task .detail { font: 400 17px/1.6 var(--sans); }
+      .task-foot { display: flex; align-items: center; gap: 18px; margin-top: 8px; flex-wrap: wrap; }
+      .actions .done { flex: none; height: 52px; padding: 0 30px; }
+      .actions .skip { height: 52px; padding: 0 22px; }
+      .timer { order: 2; margin: 0 0 0 auto; border-radius: 999px; padding: 8px 8px 8px 20px; flex-direction: row; align-items: center; gap: 14px; }
+      .timer .row { display: contents; }
+      .timer .time { font-size: 20px; order: 1; }
+      .timer .track { width: 90px; order: 2; }
+      .timer .tint { order: 3; margin: 0; padding: 10px 16px; }
+      .then { padding: 0 8px; }
+      .bucket .name { font-size: 20px; }
+      .bucket .count .sub { display: inline; }
+      .bucket .sign { width: 30px; height: 30px; }
+      .bucket .items { padding-top: 14px; max-height: 330px; overflow: auto; }
+      .bucket .items .sub { display: none; }
+      .change { display: none; }
+      .replan[data-desktop] { display: flex !important; padding: 0 4px; }
+      .checks-btn, .checks { padding: 0 8px; }
     }
-    .timer-header-left { display: flex; align-items: center; gap: 10px; }
-    .timer-select {
-      font-size: 12px;
-      border: 0.5px solid var(--purple-border);
-      border-radius: 6px;
-      padding: 3px 8px;
-      color: var(--purple-deep);
-      background: transparent;
-      font-family: 'DM Sans', sans-serif;
-      cursor: pointer;
-    }
-    .timer-toggle {
-      font-size: 11px;
-      color: var(--purple-mid);
-      cursor: pointer;
-      text-decoration: underline;
-      background: none;
-      border: none;
-      font-family: 'DM Sans', sans-serif;
-    }
-    .timer-btns { display: flex; gap: 6px; }
-    .timer-btn {
-      padding: 5px 14px;
-      border-radius: 6px;
-      border: 0.5px solid var(--purple-border);
-      background: transparent;
-      font-size: 12px;
-      color: var(--purple-deep);
-      cursor: pointer;
-      font-family: 'DM Sans', sans-serif;
-      transition: background 0.15s;
-    }
-    .timer-btn:hover { background: rgba(124,92,191,0.06); }
-    .timer-btn.primary { background: var(--purple); color: #fff; border-color: var(--purple); }
-    .timer-btn.primary:hover { background: var(--purple-dark); }
-    .timer-visual {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      background: rgba(124,92,191,0.06);
-      border: 0.5px solid var(--purple-border);
-      border-radius: var(--radius-md);
-      padding: 12px 16px;
-    }
-    .timer-ring svg { display: block; }
-    .timer-info { flex: 1; }
-    .timer-time {
-      font-family: 'DM Mono', monospace;
-      font-size: 24px;
-      color: var(--purple-deep);
-      line-height: 1;
-      margin-bottom: 3px;
-    }
-    .timer-status { font-size: 11px; color: var(--purple-mid); }
-
-    /* ── DUMP AREA ────────────────────────────────────── */
-    .dump-box {
-      background: #fff;
-      border: 0.5px solid var(--purple-border);
-      border-radius: var(--radius-lg);
-      padding: 1.25rem;
-      margin-bottom: 1rem;
-    }
-    .dump-example-tag {
-      display: inline-block;
-      font-size: 10px;
-      background: rgba(124,92,191,0.1);
-      color: var(--purple);
-      border-radius: 4px;
-      padding: 2px 8px;
-      font-weight: 500;
-      margin-bottom: 8px;
-    }
-    .dump-box textarea {
-      width: 100%;
-      min-height: 120px;
-      border: none;
-      outline: none;
-      resize: none;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px;
-      line-height: 1.75;
-      color: var(--text);
-      background: transparent;
-    }
-    .dump-box textarea::placeholder { color: rgba(124,92,191,0.35); }
-    .dump-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 8px;
-      padding-top: 8px;
-      border-top: 0.5px solid rgba(124,92,191,0.1);
-    }
-    .dump-hint { font-size: 11px; color: rgba(124,92,191,0.4); transition: opacity 0.3s; }
-    .dump-desc { font-size: 11px; color: var(--text-muted); }
-    .mic-btn {
-      background: none;
-      border: 0.5px solid var(--purple-border);
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      color: var(--purple-mid);
-      transition: all 0.15s;
-      flex-shrink: 0;
-    }
-    .mic-btn:hover { background: rgba(124,92,191,0.08); color: var(--purple); }
-    .mic-btn.recording {
-      background: rgba(124,92,191,0.12);
-      border-color: var(--purple);
-      color: var(--purple);
-      animation: micPulse 1s ease-in-out infinite;
-    }
-    .mic-btn i { font-size: 14px; }
-    @keyframes micPulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(124,92,191,0.3); }
-      50% { box-shadow: 0 0 0 5px rgba(124,92,191,0); }
-    }
-    .mic-status { font-size: 11px; color: var(--purple); display: none; }
-    .mic-status.visible { display: inline; }
-
-    /* ── SORT BUTTON ──────────────────────────────────── */
-    .sort-wrap { text-align: center; margin-bottom: 0.75rem; }
-    .sort-btn {
-      background: var(--purple);
-      color: #fff;
-      border: none;
-      border-radius: var(--radius-md);
-      padding: 12px 32px;
-      font-size: 15px;
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.15s;
-      letter-spacing: 0.01em;
-    }
-    .sort-btn:hover { background: var(--purple-dark); }
-    .sort-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-    .emergency-btn {
-      display: block;
-      text-align: center;
-      font-size: 12px;
-      color: var(--purple-mid);
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-family: 'DM Sans', sans-serif;
-      margin-bottom: 1.25rem;
-      text-decoration: underline;
-    }
-
-    /* ── DIVIDER ──────────────────────────────────────── */
-    .divider { height: 0.5px; background: rgba(124,92,191,0.15); margin: 1.25rem 0; }
-
-    /* ── SECTION LABEL ────────────────────────────────── */
-    .section-label {
-      font-size: 10px;
-      font-weight: 500;
-      color: var(--purple-mid);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-bottom: 10px;
-    }
-
-    /* ── BUCKETS ──────────────────────────────────────── */
-    .buckets-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 1.25rem;
-    }
-    .bucket {
-      border-radius: var(--radius-lg);
-      padding: 14px 16px;
-      border: 0.5px solid;
-    }
-    .bucket-do     { background: rgba(124,92,191,0.07); border-color: rgba(124,92,191,0.3); }
-    .bucket-decide { background: var(--green-bg);  border-color: var(--green-border); }
-    .bucket-capture{ background: var(--coral-bg);  border-color: var(--coral-border); }
-    .bucket-release{ background: var(--pink-bg);   border-color: var(--pink-border); }
-
-    .bucket-head { display: flex; align-items: center; gap: 6px; margin-bottom: 3px; }
-    .bucket-title { font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 500; }
-    .bucket-do .bucket-title     { color: var(--purple-dark); }
-    .bucket-decide .bucket-title { color: var(--green-text); }
-    .bucket-capture .bucket-title{ color: var(--coral-text); }
-    .bucket-release .bucket-title{ color: var(--pink-text); }
-
-    .bucket-count {
-      font-size: 10px;
-      font-weight: 500;
-      padding: 2px 7px;
-      border-radius: 20px;
-    }
-    .bucket-do .bucket-count     { background: rgba(124,92,191,0.2); color: var(--purple-dark); }
-    .bucket-decide .bucket-count { background: var(--green-count); color: var(--green-text); }
-    .bucket-capture .bucket-count{ background: var(--coral-count); color: var(--coral-text); }
-    .bucket-release .bucket-count{ background: var(--pink-count);  color: var(--pink-text); }
-
-    .bucket-sub { font-size: 11px; margin-bottom: 10px; }
-    .bucket-do .bucket-sub     { color: rgba(124,92,191,0.7); }
-    .bucket-decide .bucket-sub { color: var(--green-sub); }
-    .bucket-capture .bucket-sub{ color: var(--coral-sub); }
-    .bucket-release .bucket-sub{ color: var(--pink-sub); }
-
-    .items-list { display: flex; flex-direction: column; gap: 5px; min-height: 20px; }
-    .item-card {
-      border-radius: var(--radius-sm);
-      padding: 5px 10px;
-      font-size: 12px;
-      border: 0.5px solid;
-      animation: flyIn 0.4s cubic-bezier(.22,.68,0,1.2) both;
-    }
-    .bucket-do .item-card     { background: rgba(124,92,191,0.1); border-color: rgba(124,92,191,0.25); color: var(--purple-dark); }
-    .bucket-decide .item-card { background: var(--green-card); border-color: var(--green-card-b); color: var(--green-text); }
-    .bucket-capture .item-card{ background: var(--coral-card); border-color: var(--coral-card-b); color: var(--coral-text); }
-    .bucket-release .item-card{ background: var(--pink-card);  border-color: var(--pink-card-b);  color: var(--pink-text); }
-
-    @keyframes flyIn {
-      from { opacity: 0; transform: translateY(-8px) scale(0.96); }
-      to   { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    .bucket-empty {
-      font-size: 11px;
-      color: rgba(124,92,191,0.35);
-      font-style: italic;
-    }
-
-    /* ── FOCUS SECTION ────────────────────────────────── */
-    .focus-section {
-      background: rgba(124,92,191,0.07);
-      border: 0.5px solid rgba(124,92,191,0.25);
-      border-radius: var(--radius-lg);
-      padding: 1.25rem;
-      margin-bottom: 1rem;
-    }
-    .focus-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 17px;
-      color: #645491;
-      margin-bottom: 2px;
-    }
-    .focus-sub {
-      font-size: 12px;
-      color: #9E8DC6;
-      margin-bottom: 1rem;
-    }
-    .focus-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
-    .focus-dot {
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: var(--purple);
-      flex-shrink: 0;
-      margin-top: 7px;
-    }
-    .focus-line {
-      display: flex;
-      align-items: baseline;
-      flex-wrap: wrap;
-      gap: 7px;
-      flex: 1;
-    }
-    .focus-text { font-size: 15px; color: var(--text); line-height: 1.4; }
-    .tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 2px;
-      font-size: 10px;
-      font-weight: 500;
-      background: rgba(124,92,191,0.15);
-      color: #7C6DA3;
-      border: 0.5px solid rgba(124,92,191,0.35);
-      border-radius: 20px;
-      padding: 0px 6px;
-      cursor: pointer;
-      font-family: 'DM Sans', sans-serif;
-      white-space: nowrap;
-      line-height: 0.75;
-      height: 15px;
-      position: relative;
-      top: -1px;
-    }
-    .tag i { font-size: 8px; color: #7C6DA3; transition: transform 0.2s; }
-    .tag.open i { transform: rotate(180deg); }
-    .strategy-expand {
-      overflow: hidden;
-      max-height: 0;
-      transition: max-height 0.25s ease, opacity 0.2s;
-      opacity: 0;
-      width: 100%;
-    }
-    .strategy-expand.open { max-height: 160px; opacity: 1; }
-    .expansion-panel {
-      margin-top: 6px;
-      background: #fff;
-      border-radius: var(--radius-sm);
-      padding: 8px 10px;
-      border: 0.5px solid rgba(124,92,191,0.2);
-    }
-    .expansion-title { font-size: 11px; font-weight: 500; color: #7D70A2; margin-bottom: 3px; }
-    .expansion-body  { font-size: 11px; color: #646461; line-height: 1.6; }
-    .focus-divider { height: 0.5px; background: rgba(124,92,191,0.15); margin: 10px 0; }
-
-    /* gentle / mental-load output */
-    .focus-gentle { display: none; }
-    .focus-gentle-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 17px;
-      color: #645491;
-      margin-bottom: 6px;
-      line-height: 1.4;
-    }
-    .focus-gentle-sub {
-      font-size: 13px;
-      color: var(--text-muted);
-      font-style: italic;
-      margin-bottom: 1rem;
-      line-height: 1.6;
-    }
-
-    /* ── START CTA ────────────────────────────────────── */
-    .start-cta {
-      width: 100%;
-      background: var(--purple-dark);
-      color: #fff;
-      border: none;
-      border-radius: var(--radius-md);
-      padding: 12px;
-      font-size: 15px;
-      font-family: 'Playfair Display', serif;
-      font-weight: 400;
-      cursor: pointer;
-      margin-bottom: 1rem;
-      transition: background 0.15s;
-      letter-spacing: 0.01em;
-    }
-    .start-cta:hover { background: var(--purple); }
-    .start-cta.hidden { display: none; }
-
-    /* ── BOTTOM ROW ───────────────────────────────────── */
-    .bottom-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
-    .streak-pill {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      color: var(--purple);
-      background: rgba(124,92,191,0.1);
-      border-radius: 20px;
-      padding: 5px 12px;
-    }
-    .streak-pill i { font-size: 14px; }
-    .action-btns { display: flex; gap: 6px; }
-    .action-btn {
-      background: #fff;
-      border: 0.5px solid var(--purple-border);
-      border-radius: var(--radius-sm);
-      padding: 6px 12px;
-      font-size: 12px;
-      color: var(--purple-deep);
-      cursor: pointer;
-      font-family: 'DM Sans', sans-serif;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      transition: background 0.15s;
-    }
-    .action-btn:hover { background: rgba(124,92,191,0.06); }
-    .action-btn i { font-size: 14px; }
-
-    /* ── POMODORO OVERLAY ─────────────────────────────── */
-    .pomo-overlay {
-      display: none;
-      background: rgba(124,92,191,0.06);
-      border: 0.5px solid var(--purple-border);
-      border-radius: var(--radius-lg);
-      padding: 1.5rem;
-      text-align: center;
-      margin-top: 1.5rem;
-    }
-    .pomo-overlay.visible { display: block; animation: flyIn 0.3s ease both; }
-    .pomo-task-label { font-size: 11px; color: var(--purple-mid); margin-bottom: 4px; }
-    .pomo-task-name {
-      font-family: 'Playfair Display', serif;
-      font-size: 15px;
-      color: var(--purple-dark);
-      font-style: italic;
-      margin-bottom: 1.25rem;
-      line-height: 1.4;
-    }
-    .pomo-ring-wrap { display: flex; justify-content: center; margin-bottom: 0.75rem; position: relative; }
-    .pomo-ring-wrap svg { display: block; }
-    .pomo-ring-center {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-    }
-    .pomo-time {
-      font-family: 'DM Mono', monospace;
-      font-size: 28px;
-      color: var(--purple-deep);
-      line-height: 1;
-    }
-    .pomo-phase-label { font-size: 10px; color: var(--purple-mid); margin-top: 3px; }
-    .pomo-status { font-size: 12px; color: var(--purple-mid); margin-bottom: 1.25rem; }
-    .pomo-btns { display: flex; gap: 8px; justify-content: center; margin-bottom: 1rem; }
-    .pomo-btn {
-      padding: 8px 18px;
-      border-radius: var(--radius-md);
-      border: 0.5px solid var(--purple-border);
-      background: #fff;
-      font-size: 12px;
-      color: var(--purple-deep);
-      cursor: pointer;
-      font-family: 'DM Sans', sans-serif;
-      transition: background 0.15s;
-    }
-    .pomo-btn:hover { background: rgba(124,92,191,0.06); }
-    .pomo-btn.primary { background: var(--purple); color: #fff; border-color: var(--purple); }
-    .pomo-btn.primary:hover { background: var(--purple-dark); }
-    .pomo-dots { display: flex; gap: 8px; justify-content: center; margin-bottom: 1rem; }
-    .pomo-dot { width: 9px; height: 9px; border-radius: 50%; background: rgba(124,92,191,0.2); }
-    .pomo-dot.done { background: var(--purple); }
-    .pomo-dot.current { background: var(--purple); box-shadow: 0 0 0 2px rgba(124,92,191,0.2); }
-    .pomo-next-task {
-      margin-top: 1rem;
-      padding-top: 1rem;
-      border-top: 0.5px solid rgba(124,92,191,0.15);
-    }
-    .pomo-next-label { font-size: 10px; color: var(--purple-mid); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 5px; }
-    .pomo-next-name { font-size: 13px; color: var(--purple-deep); font-family: 'Playfair Display', serif; font-style: italic; }
-    .pomo-close {
-      display: block;
-      font-size: 12px;
-      color: var(--purple-mid);
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-family: 'DM Sans', sans-serif;
-      text-decoration: underline;
-      margin: 1rem auto 0;
-    }
-
-    /* ── LOADING STATE ────────────────────────────────── */
-    .loading-dots {
-      display: none;
-      text-align: center;
-      padding: 1rem;
-      color: var(--purple-mid);
-      font-size: 13px;
-    }
-    .loading-dots.visible { display: block; }
-    .dot-pulse { display: inline-block; animation: pulse 1.2s infinite; }
-    .dot-pulse:nth-child(2) { animation-delay: 0.2s; }
-    .dot-pulse:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes pulse { 0%,80%,100%{opacity:.2} 40%{opacity:1} }
-
-    /* ── ERROR ────────────────────────────────────────── */
-    .error-msg {
-      display: none;
-      background: #fff0f0;
-      border: 0.5px solid #f0c0c0;
-      border-radius: var(--radius-sm);
-      padding: 10px 14px;
-      font-size: 12px;
-      color: #a33;
-      margin-bottom: 1rem;
-    }
-    .error-msg.visible { display: block; }
-
-    /* the plan arriving, before it is a plan */
-    .live-pane {
-      display: none; margin: 0.75rem 0 0; padding: 0.9rem 1rem; max-height: 9rem; overflow: hidden;
-      font-family: 'DM Mono', monospace; font-size: 11.5px; line-height: 1.5; color: var(--text-muted);
-      background: var(--purple-light); border: 1px solid var(--purple-border); border-radius: 10px;
-      white-space: pre-wrap; word-break: break-word; opacity: .85;
-    }
-    .live-pane.visible { display: block; }
-
-    /* change something? */
-    .replan { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--purple-border); }
-    .replan-label { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
-    .replan-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
-    .replan-chip {
-      font-family: 'DM Sans', sans-serif; font-size: 12.5px; padding: 6px 11px; border-radius: 999px; cursor: pointer;
-      background: var(--purple-tag); border: 1px solid var(--purple-tag-border); color: var(--purple-dark);
-    }
-    .replan-chip:hover { background: var(--purple-border); }
-    .replan-form { display: flex; gap: 8px; }
-    .replan-form input {
-      flex: 1; font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 9px 12px; border-radius: 8px;
-      border: 1px solid var(--purple-border); background: #fff; color: inherit;
-    }
-    .replan-form input:focus { outline: 2px solid var(--purple-mid); outline-offset: 1px; }
-    .replan-form button {
-      font-family: 'DM Sans', sans-serif; font-size: 13px; padding: 9px 14px; border-radius: 8px; cursor: pointer;
-      background: var(--purple); color: #fff; border: 0;
-    }
-    .replan-form button:disabled { opacity: .5; cursor: default; }
-
-    /* ── OUTPUT HIDDEN UNTIL SORTED ───────────────────── */
-    .output-section { display: none; }
-    .output-section.visible { display: block; }
+    @media (max-width: 859px) { .task-foot { display: contents; } }
   </style>
 </head>
 <body>
-<div class="app">
 
-  <!-- HERO -->
-  <div class="hero">
-    <h1>clear your mind.</h1>
-    <p>set a timer &middot; don't filter &middot; just go</p>
+<header class="top">
+  <span class="brand">clear your mind.</span>
+  <span class="streak" id="streak" hidden><span class="short"></span><span class="long"></span></span>
+</header>
+
+<!-- ── DUMP ──────────────────────────────────────────── -->
+<main class="dump" id="dump-view">
+  <h1>what's on your mind?</h1>
+
+  <div class="dump-card">
+    <textarea id="dump-text" placeholder="all of it, in any order" aria-label="what's on your mind"></textarea>
+    <div class="tools">
+      <button class="tint" id="voice-btn" type="button">+ voice</button>
+      <button class="tint" id="dtimer-btn" type="button" aria-expanded="false">+ timer</button>
+      <button class="tint" id="carry-btn" type="button" aria-expanded="false" hidden></button>
+    </div>
+
+    <div class="panel rise" id="dtimer-panel" hidden>
+      <div class="row">
+        <span id="dtimer-mins" class="row"></span>
+        <span class="clock" id="dtimer-time">10:00</span>
+        <button class="link" id="dtimer-toggle" type="button" style="font-weight:500;font-size:13px;padding-left:6px">start</button>
+      </div>
+      <div class="track"><div class="fill" id="dtimer-fill"></div></div>
+    </div>
+
+    <div class="panel rise" id="carry-panel" hidden style="gap:6px;padding:4px 8px 10px"></div>
   </div>
 
-  <!-- PRIVACY BAR -->
-  <div class="privacy-bar">
-    <i class="ti ti-lock" aria-hidden="true"></i>
-    <span>everything stays on your device &mdash; nothing is stored or shared</span>
-    <a href="https://github.com/SamieVargas/brain-dump" target="_blank" rel="noopener">
-      view the code <i class="ti ti-external-link" style="font-size:11px"></i>
-    </a>
+  <div class="feel">
+    <span class="ask">how much do you have?</span>
+    <div class="states" id="states" role="group" aria-label="how much do you have"></div>
+    <button class="pill sm" id="anx-btn" type="button" aria-pressed="false">+ feeling anxious</button>
   </div>
 
-  <!-- ENERGY SELECTOR -->
-  <div class="energy-wrap">
-    <span class="energy-label">how are you right now?</span>
-    <div class="energy-row">
-      <button class="energy-btn active" onclick="setEnergy(this)">overwhelmed</button>
-      <button class="energy-btn" onclick="setEnergy(this)">scattered</button>
-      <button class="energy-btn" onclick="setEnergy(this)">anxious</button>
-      <button class="energy-btn" onclick="setEnergy(this)">low energy</button>
-      <button class="energy-btn" onclick="setEnergy(this)">foggy</button>
-    </div>
+  <div class="error" id="error" hidden></div>
+  <pre class="live" id="live" hidden aria-live="polite"></pre>
+
+  <div class="go">
+    <button class="primary" id="sort-btn" type="button">sort it →</button>
+    <button class="link" id="one-btn" type="button">just one thing</button>
   </div>
+  <p class="note" id="sample-note" hidden>the sorter is being rebuilt for three states, so for now "sort it" shows a sample plan made from a real 23 September dump</p>
+</main>
 
-  <!-- TIMER -->
-  <div class="timer-wrap">
-    <div class="timer-header">
-      <div class="timer-header-left">
-        <select class="timer-select" id="timer-select" onchange="setDuration(this.value)">
-          <option value="5">5 min</option>
-          <option value="7">7 min</option>
-          <option value="10" selected>10 min</option>
-        </select>
-        <button class="timer-toggle" id="timer-toggle" onclick="toggleTimer()">hide timer</button>
-      </div>
-      <div class="timer-btns">
-        <button class="timer-btn" onclick="resetTimer()">reset</button>
-        <button class="timer-btn primary" id="start-btn" onclick="startTimer()">start</button>
-      </div>
-    </div>
-    <div id="timer-block">
-      <div class="timer-visual">
-        <div class="timer-ring">
-          <svg width="56" height="56" viewBox="0 0 56 56">
-            <circle cx="28" cy="28" r="24" fill="none" stroke="rgba(124,92,191,0.2)" stroke-width="4"/>
-            <circle cx="28" cy="28" r="24" fill="none" stroke="#7C5CBF" stroke-width="4"
-              stroke-dasharray="150.8" stroke-dashoffset="0" stroke-linecap="round"
-              transform="rotate(-90 28 28)" id="ring-progress"/>
-          </svg>
-        </div>
-        <div class="timer-info">
-          <div class="timer-time" id="timer-display">10:00</div>
-          <div class="timer-status" id="timer-status">ready when you are</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- DUMP AREA -->
-  <div class="dump-box">
-    <div class="dump-example-tag" id="example-tag">example — clear to write your own</div>
-    <textarea id="dump-text"
-      placeholder="just type — no filtering, no fixing, no thinking about it...">I need to finish the quarterly deck but I keep opening Twitter, also I owe Sarah an email from like two weeks ago, I've been thinking about starting a ceramics class, my manager meeting is tomorrow and I haven't prepped, I'm stressed about money but I don't even know why, I want to redesign my whole morning routine, groceries, why did I say that weird thing in the meeting today, I should probably meditate more, the apartment is a mess but I can't start cleaning...</textarea>
-    <div class="dump-footer">
-      <span class="dump-hint" id="dump-hint">don't filter — just type everything</span>
-      <div style="display:flex;align-items:center;gap:8px;">
-        <span class="mic-status" id="mic-status">listening…</span>
-        <span class="dump-desc">no data leaves your session</span>
-        <button class="mic-btn" id="mic-btn" onclick="toggleVoice()" aria-label="voice input" title="speak your dump">
-          <i class="ti ti-microphone" aria-hidden="true"></i>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- SORT -->
-  <div class="sort-wrap">
-    <button class="sort-btn" id="sort-btn" onclick="runSort()">sort it out →</button>
-  </div>
-  <button class="emergency-btn" onclick="runEmergency()">just give me one thing to do right now</button>
-
-  <!-- ERROR -->
-  <div class="error-msg" id="error-msg"></div>
-
-  <!-- LOADING -->
-  <div class="loading-dots" id="loading">
-    <span class="dot-pulse">·</span>
-    <span class="dot-pulse">·</span>
-    <span class="dot-pulse">·</span>
-    sorting your thoughts
-  </div>
-  <pre class="live-pane" id="live-pane" aria-live="polite"></pre>
-
-  <!-- OUTPUT -->
-  <div class="output-section" id="output-section">
-    <div class="divider"></div>
-
-    <div class="section-label">your buckets</div>
-    <div class="buckets-grid">
-      <div class="bucket bucket-do">
-        <div class="bucket-head">
-          <span class="bucket-title">do it</span>
-          <span class="bucket-count" id="count-do">0</span>
-        </div>
-        <div class="bucket-sub">you have energy for this today</div>
-        <div class="items-list" id="items-do"></div>
-      </div>
-      <div class="bucket bucket-decide">
-        <div class="bucket-head">
-          <span class="bucket-title">decide later</span>
-          <span class="bucket-count" id="count-decide">0</span>
-        </div>
-        <div class="bucket-sub">real, but not right now</div>
-        <div class="items-list" id="items-decide"></div>
-      </div>
-      <div class="bucket bucket-capture">
-        <div class="bucket-head">
-          <span class="bucket-title">capture it</span>
-          <span class="bucket-count" id="count-capture">0</span>
-        </div>
-        <div class="bucket-sub">worth keeping, not yet actionable</div>
-        <div class="items-list" id="items-capture"></div>
-      </div>
-      <div class="bucket bucket-release">
-        <div class="bucket-head">
-          <span class="bucket-title">release it</span>
-          <span class="bucket-count" id="count-release">0</span>
-        </div>
-        <div class="bucket-sub">not yours to carry right now</div>
-        <div class="items-list" id="items-release"></div>
-      </div>
+<!-- ── PLAN ──────────────────────────────────────────── -->
+<main class="plan" id="plan-view" hidden>
+  <section class="plan-main">
+    <div class="plan-head">
+      <button class="link" id="back-btn" type="button">← my dump</button>
+      <span class="step" id="step"></span>
     </div>
 
-    <!-- FOCUS: task-heavy -->
-    <div class="focus-section" id="focus-task">
-      <div class="focus-title">your focus today</div>
-      <div class="focus-sub" id="focus-sub">3 things — in order of activation energy</div>
-      <div id="focus-items"></div>
+    <div class="task rise" id="task-body"></div>
+
+    <span class="then" id="then" hidden></span>
+
+    <button class="change" id="change-btn" type="button" aria-expanded="false">+ change something</button>
+    <div class="replan" id="replan" data-desktop hidden>
+      <button class="pill sm" type="button" data-replan="twenty">I have 20 minutes</button>
+      <button class="pill sm" type="button" data-replan="tomorrow">move this to tomorrow</button>
+      <button class="pill sm" type="button" data-replan="toptwo">done with the top two</button>
     </div>
 
-    <!-- FOCUS: mental-load -->
-    <div class="focus-section focus-gentle" id="focus-mental">
-      <div class="focus-gentle-title" id="gentle-title">your mind needed clearing more than your list needed doing.</div>
-      <div class="focus-gentle-sub" id="gentle-sub">most of what came out today wasn't tasks — it was weight. that's the work. one small anchor to keep you tethered:</div>
-      <div class="focus-item">
-        <div class="focus-dot"></div>
-        <div style="flex:1">
-          <div class="focus-line">
-            <span class="focus-text" id="gentle-anchor"></span>
-            <button class="tag" id="gentle-tag" onclick="toggleTag('gentle-expand','gentle-tag')">
-              reset first <i class="ti ti-chevron-down"></i>
-            </button>
-          </div>
-          <div class="strategy-expand" id="gentle-expand">
-            <div class="expansion-panel">
-              <div class="expansion-title">reset before tasking</div>
-              <div class="expansion-body" id="gentle-expand-body"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <button class="checks-btn" id="checks-btn" type="button" aria-expanded="false"></button>
+    <div class="checks" id="checks" hidden></div>
+  </section>
 
-    <button class="start-cta" id="start-cta" onclick="showPomo()">start the first one →</button>
-
-    <!-- RE-PLAN -->
-    <div class="replan" id="replan">
-      <div class="replan-label">change something?</div>
-      <div class="replan-chips">
-        <button class="replan-chip" type="button" onclick="followUp(this.textContent)">I have 20 minutes</button>
-        <button class="replan-chip" type="button" onclick="followUp(this.textContent)">Move the first one to tomorrow</button>
-        <button class="replan-chip" type="button" onclick="followUp(this.textContent)">Done with the top two</button>
-      </div>
-      <form class="replan-form" onsubmit="event.preventDefault(); followUp(document.getElementById('replan-text').value)">
-        <input id="replan-text" placeholder="or say what changed" maxlength="500" autocomplete="off">
-        <button type="submit" id="replan-btn">re-plan →</button>
-      </form>
-    </div>
-
-    <div class="bottom-row">
-      <div class="streak-pill">
-        <i class="ti ti-flame" aria-hidden="true"></i>
-        <span id="streak-text">1 dump today</span>
-      </div>
-      <div class="action-btns">
-        <button class="action-btn" onclick="exportResults()">
-          <i class="ti ti-download" aria-hidden="true"></i> .txt
-        </button>
-        <button class="action-btn" onclick="exportPDF()">
-          <i class="ti ti-file-type-pdf" aria-hidden="true"></i> pdf
-        </button>
-        <button class="action-btn" onclick="copyResults()">
-          <i class="ti ti-copy" aria-hidden="true"></i> copy
-        </button>
-      </div>
-    </div>
-
-    <!-- POMODORO -->
-    <div class="pomo-overlay" id="pomo-overlay">
-      <div class="pomo-task-label">working on</div>
-      <div class="pomo-task-name" id="pomo-task-name"></div>
-      <div class="pomo-ring-wrap">
-        <svg width="130" height="130" viewBox="0 0 130 130">
-          <circle cx="65" cy="65" r="56" fill="none" stroke="rgba(124,92,191,0.15)" stroke-width="7"/>
-          <circle cx="65" cy="65" r="56" fill="none" stroke="#7C5CBF" stroke-width="7"
-            stroke-dasharray="351.86" stroke-dashoffset="0" stroke-linecap="round"
-            transform="rotate(-90 65 65)" id="pomo-ring"/>
-        </svg>
-        <div class="pomo-ring-center">
-          <div class="pomo-time" id="pomo-display">25:00</div>
-          <div class="pomo-phase-label" id="pomo-phase">focus</div>
-        </div>
-      </div>
-      <div class="pomo-status" id="pomo-status">ready when you are</div>
-      <div class="pomo-btns">
-        <button class="pomo-btn primary" id="pomo-toggle" onclick="togglePomo()">start</button>
-        <button class="pomo-btn" onclick="finishEarly()">done early</button>
-      </div>
-      <div class="pomo-dots" id="pomo-dots"></div>
-      <div class="pomo-next-task" id="pomo-next-wrap">
-        <div class="pomo-next-label">up next</div>
-        <div class="pomo-next-name" id="pomo-next-name"></div>
-      </div>
-      <button class="pomo-close" onclick="closePomo()">← back to my list</button>
-    </div>
-  </div>
-
-</div>
+  <aside class="plan-side" id="buckets"></aside>
+</main>
 
 <script>
   // ── CONFIG ────────────────────────────────────────────
   const WORKER_URL = "https://brain-dump-proxy.samievargas.workers.dev";
 
-  // ── STATE ─────────────────────────────────────────────
-  let currentEnergy = "overwhelmed";
-  let totalSec = 600, remaining = 600, running = false, timerInterval = null, timerVisible = true;
-  let sortedData = null;
-  let doTasks = [];
-  let pomoIdx = 0, pomoSec = 1500, pomoRunning = false, pomoInterval = null, pomoPhase = "focus";
-  let dumpCount = parseInt(localStorage.getItem("bd-count") || "0");
-  let lastDump = localStorage.getItem("bd-last") || "";
+  // "sample" shows the hand-sorted plans below for whichever state is picked;
+  // "live" posts the new request shape to the Worker. Flip it once the Worker
+  // speaks the three-state contract and the evals have been rerun.
+  const SORT_SOURCE = "sample";
 
-  const STRATEGIES = {
-    "5-min rule": {
-      title: "the 5-minute rule",
-      body: "commit to just 5 minutes. ADHD brains resist starting, not doing — once in motion, continuing is far easier. the rule gives your brain permission to stop, which paradoxically makes it easier to begin."
-    },
-    "eat the frog": {
-      title: "eat the frog",
-      body: "do the thing you're most likely to avoid first. high-dread tasks loom large in ADHD working memory and drain bandwidth even while you're doing other things. clearing it early frees your brain for the rest."
-    },
-    "small movement": {
-      title: "small movement",
-      body: "physical action — even tiny — shifts your nervous system state and builds momentum. it's a pattern interrupt that makes the next task feel more possible."
-    },
-    "body double": {
-      title: "body double",
-      body: "work alongside someone — in person, on video, or virtually via Focusmate. having another presence activates the ADHD brain's social attention system, making it dramatically easier to start and sustain focus."
-    },
-    "time boxing": {
-      title: "time boxing",
-      body: "set a hard stop time before you begin. tasks that could expand infinitely (research, email, planning) need a container. knowing it ends at a set time makes starting feel safe."
-    },
-    "temptation bundling": {
-      title: "temptation bundling",
-      body: "pair a boring task with something you actually enjoy. the enjoyable thing is only allowed during the task. it makes the mundane feel like a treat."
-    },
-    "micro-commitment": {
-      title: "micro-commitment",
-      body: "when even 5 minutes feels like too much, commit only to opening the file, writing one word, or putting on your shoes. the goal is contact, not completion. starting is the entire job."
-    },
-    "reset first": {
-      title: "reset before tasking",
-      body: "when the dump is mostly emotional weight — worries, guilt, vague dread — trying to 'do' something often backfires. a short physical reset shifts your nervous system state first, making any task that follows easier to start."
-    },
-    "parallel stacking": {
-      title: "parallel stacking",
-      body: "stack two tasks so one runs in the background while you do the other. press the Roomba button while waiting for food, start laundry before a call. zero extra effort, double the progress."
-    },
-    "body first, everything else second": {
-      title: "body first",
-      body: "your brain can't function well when your body's basic needs aren't met. food, water, and rest aren't distractions from productivity — they're the foundation of it. this comes first, everything else follows."
-    },
-    "body first, brain second": {
-      title: "body first",
-      body: "your brain can't function well when your body's basic needs aren't met. food, water, and rest aren't distractions from productivity — they're the foundation of it. this comes first, everything else follows."
-    },
-    "pre-made decision + single action": {
-      title: "pre-made decision",
-      body: "when energy is low, decision fatigue is real. this task has already been decided for you — there's nothing to weigh or choose. just follow the single physical action described. that's the entire task."
-    },
-    "pre-made decision, single physical gesture": {
-      title: "pre-made decision",
-      body: "when you're foggy, even small decisions drain energy you don't have. this task removes the decision entirely. one physical gesture is all that's needed — the rest takes care of itself."
-    },
-    "parallel task / temptation bundling": {
-      title: "parallel task + temptation bundling",
-      body: "two things at once: this task runs in the background while you do something you'd do anyway (eat, rest, watch something). zero extra willpower required."
-    },
-    "20-minute time box + scope limiter": {
-      title: "time box + scope limit",
-      body: "set a 20-minute timer and a hard boundary on scope. you're not finishing the thing — you're doing the smallest defined version of it in a fixed window. when the timer stops, you stop."
-    },
-    "minimum viable prep": {
-      title: "minimum viable prep",
-      body: "prep doesn't have to be thorough to be useful. the smallest amount of preparation that makes tomorrow easier is enough. three bullet points beats a polished outline every time."
-    },
-    "capture to release": {
-      title: "capture to release",
-      body: "writing something down externally — even one sentence — moves it out of your working memory and into the world. once it's captured, your brain can actually let it go. the act of writing is the release."
-    },
-    "5-minute rule + pre-made decision": {
-      title: "5-minute rule + pre-made decision",
-      body: "two things working together: the decision is already made for you (no choosing required), and you're only committing to 5 minutes. lowest possible activation energy."
-    },
-    "parallel tasking + micro-commitment": {
-      title: "parallel task + micro-commitment",
-      body: "the commitment is tiny (just press one button) and the task runs while you're already doing something else. the bar is as low as it gets."
-    }
+  // Names are display constants so they are easy to swap. The alternates the
+  // design explored: wired · worried · wiped, full tank · half tank · fumes;
+  // do · keep · release, today · someday · not mine.
+  const ENERGY_LEVELS = ["plenty", "a little", "none"];
+  const CAPS = { plenty: 3, "a little": 2, none: 1 };
+  const TIMER_MIN = { plenty: 25, "a little": 15, none: 5 };
+  const BUCKET_NAMES = { now: "now", later: "later", let_go: "let go" };
+  const BUCKET_SUBS = { later: "safe here for later", let_go: "you can set these down" };
+  const DUMP_TIMER_MINS = [5, 7, 10];
+
+  // The same lists as BANNED_PHRASES in worker/contracts.js, each with the
+  // words the page puts in its place.
+  const BANNED = {
+    all: [
+      [/\byou must\b/gi, "you can"],
+      [/\byou have to\b/gi, "you can"],
+      [/\bjust do it\b/gi, "start small"],
+      [/\bstop procrastinating\b/gi, "start when you're ready"],
+      [/\blazy\b/gi, "tired"],
+    ],
+    anxious: [
+      [/\byou (?:need to|should)\b/gi, "when you're ready, you can"],
+      [/\b(?:need to|should)\b/gi, "could"],
+    ],
   };
 
-  // ── SESSION, HISTORY, STREAMING ───────────────────────
-  // The prompts live on the worker now. The page sends a mode, the energy
-  // state, the dump and (for a follow-up) the conversation so far, and
-  // nothing else. Anyone who can reach the worker can run these prompts and
-  // only these.
+  const STRATEGIES = {
+    "eat the frog": "the one you keep circling drains attention even while you do other things, so clearing it first frees up the rest of the list.",
+    "5-min rule": "commit to five minutes and nothing more, because starting is the hard part and the rule gives you permission to stop.",
+    "one gesture": "the decision is already made and the task is one physical action, so there is nothing to weigh before you start.",
+    "pre-decided task": "the choice is made in the task text, so you follow it instead of comparing options on an empty stomach.",
+    "pair it": "the message runs in the background while your hands do something else, which is two things moved for the effort of one.",
+    "body doubling": "someone else being around, even on a video call, makes it easier to start and to keep going.",
+    "temptation bundling": "the boring part gets paired with something you enjoy, and the enjoyable thing only happens during it.",
+    "micro-commitment": "the goal is contact and not completion, so opening the file counts.",
+    "physical reset": "moving your body first shifts your state, which makes whatever comes next easier to start.",
+    "time boxing": "a hard stop before you begin makes starting feel safe, because it ends when the timer does.",
+  };
+
+  // ── SAMPLE ────────────────────────────────────────────
+  // Samie's 23 September 2026 dump, re-sorted by hand into the three buckets
+  // for each level. It is what the sorter's reply looks like before the page's
+  // checks run, so it deliberately sends three for "now" at every level, says
+  // "need to" once when anxious, and puts one idea in two buckets.
+  const SAMPLE_DUMP = "okay so um I have like so much in my head right now and I don't really know where to start I guess I'll just go I need to call the pharmacy I need to call the pharmacy to ask them to switch my prescription to a 90 day one, because they said if I do 30 days it wont be covered, then it's this whole thing every time and I also need to check the lease renewal date cuz I think I put it in my calendar but I don't know if I put the right date and I'm scared I'm going to like miss it and then I don't know what happens and also the boxes from the couch are still just sitting in the living room like all of them and I need to write that QBR recap email to send it to my boss before sending it out to the group. dang but i remembered but i found out that I was missing notes and needed to ping Matt for them and I need to decide if I'm keeping the storage seats or like the regular ones before I can schedule the pickup and with the chase lounge setup I can't even get into the storage one so I don't know it's just clutter everywhere and I think it's making me more anxious than I think it is I also want to hang the Lego sets on the wall cuz they've been on the dining table for like weeks. I signed up for that pottery class tonight and I keep doing this thing where I sign up for stuff and then I just don't go and then I feel bad about it and I don't know if I'm going to go tonight either like part of me wants to and part of me just wants to stay home oh I need to figure out what I'm wearing for my friend's birthday cuz it's a costume thing and I haven't started I haven't even thought about it and I want to download the mods for Stardew game so it's ready and I can just play cuz it looked really fun and honestly I'm so excited for the new steam machine and like finally playing the games I've wanted to that I can't on my current okay I think it stopped recording again god I hate when it does that okay where was I um I haven't done my strength training in like two weeks and I feel bad cuz I know I like it when I do it I just can't make myself start like even ten minutes and I need to order groceries cuz I don't have anything for lunch and it's already like almost eleven and then there's the weekend where I don't have plans with anyone and I keep going back and forth on like if I should go to dinner with the guys. I need to go back to that podcast I like cuz it helps me calm down I keep just like cycling the same two episodes and oh I had this idea for like a little display that shows my whole day at a glance but I feel like it has to be perfect before I start so I just haven't started and I think I think that's everything I think the pharmacy is the one I keep coming back to so I should probably just call";
+
+  // label, detail and strategy per level: plenty, a little, none.
+  const SAMPLE_NOW = [
+    { label: ["call the pharmacy about the 90-day refill", "call the pharmacy about the 90-day refill", "call the pharmacy."],
+      detail: ["one call and one ask, and then it is off your mind for three months.", "ask for the 90-day switch, and that is the whole call.", "dial the number already saved in your phone, ask for the 90-day refill, and that is the whole call."],
+      anxious: "you need to dial and ask for the 90-day switch, and nothing else has to happen after.",
+      why: 'you said "the pharmacy is the one I keep coming back to"', strategy: ["eat the frog", "5-min rule", "one gesture"] },
+    { label: ["order groceries for lunch", "order groceries for lunch", "order lunch."],
+      detail: ["it is almost eleven, so open whichever app is already on your phone and pick the first lunch that looks fine.", "open whichever app is already on your phone and pick the first lunch that looks fine.", "open the app already on your phone and press order on the first thing."],
+      anxious: "if it feels okay, open whichever app is already on your phone and pick the first lunch you see.",
+      why: "nothing for lunch and it is almost eleven", strategy: ["pre-decided task", "pre-decided task", "one gesture"] },
+    { label: ["ping Matt for the QBR notes", "ping Matt for the QBR notes", "text Matt."],
+      detail: ["one message, then move one couch box while you wait for the reply.", "one short message, and the recap can wait for his reply.", "one line asking for the notes."],
+      anxious: "one short message whenever it feels okay, and the recap can wait for his reply.",
+      why: "the recap email is stuck until his notes come in", strategy: ["pair it", "5-min rule", "one gesture"] },
+  ];
+  const SAMPLE_LATER = [
+    ["do", "check the lease renewal date against the lease itself"],
+    ["do", "write the QBR recap email once Matt's notes are in"],
+    ["do", "10 minutes of strength training with the podcast on"],
+    ["do", "hang the Lego sets on the wall"],
+    ["decide", "storage seats or regular ones, then schedule the pickup"],
+    ["decide", "the costume for the birthday"],
+    ["decide", "dinner with the guys this weekend"],
+    ["idea", "the day-at-a-glance display"],
+    ["idea", "Stardew mods, ready to play"],
+    ["idea", "the games list for the new Steam machine"],
+  ];
+  const SAMPLE_LET_GO = [
+    "going or not going to pottery tonight is not a verdict on who you are.",
+    "two weeks without strength training doesn't erase the progress you made.",
+    "the boxes in the living room are just boxes waiting for your energy.",
+    "the day-at-a-glance display is allowed to start messy.",
+  ];
+
+  function samplePlan(level, anxious, carried) {
+    const L = ENERGY_LEVELS.indexOf(level);
+    const later = SAMPLE_LATER.map(([tag, text]) => ({ text, tag }));
+    // a kept carry-over that is already one of these tasks is not added twice
+    const known = new Set(SAMPLE_NOW.flatMap(t => t.label.map(norm)));
+    carried.filter(text => !known.has(norm(text))).forEach(text => later.unshift({ text, tag: "carried" }));
+    return {
+      now: SAMPLE_NOW.map(t => ({ label: t.label[L], detail: anxious ? t.anxious : t.detail[L], why: t.why, strategy: t.strategy[L] })),
+      later,
+      let_go: [...SAMPLE_LET_GO],
+    };
+  }
+
+  // ── CHECKS ────────────────────────────────────────────
+  // The rules evals/graders.js checks offline, run on the plan before it is
+  // shown. Each fix is written down in plain words for the checks line.
+  const norm = s => String(s || "").toLowerCase().replace(/[^a-z0-9 ]+/g, " ").replace(/\s+/g, " ").trim();
+
+  function checkPlan(raw, level, anxious) {
+    const fixes = [], notes = [];
+    const cap = CAPS[level];
+    const plan = {
+      now: (raw.now || []).map(t => ({ ...t })),
+      later: (raw.later || []).map(t => typeof t === "string" ? { text: t, tag: "do" } : { ...t }),
+      let_go: [...(raw.let_go || [])],
+    };
+
+    // 1. cap: clip now, the extras go to later tagged "over cap".
+    if (plan.now.length > cap) {
+      const extra = plan.now.splice(cap);
+      plan.later.unshift(...extra.map(t => ({ text: t.label.replace(/\.$/, ""), tag: "over cap" })));
+      fixes.push(`the sorter sent ${cap + extra.length} for ${BUCKET_NAMES.now}, held to ${cap} on the page, ${extra.length} moved to ${BUCKET_NAMES.later}`);
+    } else notes.push(`${plan.now.length} of ${cap} within the cap`);
+
+    // 2. banned phrases: the global list everywhere, "should" and "need to" when anxious.
+    const rules = [...BANNED.all, ...(anxious ? BANNED.anxious : [])];
+    const found = [];
+    const clean = s => {
+      let out = s;
+      for (const [re, to] of rules) out = out.replace(re, m => { found.push(m.toLowerCase()); return to; });
+      return out;
+    };
+    plan.now.forEach(t => { t.label = clean(t.label); t.detail = clean(t.detail || ""); });
+    plan.later.forEach(t => { t.text = clean(t.text); });
+    plan.let_go = plan.let_go.map(clean);
+    if (found.length) {
+      const uniq = [...new Set(found)];
+      fixes.push(`the sorter wrote ${uniq.map(p => `"${p}"`).join(" and ")}${found.length > 1 ? ` ${found.length} times` : " once"}, rewritten on the page`);
+    } else notes.push("no banned phrases");
+
+    // 3. duplicates: anything in let go stays only in let go.
+    const letGo = plan.let_go.map(norm);
+    const inLetGo = s => { const n = norm(s); return n && letGo.some(l => l === n || l.startsWith(n + " ")); };
+    const dupes = [];
+    plan.now = plan.now.filter(t => inLetGo(t.label) ? (dupes.push(t.label), false) : true);
+    plan.later = plan.later.filter(t => inLetGo(t.text) ? (dupes.push(t.text), false) : true);
+    // a carried item the sorter already placed is not listed twice
+    const seen = new Set(plan.now.map(t => norm(t.label)));
+    plan.later = plan.later.filter(t => { const n = norm(t.text); if (seen.has(n)) return false; seen.add(n); return true; });
+    dupes.forEach(d => fixes.push(`"${d}" came back in two buckets, kept in ${BUCKET_NAMES.let_go}`));
+
+    // 4. every item placed.
+    const placed = plan.now.length + plan.later.length + plan.let_go.length;
+    notes.push(`every item placed · ${placed} of ${placed}`);
+
+    return { plan, fixes, notes };
+  }
+
+  // ── STATE ─────────────────────────────────────────────
+  let level = "a little";
+  let anxious = false;
+  let result = null;          // { plan, fixes, notes, source }
+  let done = [], moved = [];  // indexes into result.plan.now
+  let open = { later: false, let_go: false };
+  let showWhy = false;
+  let justOpened = null;      // the section to animate on this render only
+  let carryChoice = {};       // text -> "keep" | "drop"
+  let dumpCount = parseInt(localStorage.getItem("bd-count") || "0", 10) || 0;
+
+  const $ = id => document.getElementById(id);
+  const ta = $("dump-text");
+  const desktop = window.matchMedia("(min-width: 860px)");
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const fmt = sec => Math.floor(sec / 60) + ":" + String(sec % 60).padStart(2, "0");
+
+  function store(kind, key, value) {
+    try { window[kind].setItem(key, JSON.stringify(value)); } catch (e) {}
+  }
+  function load(kind, key, fallback) {
+    try { const v = window[kind].getItem(key); return v ? JSON.parse(v) : fallback; } catch (e) { return fallback; }
+  }
+
+  // ── TIMER ─────────────────────────────────────────────
+  // One timer: the optional dump timer on the first screen, the task timer on
+  // the plan, sized by the level unless "I have 20 minutes" set it.
+  const timer = { total: 600, left: 600, running: false, iv: null, onTick: () => {} };
+  function setTimer(min) {
+    clearInterval(timer.iv);
+    timer.total = timer.left = min * 60; timer.running = false;
+    timer.onTick();
+  }
+  function toggleTimerRun() {
+    if (timer.running) { timer.running = false; clearInterval(timer.iv); timer.onTick(); return; }
+    if (!timer.left) timer.left = timer.total;
+    timer.running = true;
+    timer.iv = setInterval(() => {
+      timer.left = Math.max(0, timer.left - 1);
+      if (!timer.left) { timer.running = false; clearInterval(timer.iv); }
+      timer.onTick();
+    }, 1000);
+    timer.onTick();
+  }
+  function paintTimer(timeEl, fillEl, btnEl, idle) {
+    timeEl.textContent = fmt(timer.left);
+    fillEl.style.width = (100 * (1 - timer.left / timer.total)) + "%";
+    btnEl.textContent = timer.running ? "pause" : (!timer.left ? "reset" : (timer.left < timer.total ? "resume" : idle));
+  }
+
+  // ── DUMP SCREEN ───────────────────────────────────────
+  let dumpMin = 10;
+  function renderDumpTimer() {
+    $("dtimer-mins").innerHTML = DUMP_TIMER_MINS.map(m =>
+      `<button class="pill xs" type="button" data-min="${m}" aria-pressed="${m === dumpMin}">${m}m</button>`).join("");
+    paintTimer($("dtimer-time"), $("dtimer-fill"), $("dtimer-toggle"), "start");
+  }
+  $("dtimer-mins").addEventListener("click", e => {
+    const b = e.target.closest("[data-min]"); if (!b) return;
+    dumpMin = +b.dataset.min; setTimer(dumpMin);
+  });
+  $("dtimer-toggle").addEventListener("click", () => { if (!timer.left) setTimer(dumpMin); else toggleTimerRun(); });
+  $("dtimer-btn").addEventListener("click", () => {
+    const show = $("dtimer-panel").hidden;
+    $("dtimer-panel").hidden = !show;
+    $("dtimer-btn").textContent = (show ? "− " : "+ ") + "timer";
+    $("dtimer-btn").setAttribute("aria-expanded", show);
+  });
+
+  function renderStates() {
+    $("states").innerHTML = ENERGY_LEVELS.map(l =>
+      `<button class="pill" type="button" data-level="${l}" aria-pressed="${l === level}">${l}</button>`).join("");
+    $("anx-btn").setAttribute("aria-pressed", anxious);
+    $("anx-btn").textContent = (anxious ? "✓ " : "+ ") + "feeling anxious";
+  }
+  $("states").addEventListener("click", e => {
+    const b = e.target.closest("[data-level]"); if (!b) return;
+    level = b.dataset.level; renderStates();
+  });
+  $("anx-btn").addEventListener("click", () => { anxious = !anxious; renderStates(); });
+
+  // Carry-over: unfinished "now" items and anything moved with "not today",
+  // offered on the next dump behind keep and drop.
+  function carryItems() { return load("localStorage", "bd-carry", []).filter(t => typeof t === "string" && t.trim()); }
+  function renderCarry() {
+    const items = carryItems();
+    const btn = $("carry-btn"), panel = $("carry-panel");
+    btn.hidden = !items.length;
+    if (!items.length) { panel.hidden = true; return; }
+    const openNow = !panel.hidden;
+    btn.textContent = `${openNow ? "−" : "+"} ${items.length} thing${items.length > 1 ? "s" : ""} from last time`;
+    btn.setAttribute("aria-expanded", openNow);
+    panel.innerHTML = items.map((t, i) => {
+      const c = carryChoice[t];
+      return `<div class="carry-row${c === "drop" ? " dropped" : ""}"><span>${esc(t)}</span>
+        <button class="pill xs" type="button" data-carry="${i}" data-choice="keep" aria-pressed="${c === "keep"}">keep</button>
+        <button class="pill xs" type="button" data-carry="${i}" data-choice="drop" aria-pressed="${c === "drop"}">drop</button></div>`;
+    }).join("");
+  }
+  $("carry-btn").addEventListener("click", () => { $("carry-panel").hidden = !$("carry-panel").hidden; renderCarry(); });
+  $("carry-panel").addEventListener("click", e => {
+    const b = e.target.closest("[data-carry]"); if (!b) return;
+    const t = carryItems()[+b.dataset.carry], c = b.dataset.choice;
+    carryChoice[t] = carryChoice[t] === c ? undefined : c;
+    renderCarry();
+  });
+
+  function renderStreak() {
+    const el = $("streak");
+    el.hidden = !dumpCount;
+    el.querySelector(".short").textContent = `${dumpCount} this week`;
+    el.querySelector(".long").textContent = `${dumpCount} dump${dumpCount === 1 ? "" : "s"} this week · stays in this tab`;
+  }
+
+  function showError(msg) { $("error").textContent = msg; $("error").hidden = false; }
+  function clearError() { $("error").hidden = true; }
+
+  // ── SESSION AND THE WORKER ────────────────────────────
+  // The page sends a mode, the level, the anxious switch, the dump and the
+  // kept carry-overs, and nothing else.
   let sessionToken = null;
   async function session() {
     if (sessionToken) return sessionToken;
@@ -987,33 +530,6 @@
     } catch (e) { /* the worker may run without sessions; the POST will say */ }
     return sessionToken;
   }
-  session();
-
-  // The conversation: the original dump, each plan as the assistant's own
-  // JSON, each follow-up as a user turn. Page and sessionStorage only.
-  const HISTORY_KEY = "bd-history";
-  const HISTORY_MAX = 8;
-  function loadHistory() { try { return JSON.parse(sessionStorage.getItem(HISTORY_KEY) || "[]"); } catch (e) { return []; } }
-  function saveHistory(h) { try { sessionStorage.setItem(HISTORY_KEY, JSON.stringify(h.slice(-HISTORY_MAX))); } catch (e) {} }
-  let history = loadHistory();
-
-  // Time to first token and time to render, kept for the last ten sorts so
-  // the streaming change can be measured rather than felt.
-  function recordTiming(t0, tFirst, meta) {
-    const entry = {
-      at: new Date().toISOString(),
-      first_token_ms: tFirst === null ? null : Math.round(tFirst - t0),
-      render_ms: Math.round(performance.now() - t0),
-      cache_read: meta && meta.usage ? meta.usage.cache_read_input_tokens || 0 : null,
-      parse_path: meta ? meta.parse_path : null,
-      contract: meta ? meta.contract : null,
-    };
-    let all = [];
-    try { all = JSON.parse(sessionStorage.getItem("bd-timings") || "[]"); } catch (e) {}
-    all.push(entry);
-    try { sessionStorage.setItem("bd-timings", JSON.stringify(all.slice(-10))); } catch (e) {}
-    console.info("brain dump timing", entry);
-  }
 
   async function callWorker(body, { onDelta } = {}) {
     const token = await session();
@@ -1022,7 +538,7 @@
     const res = await fetch(WORKER_URL + "/sort", { method: "POST", headers, body: JSON.stringify(body) });
     if (res.status === 401 && token) { sessionToken = null; return callWorker(body, { onDelta }); }
     if (!res.ok) {
-      let msg = "something went wrong — check your connection and try again";
+      let msg = "something went wrong, so check your connection and try again";
       try { msg = (await res.json()).message || msg; } catch (e) {}
       throw new Error(msg);
     }
@@ -1034,8 +550,8 @@
     const dec = new TextDecoder();
     let buf = "", text = "", meta = null, stopReason = null, apiError = null;
     for (;;) {
-      const { value, done } = await reader.read();
-      if (done) break;
+      const { value, done: end } = await reader.read();
+      if (end) break;
       buf += dec.decode(value, { stream: true });
       let i;
       while ((i = buf.indexOf("\n\n")) >= 0) {
@@ -1054,542 +570,280 @@
     return { text, meta, stopReason: (meta && meta.stop_reason) || stopReason, apiError };
   }
 
-  // A stream can end without a usable plan in three ways: the API sends an
-  // error event partway through, the model uses its whole output budget
-  // before the JSON closes (thinking counts against the budget, so this can
-  // happen before a single character of text), or the text is not JSON.
-  // Each gets a sentence a person can act on instead of a parser message.
+  // A stream can end without a usable plan three ways; each gets a sentence
+  // a person can act on instead of a parser message.
   function planFrom(text, stopReason, apiError) {
-    if (apiError) throw new Error("the sorter had a bad moment. try again in a little while.");
+    if (apiError) throw new Error("the sorter had a bad moment, so try again in a little while.");
     const clean = (text || "").replace(/```json|```/g, "").trim();
-    if (stopReason === "max_tokens") throw new Error("the sorter ran out of room before it finished. try again in a moment.");
-    if (!clean) throw new Error("the sorter came back empty. try again in a moment.");
+    if (stopReason === "max_tokens") throw new Error("the sorter ran out of room before it finished, so try again in a moment.");
+    if (!clean) throw new Error("the sorter came back empty, so try again in a moment.");
     try { return JSON.parse(clean); }
-    catch (e) { throw new Error("the sorter's answer came back garbled. try again in a moment."); }
+    catch (e) { throw new Error("the sorter's answer came back garbled, so try again in a moment."); }
   }
-
-  // ── ENERGY ────────────────────────────────────────────
-  function setEnergy(btn) {
-    document.querySelectorAll(".energy-btn").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-    currentEnergy = btn.textContent.trim();
-  }
-
-  // ── TIMER ─────────────────────────────────────────────
-  const CIRC = 150.8;
-  function setDuration(v) {
-    totalSec = parseInt(v) * 60;
-    remaining = totalSec;
-    running = false;
-    clearInterval(timerInterval);
-    document.getElementById("start-btn").textContent = "start";
-    document.getElementById("timer-status").textContent = "ready when you are";
-    updateTimerDisplay();
-  }
-  function updateTimerDisplay() {
-    const m = Math.floor(remaining / 60), s = remaining % 60;
-    document.getElementById("timer-display").textContent = m + ":" + String(s).padStart(2, "0");
-    document.getElementById("ring-progress").style.strokeDashoffset = CIRC * (1 - remaining / totalSec);
-  }
-  function startTimer() {
-    if (running) {
-      running = false; clearInterval(timerInterval);
-      document.getElementById("start-btn").textContent = "resume";
-      document.getElementById("timer-status").textContent = "paused";
-      return;
-    }
-    if (remaining <= 0) { resetTimer(); return; }
-    running = true;
-    document.getElementById("start-btn").textContent = "pause";
-    document.getElementById("timer-status").textContent = "dumping — don't filter";
-    timerInterval = setInterval(() => {
-      if (remaining <= 0) {
-        clearInterval(timerInterval); running = false;
-        document.getElementById("timer-status").textContent = "time's up — ready to sort?";
-        document.getElementById("start-btn").textContent = "done";
-        return;
-      }
-      remaining--;
-      updateTimerDisplay();
-    }, 1000);
-  }
-  function resetTimer() {
-    clearInterval(timerInterval); running = false; remaining = totalSec;
-    document.getElementById("start-btn").textContent = "start";
-    document.getElementById("timer-status").textContent = "ready when you are";
-    updateTimerDisplay();
-  }
-  function toggleTimer() {
-    timerVisible = !timerVisible;
-    document.getElementById("timer-block").style.display = timerVisible ? "block" : "none";
-    document.getElementById("timer-select").style.display = timerVisible ? "" : "none";
-    document.getElementById("timer-toggle").textContent = timerVisible ? "hide timer" : "show timer";
-  }
-  updateTimerDisplay();
-
-  // ── DUMP AREA HINT ────────────────────────────────────
-  const ta = document.getElementById("dump-text");
-  const hint = document.getElementById("dump-hint");
-  const exTag = document.getElementById("example-tag");
-  ta.addEventListener("focus", () => { hint.style.opacity = "0"; });
-  ta.addEventListener("blur", () => { if (!ta.value.trim()) hint.style.opacity = "1"; });
-  ta.addEventListener("input", () => {
-    if (ta.value !== lastDump) exTag.style.display = "none";
-  });
 
   // ── SORT ──────────────────────────────────────────────
-  async function runSort(opts) {
-    const followUpText = opts && opts.followUp ? opts.followUp : null;
-    const dump = followUpText || ta.value.trim();
-    if (!dump) { showError("type something first — anything that's on your mind"); return; }
-
-    clearError();
-    const pane = document.getElementById("live-pane");
-    document.getElementById("sort-btn").disabled = true;
-    document.getElementById("replan-btn").disabled = true;
-    document.getElementById("loading").classList.add("visible");
-    pane.textContent = ""; pane.classList.add("visible");
-    if (!followUpText) document.getElementById("output-section").classList.remove("visible");
-
-    const body = { mode: "sort", energy_state: currentEnergy, dump, stream: true };
-    if (followUpText && history.length) body.history = history.slice(-HISTORY_MAX);
-
-    const t0 = performance.now();
-    let tFirst = null;
-    try {
-      const { text, meta, stopReason, apiError } = await callWorker(body, { onDelta: (t) => { if (tFirst === null) tFirst = performance.now(); pane.textContent = t; } });
-      if (meta) recordTiming(t0, tFirst, meta);
-      sortedData = planFrom(text, stopReason, apiError);
-      renderOutput(sortedData);
-
-      if (!followUpText) { history = [{ role: "user", content: dump }]; updateStreak(); }
-      else history.push({ role: "user", content: dump });
-      history.push({ role: "assistant", content: text });
-      saveHistory(history);
-
-    } catch (err) {
-      showError(err.message || "something went wrong — check your connection and try again");
-      console.error(err);
-    } finally {
-      document.getElementById("sort-btn").disabled = false;
-      document.getElementById("replan-btn").disabled = false;
-      document.getElementById("loading").classList.remove("visible");
-      pane.classList.remove("visible");
-    }
-  }
-
-  // A follow-up re-plans under the same contract. The energy state is
-  // whatever is selected now, so it can change mid-conversation.
-  function followUp(text) {
-    text = (text || "").trim();
-    if (!text) return;
-    if (!history.some(t => t.role === "assistant")) { showError("sort something first, then change it"); return; }
-    document.getElementById("replan-text").value = "";
-    runSort({ followUp: text });
-  }
-
-  // Coming back to the tab: the last plan is still here.
-  (function restoreLastPlan() {
-    const last = [...history].reverse().find(t => t.role === "assistant");
-    if (!last) return;
-    try {
-      sortedData = JSON.parse(last.content.replace(/```json|```/g, "").trim());
-      renderOutput(sortedData);
-      const first = history.find(t => t.role === "user");
-      if (first && !ta.value) ta.value = first.content;
-    } catch (e) { /* an old or broken plan; start fresh */ }
-  })();
-
-  function renderOutput(data) {
-    // buckets
-    renderBucket("do", data.buckets.do_it || []);
-    renderBucket("decide", data.buckets.decide_later || []);
-    renderBucket("capture", data.buckets.capture_it || []);
-    renderBucket("release", data.buckets.release_it || []);
-
-    const taskHeavy = data.output_type === "task_heavy";
-    document.getElementById("focus-task").style.display = taskHeavy ? "block" : "none";
-    document.getElementById("focus-mental").style.display = taskHeavy ? "none" : "block";
-    document.getElementById("start-cta").classList.toggle("hidden", !taskHeavy);
-
-    if (data.focus_subtitle) document.getElementById("focus-sub").textContent = data.focus_subtitle;
-    if (data.cta_text) document.getElementById("start-cta").textContent = data.cta_text;
-
-    if (taskHeavy) {
-      renderFocusItems(data.focus || []);
-      doTasks = (data.focus || []).map(f => f.task);
-      pomoIdx = 0;
-    } else {
-      document.getElementById("gentle-anchor").textContent = data.gentle_anchor || "";
-      document.getElementById("gentle-sub").textContent = data.gentle_note || "most of what came out today wasn't tasks — it was weight. that's the work.";
-    }
-
-    document.getElementById("output-section").classList.add("visible");
-    document.getElementById("output-section").scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-
-  function renderBucket(name, items) {
-    const list = document.getElementById("items-" + name);
-    const count = document.getElementById("count-" + name);
-    list.innerHTML = "";
-    count.textContent = items.length;
-    if (items.length === 0) {
-      list.innerHTML = '<span class="bucket-empty">nothing here</span>';
-      return;
-    }
-    items.forEach((item, i) => {
-      const card = document.createElement("div");
-      card.className = "item-card";
-      card.style.animationDelay = (i * 0.07) + "s";
-      card.textContent = item;
-      list.appendChild(card);
-    });
-  }
-
-  function renderFocusItems(focus) {
-    const container = document.getElementById("focus-items");
-    container.innerHTML = "";
-    focus.forEach((item, i) => {
-      const stratKey = item.strategy || "";
-      let strat = STRATEGIES[stratKey];
-      if (!strat) {
-        const lower = stratKey.toLowerCase();
-        const match = Object.keys(STRATEGIES).find(k => lower.includes(k) || k.includes(lower.split(" ")[0]));
-        strat = match ? STRATEGIES[match] : { title: stratKey, body: "a strategy tailored to this task — do the smallest version of it you can imagine right now." };
-      }
-      const id = "fi-" + i;
-      const chipId = "fc-" + i;
-      const div = document.createElement("div");
-      div.innerHTML = `
-        ${i > 0 ? '<div class="focus-divider"></div>' : ""}
-        <div class="focus-item">
-          <div class="focus-dot"></div>
-          <div style="flex:1">
-            <div class="focus-line">
-              <span class="focus-text">${item.task.replace(/\n\n/g, '<br><span style="font-size:13px;color:var(--text-muted);font-weight:300;line-height:1.6;">&nbsp;').replace(/\n/g, '<br>')}</span>
-              <button class="tag" id="${chipId}" onclick="toggleTag('${id}','${chipId}')">
-                ${item.strategy} <i class="ti ti-chevron-down"></i>
-              </button>
-            </div>
-            <div class="strategy-expand" id="${id}">
-              <div class="expansion-panel">
-                <div class="expansion-title">${strat.title}</div>
-                <div class="expansion-body">${strat.body}</div>
-              </div>
-            </div>
-          </div>
-        </div>`;
-      container.appendChild(div);
-    });
-  }
-
-  function toggleTag(id, tagId) {
-    document.getElementById(id).classList.toggle("open");
-    document.getElementById(tagId).classList.toggle("open");
-  }
-
-  // ── EMERGENCY MODE ────────────────────────────────────
-  // Its own mode on the worker, its own schema, and a hard-coded fallback
-  // here that never came from a model.
-  async function runEmergency() {
+  async function runSort() {
     const dump = ta.value.trim();
-    if (!dump) { showError("type something first — even one word is fine"); return; }
-
+    if (!dump) { showError("type something first, anything that's on your mind"); return; }
     clearError();
-    document.getElementById("sort-btn").disabled = true;
-    document.getElementById("loading").classList.add("visible");
+    const carried = carryItems().filter(t => carryChoice[t] === "keep");
 
+    if (SORT_SOURCE === "sample") {
+      result = { raw: samplePlan(level, anxious, carried), source: "sample" };
+    } else {
+      $("sort-btn").disabled = true;
+      const live = $("live");
+      live.textContent = "sorting…"; live.hidden = false;
+      try {
+        const body = { mode: "sort", energy_state: level, anxious, dump, stream: true };
+        if (carried.length) body.carried = carried;
+        const { text, stopReason, apiError } = await callWorker(body, { onDelta: t => { live.textContent = t; } });
+        result = { raw: planFrom(text, stopReason, apiError), source: "live" };
+      } catch (err) {
+        showError(err.message || "something went wrong, so check your connection and try again");
+        return;
+      } finally {
+        $("sort-btn").disabled = false; live.hidden = true;
+      }
+    }
+    result.level = level; result.anxious = anxious;
+    dumpCount++; try { localStorage.setItem("bd-count", dumpCount); } catch (e) {}
+    carryChoice = {};
+    startPlan();
+  }
+
+  async function runOneThing() {
+    const dump = ta.value.trim();
+    if (!dump) { showError("type something first, even one word is fine"); return; }
+    clearError();
+    $("one-btn").disabled = true;
+    let one;
     try {
       const { plan } = await callWorker({ mode: "emergency", dump });
-      alert(`one thing right now:\n\n${plan.one_thing}\n\n${plan.why}`);
+      one = { label: plan.one_thing, detail: plan.why, why: "", strategy: "" };
     } catch (e) {
-      alert("couldn't connect — but here's a rule: pick the smallest thing on your list and open it. just open it.");
-    } finally {
-      document.getElementById("sort-btn").disabled = false;
-      document.getElementById("loading").classList.remove("visible");
-    }
+      // Same rule as EMERGENCY_FALLBACK in worker/contracts.js, never from a model.
+      one = { label: "open the smallest thing on your list.", detail: "just open it, and that counts.", why: "", strategy: "" };
+    } finally { $("one-btn").disabled = false; }
+    result = { raw: { now: [one], later: [], let_go: [] }, source: "one", level: "none", anxious };
+    startPlan();
   }
 
-  // ── STREAK ────────────────────────────────────────────
-  function updateStreak() {
-    dumpCount++;
-    localStorage.setItem("bd-count", dumpCount);
-    const text = dumpCount === 1 ? "1 dump today" : `${dumpCount} dumps this week`;
-    document.getElementById("streak-text").textContent = text;
+  function startPlan() {
+    done = []; moved = []; showWhy = false;
+    open = { later: desktop.matches, let_go: false };
+    Object.assign(result, checkPlan(result.raw, result.level, result.anxious));
+    renderPlan();
+    setTimer(TIMER_MIN[result.level]);
+    showView("plan");
   }
 
-  // ── EXPORT / COPY ─────────────────────────────────────
-  function buildExportText() {
-    if (!sortedData) return "";
-    const b = sortedData.buckets;
-    const f = sortedData.focus || [];
-    let out = `brain dump — ${new Date().toLocaleDateString()}\nenergy: ${currentEnergy}\n\n`;
-    out += `DO IT\n${(b.do_it||[]).map(i=>"• "+i).join("\n")}\n\n`;
-    out += `DECIDE LATER\n${(b.decide_later||[]).map(i=>"• "+i).join("\n")}\n\n`;
-    out += `CAPTURE IT\n${(b.capture_it||[]).map(i=>"• "+i).join("\n")}\n\n`;
-    out += `RELEASE IT\n${(b.release_it||[]).map(i=>"• "+i).join("\n")}\n\n`;
-    if (f.length) {
-      out += `YOUR FOCUS TODAY\n${f.map((i,n)=>`${n+1}. ${i.task} [${i.strategy}]`).join("\n")}`;
-    }
-    return out;
+  // ── PLAN SCREEN ───────────────────────────────────────
+  function queue() {
+    return result.plan.now.map((t, i) => ({ ...t, i })).filter(t => !moved.includes(t.i));
   }
 
-  function exportResults() {
-    const text = buildExportText();
-    if (!text) return;
-    const blob = new Blob([text], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url; a.download = `brain-dump-${new Date().toISOString().slice(0,10)}.txt`;
-    a.click(); URL.revokeObjectURL(url);
-  }
+  function renderPlan() {
+    const q = queue();
+    const left = q.filter(t => !done.includes(t.i));
+    const cur = left[0], next = left[1];
+    const isOne = result.source === "one";
 
-  function copyResults() {
-    const text = buildExportText();
-    if (!text) return;
-    navigator.clipboard.writeText(text).then(() => {
-      const btn = document.querySelector('[onclick="copyResults()"]');
-      btn.textContent = "✓ copied";
-      setTimeout(() => { btn.innerHTML = '<i class="ti ti-copy"></i> copy'; }, 2000);
-    });
-  }
+    $("step").textContent = isOne ? "just one thing"
+      : result.level + (result.anxious ? " · anxious" : "") + (cur ? ` · ${q.length - left.length + 1} of ${q.length}` : "");
 
-  function exportPDF() {
-    if (!sortedData) return;
-    const b = sortedData.buckets;
-    const f = sortedData.focus || [];
-    const date = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-
-    const bucketColors = {
-      do_it:       { bg: 'rgba(124,92,191,0.10)', border: 'rgba(124,92,191,0.3)',  title: '#3C3489', sub: '#534AB7', item_bg: 'rgba(124,92,191,0.07)', item_border: 'rgba(124,92,191,0.2)',  item_text: '#3C3489' },
-      decide_later:{ bg: '#EAF3DE',               border: '#97C459',               title: '#27500A', sub: '#3B6D11', item_bg: '#f2f9e8',              item_border: '#C0DD97',              item_text: '#27500A' },
-      capture_it:  { bg: '#FAECE7',               border: '#F0997B',               title: '#712B13', sub: '#993C1D', item_bg: '#fdf2ee',              item_border: '#F5C4B3',              item_text: '#712B13' },
-      release_it:  { bg: '#FBEAF0',               border: '#ED93B1',               title: '#72243E', sub: '#993556', item_bg: '#fdf0f5',              item_border: '#F4C0D1',              item_text: '#72243E' },
-    };
-    const bucketLabels = { do_it: 'do it', decide_later: 'decide later', capture_it: 'capture it', release_it: 'release it' };
-    const bucketSubs   = { do_it: 'you have energy for this today', decide_later: 'real, but not right now', capture_it: 'worth keeping, not yet actionable', release_it: 'not yours to carry right now' };
-
-    const makeBucket = (key) => {
-      const items = b[key] || [];
-      const c = bucketColors[key];
-      const itemRows = items.map(i => `
-        <div style="background:${c.item_bg};border:0.5px solid ${c.item_border};border-radius:6px;padding:5px 10px;font-size:11px;color:${c.item_text};margin-bottom:4px;">${i}</div>
-      `).join('');
-      return `
-        <div style="background:${c.bg};border:0.5px solid ${c.border};border-radius:12px;padding:12px 14px;break-inside:avoid;">
-          <div style="font-family:'Playfair Display',Georgia,serif;font-size:13px;font-weight:500;color:${c.title};margin-bottom:2px;">${bucketLabels[key]}</div>
-          <div style="font-size:10px;color:${c.sub};margin-bottom:8px;">${bucketSubs[key]}</div>
-          ${itemRows || '<div style="font-size:10px;color:#aaa;font-style:italic;">nothing here</div>'}
+    const body = $("task-body");
+    if (cur) {
+      const strat = STRATEGIES[cur.strategy];
+      const whyText = [cur.why, cur.strategy && `the idea behind it is ${cur.strategy}${strat ? ": " + strat : ""}`].filter(Boolean).join(", and ");
+      body.innerHTML = `
+        <h2>${esc(cur.label)}</h2>
+        ${cur.detail ? `<p class="detail">${esc(cur.detail)}</p>` : ""}
+        ${whyText ? `<button class="glass why-btn" type="button" id="why-btn" aria-expanded="${showWhy}">${showWhy ? "−" : "+"} why this one</button>
+          <p class="why${justOpened === "why" ? " rise" : ""}" ${showWhy ? "" : "hidden"}>${esc(whyText)}</p>` : ""}
+        <div class="task-foot">
+          <div class="timer">
+            <div class="row"><span class="time" id="ttime"></span><button class="tint" type="button" id="ttoggle">start</button></div>
+            <div class="track"><div class="fill" id="tfill"></div></div>
+          </div>
+          <div class="actions">
+            <button class="primary done" type="button" id="done-btn">done →</button>
+            ${isOne ? "" : `<button class="glass skip" type="button" id="skip-btn">not today</button>`}
+          </div>
         </div>`;
-    };
-
-    const focusRows = f.map((item, i) => `
-      <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;">
-        <div style="width:7px;height:7px;border-radius:50%;background:#7C5CBF;flex-shrink:0;margin-top:5px;"></div>
-        <div>
-          <span style="font-size:13px;color:#1a1a1a;">${item.task}</span>
-          <span style="font-size:10px;background:rgba(124,92,191,0.15);color:#7C6DA3;border:0.5px solid rgba(124,92,191,0.3);border-radius:20px;padding:1px 7px;margin-left:6px;white-space:nowrap;">${item.strategy}</span>
-        </div>
-      </div>`).join('<div style="height:0.5px;background:rgba(124,92,191,0.12);margin:6px 0;"></div>');
-
-    const html = `<!DOCTYPE html><html><head>
-      <meta charset="UTF-8"/>
-      <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
-      <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'DM Sans', sans-serif; background: #faf9ff; color: #1a1a1a; padding: 32px; max-width: 700px; margin: 0 auto; }
-        @media print { body { padding: 16px; } .no-print { display: none; } }
-      </style>
-    </head><body>
-      <div style="text-align:center;margin-bottom:24px;">
-        <div style="font-family:'Playfair Display',Georgia,serif;font-size:26px;font-weight:400;color:#5b4a8a;margin-bottom:4px;">clear your mind.</div>
-        <div style="font-size:12px;color:#9E8DC6;">${date} &middot; energy: ${currentEnergy}</div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;">
-        ${makeBucket('do_it')}${makeBucket('decide_later')}${makeBucket('capture_it')}${makeBucket('release_it')}
-      </div>
-      ${f.length ? `
-      <div style="background:rgba(124,92,191,0.07);border:0.5px solid rgba(124,92,191,0.25);border-radius:12px;padding:14px 16px;">
-        <div style="font-family:'Playfair Display',Georgia,serif;font-size:15px;color:#645491;margin-bottom:3px;">your focus today</div>
-        <div style="font-size:11px;color:#9E8DC6;margin-bottom:12px;">${document.getElementById('focus-sub').textContent}</div>
-        ${focusRows}
-      </div>` : ''}
-      <div style="margin-top:20px;text-align:center;font-size:10px;color:#c4b4e0;">
-        made with brain dump &middot; samievargas.github.io/brain-dump
-      </div>
-      <script>window.onload = () => { window.print(); }<\/script>
-    </body></html>`;
-
-    const win = window.open('', '_blank');
-    win.document.write(html);
-    win.document.close();
-  }
-  const POMO_CIRC = 351.86;
-  function showPomo() {
-    if (!doTasks.length) return;
-    pomoIdx = 0; pomoSec = 1500; pomoPhase = "focus"; pomoRunning = false;
-    clearInterval(pomoInterval);
-    updatePomoDisplay();
-    renderPomoDots();
-    document.getElementById("pomo-task-name").textContent = doTasks[0];
-    updatePomoNext();
-    document.getElementById("pomo-overlay").classList.add("visible");
-    document.getElementById("pomo-overlay").scrollIntoView({ behavior: "smooth" });
-  }
-
-  function togglePomo() {
-    if (pomoRunning) {
-      pomoRunning = false; clearInterval(pomoInterval);
-      document.getElementById("pomo-toggle").textContent = "resume";
-      document.getElementById("pomo-status").textContent = "paused — take a breath";
-      return;
+      $("ttoggle").onclick = () => { if (!timer.left) setTimer(timer.total / 60); else toggleTimerRun(); };
+      $("done-btn").onclick = () => { done.push(cur.i); afterStep(); };
+      if ($("skip-btn")) $("skip-btn").onclick = () => moveToLater(cur.i);
+      if ($("why-btn")) $("why-btn").onclick = () => { showWhy = !showWhy; justOpened = "why"; renderPlan(); };
+    } else {
+      body.innerHTML = `<h2>that's it for now.</h2>
+        <button class="restart" type="button" id="restart-btn">start again</button>`;
+      $("restart-btn").onclick = () => { done = []; moved = []; afterStep(); };
     }
-    pomoRunning = true;
-    document.getElementById("pomo-toggle").textContent = "pause";
-    document.getElementById("pomo-status").textContent =
-      pomoPhase === "focus" ? `session ${pomoIdx + 1} of ${doTasks.length} · next: 5 min break` : "break time — step away";
-    pomoInterval = setInterval(() => {
-      if (pomoSec <= 0) {
-        clearInterval(pomoInterval); pomoRunning = false;
-        if (pomoPhase === "focus") {
-          pomoPhase = "break"; pomoSec = 300;
-          document.getElementById("pomo-phase").textContent = "break";
-          document.getElementById("pomo-status").textContent = "5 min break — you earned it";
-          document.getElementById("pomo-toggle").textContent = "start break";
-        } else {
-          pomoPhase = "focus"; pomoSec = 1500;
-          pomoIdx = Math.min(pomoIdx + 1, doTasks.length - 1);
-          document.getElementById("pomo-task-name").textContent = doTasks[pomoIdx];
-          document.getElementById("pomo-phase").textContent = "focus";
-          document.getElementById("pomo-status").textContent = "next task loaded — ready when you are";
-          document.getElementById("pomo-toggle").textContent = "start";
-          updatePomoNext();
-          renderPomoDots();
-        }
-        return;
-      }
-      pomoSec--;
-      updatePomoDisplay();
-    }, 1000);
+    timer.onTick = () => { if ($("ttime")) paintTimer($("ttime"), $("tfill"), $("ttoggle"), "start"); };
+    timer.onTick();
+
+    $("then").hidden = !next;
+    if (next) $("then").textContent = `then · ${next.label.replace(/\.$/, "")}`;
+
+    // later: moved items first, then whatever the checks left there
+    const later = [
+      ...moved.map(i => ({ text: result.plan.now[i].label.replace(/\.$/, ""), tag: "moved" })),
+      ...result.plan.later,
+    ];
+    const cards = isOne ? [] : [
+      { key: "later", cls: "later", items: later },
+      { key: "let_go", cls: "letgo", items: result.plan.let_go.map(text => ({ text })) },
+    ];
+    $("buckets").innerHTML = cards.map(c => `
+      <div class="bucket ${c.cls}">
+        <button type="button" data-bucket="${c.key}" aria-expanded="${open[c.key]}">
+          <span class="name">${BUCKET_NAMES[c.key]}</span>
+          <span class="count">${c.items.length}<span class="sub"> · ${BUCKET_SUBS[c.key]}</span></span>
+          <span class="sign">${open[c.key] ? "−" : "+"}</span>
+        </button>
+        ${open[c.key] ? `<div class="items${justOpened === c.key ? " rise" : ""}"><span class="sub">${BUCKET_SUBS[c.key]}</span>
+          ${c.items.map(it => `<span class="chip"><span>${esc(it.text)}</span>${it.tag ? `<span class="tag">${esc(it.tag)}</span>` : ""}</span>`).join("")}
+        </div>` : ""}
+      </div>`).join("");
+
+    const noReplan = isOne || !cur;
+    $("change-btn").hidden = noReplan;
+    if (noReplan) { $("replan").hidden = true; $("change-btn").textContent = "+ change something"; $("change-btn").setAttribute("aria-expanded", false); }
+    $("replan").toggleAttribute("data-desktop", !noReplan);
+
+    // the checks line
+    const fixes = result.fixes || [];
+    const openChecks = !$("checks").hidden;
+    $("checks-btn").hidden = isOne;
+    $("checks-btn").textContent = `✓ checked${fixes.length ? `, ${fixes.length} small fix${fixes.length > 1 ? "es" : ""}` : ""}`
+      + (result.source === "sample" ? " · sample plan" : "");
+    $("checks-btn").setAttribute("aria-expanded", openChecks);
+    $("checks").innerHTML = [...fixes, ...(result.notes || [])].map(t => `<span>${esc(t)}</span>`).join("")
+      + (result.source === "sample" ? `<span>a hand-sorted sample from a 23 September dump, while the sorter is rebuilt</span>` : "");
+
+    justOpened = null;
+    saveState();
   }
 
-  function finishEarly() {
-    clearInterval(pomoInterval); pomoRunning = false;
-    pomoIdx = Math.min(pomoIdx + 1, doTasks.length - 1);
-    pomoPhase = "focus"; pomoSec = 1500;
-    document.getElementById("pomo-task-name").textContent = doTasks[pomoIdx];
-    document.getElementById("pomo-status").textContent = "next task loaded — ready when you are";
-    document.getElementById("pomo-toggle").textContent = "start";
-    document.getElementById("pomo-phase").textContent = "focus";
-    updatePomoDisplay(); updatePomoNext(); renderPomoDots();
+  function afterStep() {
+    showWhy = false;
+    setTimer(TIMER_MIN[result.level]);
+    renderPlan();
   }
 
-  function updatePomoDisplay() {
-    const m = Math.floor(pomoSec / 60), s = pomoSec % 60;
-    document.getElementById("pomo-display").textContent = m + ":" + String(s).padStart(2, "0");
-    const max = pomoPhase === "focus" ? 1500 : 300;
-    document.getElementById("pomo-ring").style.strokeDashoffset = POMO_CIRC * (1 - pomoSec / max);
+  function moveToLater(i) {
+    moved.push(i);
+    afterStep();
   }
 
-  function updatePomoNext() {
-    const next = doTasks[pomoIdx + 1];
-    const wrap = document.getElementById("pomo-next-wrap");
-    wrap.style.display = next ? "block" : "none";
-    if (next) document.getElementById("pomo-next-name").textContent = next;
+  $("buckets").addEventListener("click", e => {
+    const b = e.target.closest("[data-bucket]"); if (!b) return;
+    open[b.dataset.bucket] = !open[b.dataset.bucket];
+    justOpened = b.dataset.bucket;
+    renderPlan();
+  });
+  $("change-btn").addEventListener("click", () => {
+    const show = $("replan").hidden;
+    $("replan").hidden = !show;
+    $("change-btn").textContent = (show ? "− " : "+ ") + "change something";
+    $("change-btn").setAttribute("aria-expanded", show);
+  });
+  $("replan").addEventListener("click", e => {
+    const b = e.target.closest("[data-replan]"); if (!b) return;
+    const left = queue().filter(t => !done.includes(t.i));
+    if (b.dataset.replan === "twenty") setTimer(20);
+    if (b.dataset.replan === "tomorrow" && left[0]) moveToLater(left[0].i);
+    if (b.dataset.replan === "toptwo") { queue().slice(0, 2).forEach(t => { if (!done.includes(t.i)) done.push(t.i); }); afterStep(); }
+  });
+  $("checks-btn").addEventListener("click", () => {
+    $("checks").hidden = !$("checks").hidden;
+    $("checks-btn").setAttribute("aria-expanded", !$("checks").hidden);
+  });
+
+  // ── VIEWS AND PERSISTENCE ─────────────────────────────
+  function showView(v) {
+    $("dump-view").hidden = v !== "dump";
+    $("plan-view").hidden = v !== "plan";
+    if (v === "dump") {
+      setTimer(dumpMin);
+      timer.onTick = renderDumpTimer;
+      renderDumpTimer(); renderStates(); renderCarry(); renderStreak();
+    } else {
+      renderStreak();
+    }
+    window.scrollTo(0, 0);
+    store("sessionStorage", "bd-view", v);
+  }
+  $("back-btn").addEventListener("click", () => showView("dump"));
+
+  // Unfinished "now" items and everything moved with "not today" become the
+  // next dump's carry-over. The plan itself stays in this tab.
+  function saveState() {
+    if (!result || !result.plan || result.source === "one") return;
+    const unfinished = result.plan.now.map((t, i) => ({ t, i }))
+      .filter(({ i }) => !done.includes(i)).map(({ t }) => t.label.replace(/\.$/, ""));
+    store("localStorage", "bd-carry", unfinished);
+    store("sessionStorage", "bd-plan", { result: { raw: result.raw, source: result.source, level: result.level, anxious: result.anxious }, done, moved });
   }
 
-  function renderPomoDots() {
-    const dots = document.getElementById("pomo-dots");
-    dots.innerHTML = doTasks.map((_, i) =>
-      `<div class="pomo-dot ${i < pomoIdx ? 'done' : i === pomoIdx ? 'current' : ''}"></div>`
-    ).join("");
-  }
+  $("sort-btn").addEventListener("click", runSort);
+  $("one-btn").addEventListener("click", runOneThing);
+  $("voice-btn").addEventListener("click", toggleVoice);
 
-  function closePomo() {
-    clearInterval(pomoInterval); pomoRunning = false;
-    document.getElementById("pomo-overlay").classList.remove("visible");
-    document.querySelector(".hero").scrollIntoView({ behavior: "smooth" });
-  }
-
-  // ── VOICE INPUT ───────────────────────────────────────
+  // ── VOICE ─────────────────────────────────────────────
   let recognition = null;
-  let isRecording = false;
-
   function toggleVoice() {
-    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-      showError("voice input isn't supported in this browser — try Chrome");
-      return;
-    }
-    if (isRecording) {
-      stopVoice();
-      return;
-    }
-    startVoice();
-  }
-
-  function startVoice() {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) { showError("voice input isn't supported in this browser, so try Chrome"); return; }
+    if (recognition) { stopVoice(); return; }
     recognition = new SR();
     recognition.continuous = true;
     recognition.interimResults = true;
-    recognition.lang = 'en-US';
-
-    const micBtn = document.getElementById("mic-btn");
-    const micStatus = document.getElementById("mic-status");
-    const textarea = document.getElementById("dump-text");
-
-    let existingText = textarea.value;
-    if (existingText && !existingText.endsWith(' ')) existingText += ' ';
-
-    recognition.onstart = () => {
-      isRecording = true;
-      micBtn.classList.add("recording");
-      micBtn.querySelector("i").className = "ti ti-microphone-off";
-      micStatus.classList.add("visible");
-      exTag.style.display = "none";
-    };
-
-    recognition.onresult = (e) => {
-      let interim = '';
-      let final = '';
+    recognition.lang = "en-US";
+    let base = ta.value && !ta.value.endsWith(" ") ? ta.value + " " : ta.value;
+    recognition.onstart = () => { $("voice-btn").classList.add("on"); $("voice-btn").textContent = "● listening"; };
+    recognition.onresult = e => {
+      let interim = "";
       for (let i = e.resultIndex; i < e.results.length; i++) {
         const t = e.results[i][0].transcript;
-        if (e.results[i].isFinal) final += t;
-        else interim += t;
+        if (e.results[i].isFinal) base += t; else interim += t;
       }
-      if (final) existingText += final;
-      textarea.value = existingText + interim;
-      textarea.scrollTop = textarea.scrollHeight;
+      ta.value = base + interim;
+      ta.scrollTop = ta.scrollHeight;
     };
-
-    recognition.onerror = (e) => {
-      if (e.error === 'not-allowed') showError("microphone access was blocked — check your browser permissions");
+    recognition.onerror = e => {
+      if (e.error === "not-allowed") showError("microphone access was blocked, so check your browser permissions");
       stopVoice();
     };
-
-    recognition.onend = () => { stopVoice(); };
-
+    recognition.onend = stopVoice;
     recognition.start();
   }
-
   function stopVoice() {
-    if (recognition) { try { recognition.stop(); } catch(e) {} recognition = null; }
-    isRecording = false;
-    const micBtn = document.getElementById("mic-btn");
-    const micStatus = document.getElementById("mic-status");
-    micBtn.classList.remove("recording");
-    micBtn.querySelector("i").className = "ti ti-microphone";
-    micStatus.classList.remove("visible");
+    if (recognition) { try { recognition.stop(); } catch (e) {} recognition = null; }
+    $("voice-btn").classList.remove("on");
+    $("voice-btn").textContent = "+ voice";
   }
 
-  // ── ERROR ─────────────────────────────────────────────
-  function showError(msg) {
-    const el = document.getElementById("error-msg");
-    el.textContent = msg; el.classList.add("visible");
-  }
-  function clearError() {
-    document.getElementById("error-msg").classList.remove("visible");
-  }
+  // ── START ─────────────────────────────────────────────
+  session();
+  $("sample-note").hidden = SORT_SOURCE !== "sample";
+  (function restore() {
+    const saved = load("sessionStorage", "bd-plan", null);
+    if (saved && saved.result && saved.result.raw) {
+      result = saved.result; done = saved.done || []; moved = saved.moved || [];
+      level = result.level; anxious = result.anxious;
+      if (SORT_SOURCE === "sample" && !ta.value) ta.value = SAMPLE_DUMP;
+      Object.assign(result, checkPlan(result.raw, result.level, result.anxious));
+      if (load("sessionStorage", "bd-view", "dump") === "plan") {
+        open = { later: desktop.matches, let_go: false };
+        showView("plan"); renderPlan(); setTimer(TIMER_MIN[result.level]);
+        return;
+      }
+    }
+    if (SORT_SOURCE === "sample" && !ta.value) ta.value = SAMPLE_DUMP;
+    showView("dump");
+  })();
 </script>
 </body>
 </html>
